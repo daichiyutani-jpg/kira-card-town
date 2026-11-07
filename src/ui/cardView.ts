@@ -70,7 +70,14 @@ export function bigCard(def: CardDef, opts: { locked?: boolean; atk?: number; de
     h('div', { class: 'head' }, h('div', { class: 'nm' }, hide ? '？？？' : def.name), h('div', { class: 'el' }, EL_ICON[def.el])),
     h('div', { class: 'stars' }, def.type === 'monster' ? `${'★'.repeat(def.lv)}  Lv${def.lv}` : ''),
     art,
-    h('div', { class: 'type' }, h('span', {}, `${EL_NAME[def.el]}属性・${TYPE_NAME[def.type]}${def.equip ? '（装備）' : ''}`), h('span', {}, `No.${def.id}`)),
+    h(
+      'div',
+      { class: 'type' },
+      h('span', {}, `${EL_NAME[def.el]}属性・${TYPE_NAME[def.type]}${def.equip ? '（装備）' : ''}`),
+      // 魔法・アイテムは攻撃/守備の欄がないので、レア度はこの行に置く（説明文に重ならないように）
+      def.type !== 'monster' ? h('span', { class: 'rar inl' }, RARITY_NAME[def.r]) : null,
+      h('span', {}, `No.${def.id}`),
+    ),
     h(
       'div',
       { class: 'text' },
@@ -79,7 +86,7 @@ export function bigCard(def: CardDef, opts: { locked?: boolean; atk?: number; de
       !hide ? h('p', { class: 'flavor' }, def.flavor) : null,
     ),
     def.type === 'monster' ? h('div', { class: 'stats' }, h('b', { class: 'a' }, h('small', {}, '攻撃'), opts.atk ?? def.atk), h('b', { class: 'd' }, h('small', {}, '守備'), opts.def ?? def.def)) : null,
-    h('div', { class: 'rar' }, RARITY_NAME[def.r]),
+    def.type === 'monster' ? h('div', { class: 'rar' }, RARITY_NAME[def.r]) : null,
   );
 }
 

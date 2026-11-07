@@ -6,7 +6,8 @@
 
 取り込み:
   - ファイル名の先頭がカードID（例 f21.png / f21_2.jpg / w17-best.webp）。
-  - ふちの白い余白を落とし、4:3 に中央で切り抜き、800x600 の WebP にして public/art/monsters/<ID>.webp に保存する。
+  - ふちの白い余白を落とし、4:3 に中央で切り抜き、800x600 の WebP にして public/art/monsters/<ID>.webp
+    （魔法・アイテムは public/art/items/<ID>.webp）に保存する。
   - src/data/cards.json のそのカードの art に "img":"art/monsters/<ID>.webp" を書く（ID・能力値は変えない）。
   - 取り込んだ元の画像は inbox/done/ へ移す。
 検査:
@@ -30,6 +31,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 ROOT = Path(__file__).resolve().parent.parent
 INBOX = ROOT / 'design' / 'leonardo' / 'inbox'
 OUT = ROOT / 'public' / 'art' / 'monsters'
+OUT_ITEMS = ROOT / 'public' / 'art' / 'items'  # 魔法・アイテム
 CARDS = ROOT / 'src' / 'data' / 'cards.json'
 W, H = 800, 600
 SIMILAR = 10  # dHash(64bit) の違いがこれ以下なら「似ている」として一覧に出す
@@ -86,7 +88,9 @@ def dhash(path: Path) -> int:
 
 
 def do_import():
-    ids = {c['id'] for c in load_cards()}
+    cards = load_cards()
+    ids = {c['id'] for c in cards}
+    kind = {c['id']: c['type'] for c in cards}
     files = [p for p in sorted(INBOX.glob('*')) if p.suffix.lower() in ('.png', '.jpg', '.jpeg', '.webp')]
     if not files:
         print('inbox に画像がありません:', INBOX)
@@ -101,12 +105,13 @@ def do_import():
             print(f'× {p.name}: {cid} は {seen[cid]} と重なるので飛ばしました（1体1枚）')
             continue
         seen[cid] = p.name
-        dst = OUT / f'{cid}.webp'
+        sub = 'monsters' if kind[cid] == 'monster' else 'items'
+        dst = (OUT if sub == 'monsters' else OUT_ITEMS) / f'{cid}.webp'
         to_card_image(p, dst)
-        set_img(cid, f'art/monsters/{cid}.webp')
+        set_img(cid, f'art/{sub}/{cid}.webp')
         (INBOX / 'done').mkdir(exist_ok=True)
         shutil.move(str(p), str(INBOX / 'done' / p.name))
-        print(f'○ {p.name} → public/art/monsters/{cid}.webp')
+        print(f'○ {p.name} → public/{dst.relative_to(ROOT / "public").as_posix()}')
 
 
 def check():
@@ -148,6 +153,9 @@ def check():
         print(f'△ 似ている（目で確認する）: {a} と {b}（違い {d}/64）')
     done = [c for c in mons if c['art'].get('img')]
     print(f'\nモンスター {len(mons)}体のうち 画像あり {len(done)}体 / まだ {len(mons) - len(done)}体（プログラムの絵のまま）')
+    others = [c for c in cards if c['type'] != 'monster']
+    odone = [c for c in others if c['art'].get('img')]
+    print(f'魔法・アイテム {len(others)}枚のうち 画像あり {len(odone)}枚 / まだ {len(others) - len(odone)}枚')
     print(f'問題 {problems}件・似ている組 {len(pairs)}件')
     return problems
 

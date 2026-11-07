@@ -163,6 +163,7 @@ button:disabled { opacity: 0.45; }
 .big-card .stats b { flex: 1; text-align: center; border-radius: 8px; font-size: 22px; padding: 2px 0; font-weight: 900; }
 .big-card .stats b small { font-size: 12px; margin-right: 4px; }
 .big-card .stats .a { background: #d93b2b; } .big-card .stats .d { background: #2a64d9; }
+.big-card .rar.inl { position: static; margin-left: auto; margin-right: 8px; align-self: center; }
 .big-card .rar { position: absolute; right: 12px; bottom: 58px; font-size: 11px; font-weight: 900; background: rgba(0,0,0,.55); padding: 2px 8px; border-radius: 999px; z-index: 2; }
 .card-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
 .reason { color: var(--bad); font-size: 14px; font-weight: 700; text-align: center; }

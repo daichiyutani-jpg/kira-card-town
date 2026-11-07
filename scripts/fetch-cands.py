@@ -18,6 +18,7 @@ PREFIX = 'https://cdn.leonardo.ai/users/942bec89-7c2f-4b70-a4e5-1d117e0d809d/gen
 
 
 SUBJ = ROOT / 'design' / 'leonardo' / 'subjects.json'
+SUBJ_GI = ROOT / 'design' / 'leonardo' / 'subjects-gi.json'
 
 
 def expand(cid, tok):
@@ -26,8 +27,13 @@ def expand(cid, tok):
     if '/' in tok:
         return PREFIX + tok
     gen, idx = tok.split(':')
-    subj = json.loads(SUBJ.read_text(encoding='utf-8'))[cid][1]
-    name = 'lucid-origin_' + re.sub(r'[^A-Za-z0-9-]+', '_', 'Original creature design: ' + subj)[:80]
+    mons = json.loads(SUBJ.read_text(encoding='utf-8'))
+    if cid in mons:
+        head = 'Original creature design: ' + mons[cid][1]
+    else:  # 魔法・アイテム（subjects-gi.json）
+        subj = json.loads(SUBJ_GI.read_text(encoding='utf-8'))[cid][1]
+        head = ('Magical item illustration: ' if cid.startswith('i') or cid == 'mom5' else 'Magic spell effect illustration: ') + subj
+    name = 'lucid-origin_' + re.sub(r'[^A-Za-z0-9-]+', '_', head)[:80]
     return f'{PREFIX}{gen}/{name}-{idx}.jpg'
 
 
