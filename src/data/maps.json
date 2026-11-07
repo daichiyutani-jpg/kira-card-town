@@ -38,7 +38,7 @@
       "spawn": { "x": 4, "y": 6, "dir": "down" }
     },
     "home": {
-      "name": "じぶんの家", "bgm": "home", "indoor": true, "w": 13, "h": 10, "fill": "_", "border": "W",
+      "name": "じぶんの家", "bgm": "home", "indoor": true, "w": 13, "h": 10, "fill": "_", "border": "W", "theme": { "wall": "#fff6e8", "wall2": "#ffe8c8", "pattern": "dots", "base": "#a0522d", "floor": "wood", "f1": "#d9a86a", "f2": "#cf9b5d", "rug": "#4fa3e0", "rug2": "#ffffff" },
       "rects": [
         { "x": 6, "y": 1, "w": 1, "h": 4, "t": "W" },
         { "x": 1, "y": 1, "w": 5, "h": 1, "t": "W" },
@@ -49,6 +49,8 @@
       "points": [],
       "buildings": [],
       "objects": [
+        { "id": "win", "x": 2, "y": 0, "w": 2, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#4fa3e0" },
+        { "id": "clock", "x": 4, "y": 0, "h": 2, "kind": "clock", "label": "時計", "act": { "talk": "in_clock" } },
         { "id": "desk", "x": 1, "y": 2, "w": 2, "h": 1, "kind": "desk", "label": "自分の机", "act": { "desk": true } },
         { "id": "bed", "x": 4, "y": 2, "w": 1, "h": 2, "kind": "bed", "label": "ベッド", "act": { "talk": "bed" } },
         { "id": "shelf", "x": 7, "y": 1, "w": 2, "h": 1, "kind": "shelf", "label": "本だな", "act": { "talk": "shelf" } },
@@ -199,20 +201,29 @@
       "spawn": { "x": 10, "y": 15, "dir": "up" }
     },
     "in_shop1": {
-      "name": "カードショップ ひだまり", "bgm": "shop", "indoor": true, "w": 11, "h": 9, "fill": "g", "border": "W",
+      "name": "カードショップ ひだまり", "bgm": "shop", "indoor": true, "w": 11, "h": 9, "fill": "_", "border": "W", "theme": { "wall": "#fff4d6", "wall2": "#ffe9b0", "pattern": "stripe", "base": "#b9763a", "floor": "tile", "f1": "#f4f7fb", "f2": "#dde7f1", "rug": "#2e86de", "rug2": "#bfe0ff" },
       "rects": [
         { "x": 1, "y": 1, "w": 9, "h": 1, "t": "W" },
-        { "x": 5, "y": 4, "w": 1, "h": 4, "t": "k" },
-        { "x": 5, "y": 8, "w": 1, "h": 1, "t": "g" }
+        { "x": 4, "y": 4, "w": 3, "h": 4, "t": "k" },
+        { "x": 5, "y": 8, "w": 1, "h": 1, "t": "_" }
       ],
       "points": [],
       "buildings": [],
       "objects": [
+        { "id": "win1", "x": 1, "y": 0, "w": 2, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#2e86de" },
+        { "id": "poster1", "x": 3, "y": 0, "h": 2, "kind": "poster", "label": "カードのポスター", "act": { "talk": "in_poster" }, "color": "#ff7a3c" },
+        { "id": "clock", "x": 5, "y": 0, "h": 2, "kind": "clock", "label": "時計", "act": { "talk": "in_clock" } },
+        { "id": "poster2", "x": 7, "y": 0, "h": 2, "kind": "poster", "label": "カードのポスター", "act": { "talk": "in_poster" }, "color": "#2ead5b" },
+        { "id": "win2", "x": 8, "y": 0, "w": 2, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#2e86de" },
         { "id": "counter", "x": 4, "y": 3, "w": 3, "kind": "counter", "label": "レジ", "act": { "shop": "shop1" } },
         { "id": "case1", "x": 1, "y": 2, "w": 2, "kind": "showcase", "label": "ショーケース", "act": { "talk": "in_showcase" } },
         { "id": "case2", "x": 8, "y": 2, "w": 2, "kind": "showcase", "label": "ショーケース", "act": { "talk": "in_showcase" } },
-        { "id": "table1", "x": 2, "y": 6, "kind": "table", "label": "対戦テーブル", "act": { "talk": "in_playtable" } },
-        { "id": "table2", "x": 8, "y": 6, "kind": "table", "label": "対戦テーブル", "act": { "talk": "in_playtable" } },
+        { "id": "pack1", "x": 1, "y": 4, "kind": "packstand", "label": "パックの台", "act": { "talk": "in_packstand" } },
+        { "id": "pack2", "x": 9, "y": 4, "kind": "packstand", "label": "パックの台", "act": { "talk": "in_packstand" } },
+        { "id": "table1", "x": 1, "y": 6, "w": 2, "kind": "cardtable", "label": "対戦テーブル", "act": { "talk": "in_playtable" } },
+        { "id": "chair1", "x": 3, "y": 6, "kind": "chair", "label": "いす", "act": { "talk": "in_chair" }, "color": "#e57373" },
+        { "id": "table2", "x": 8, "y": 6, "w": 2, "kind": "cardtable", "label": "対戦テーブル", "act": { "talk": "in_playtable" } },
+        { "id": "chair2", "x": 7, "y": 6, "kind": "chair", "label": "いす", "act": { "talk": "in_chair" }, "color": "#64b5f6" },
         { "id": "plant1", "x": 1, "y": 7, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_plant" } },
         { "id": "plant2", "x": 9, "y": 7, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_plant" } },
         { "id": "exit", "x": 5, "y": 8, "kind": "doormat", "label": "出口", "act": { "warp": "town1", "tx": 16, "ty": 6 }, "walk": true }
@@ -224,22 +235,31 @@
       "spawn": { "x": 5, "y": 7, "dir": "up" }
     },
     "in_hall1": {
-      "name": "ひだまり大会会場", "bgm": "cup", "indoor": true, "w": 13, "h": 10, "fill": "g", "border": "W",
+      "name": "ひだまり大会会場", "bgm": "cup", "indoor": true, "w": 13, "h": 10, "fill": "_", "border": "W", "theme": { "wall": "#efe6ff", "wall2": "#e2d3ff", "pattern": "stripe", "base": "#6c3483", "floor": "wood", "f1": "#d9a86a", "f2": "#cf9b5d", "rug": "#8e44ad", "rug2": "#f1d9ff" },
       "rects": [
         { "x": 1, "y": 1, "w": 11, "h": 1, "t": "W" },
         { "x": 6, "y": 2, "w": 1, "h": 7, "t": "k" },
-        { "x": 6, "y": 9, "w": 1, "h": 1, "t": "g" }
+        { "x": 6, "y": 9, "w": 1, "h": 1, "t": "_" }
       ],
       "points": [],
       "buildings": [],
       "objects": [
+        { "id": "win1", "x": 1, "y": 0, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#8e44ad" },
+        { "id": "poster1", "x": 3, "y": 0, "h": 2, "kind": "poster", "label": "大会のポスター", "act": { "talk": "in_cuposter" }, "color": "#ff7a3c" },
+        { "id": "board", "x": 5, "y": 0, "w": 3, "h": 2, "kind": "scoreboard", "label": "電光掲示板", "act": { "talk": "in_scoreboard" } },
+        { "id": "poster2", "x": 9, "y": 0, "h": 2, "kind": "poster", "label": "大会のポスター", "act": { "talk": "in_cuposter" }, "color": "#3c8dff" },
+        { "id": "win2", "x": 11, "y": 0, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#8e44ad" },
         { "id": "counter", "x": 5, "y": 3, "w": 3, "kind": "counter", "label": "受付", "act": { "cup": "cup1" } },
         { "id": "trophy1", "x": 1, "y": 2, "w": 3, "kind": "trophy", "label": "トロフィーの棚", "act": { "talk": "in_trophy" } },
         { "id": "trophy2", "x": 9, "y": 2, "w": 3, "kind": "trophy", "label": "トロフィーの棚", "act": { "talk": "in_trophy" } },
+        { "id": "light1", "x": 1, "y": 4, "kind": "spotlight", "label": "ライト", "act": { "talk": "in_spotlight" } },
+        { "id": "light2", "x": 11, "y": 4, "kind": "spotlight", "label": "ライト", "act": { "talk": "in_spotlight" } },
         { "id": "bench1", "x": 2, "y": 5, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
         { "id": "bench2", "x": 8, "y": 5, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
         { "id": "bench3", "x": 2, "y": 7, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
         { "id": "bench4", "x": 8, "y": 7, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
+        { "id": "plant1", "x": 1, "y": 8, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_plant" } },
+        { "id": "plant2", "x": 11, "y": 8, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_plant" } },
         { "id": "exit", "x": 6, "y": 9, "kind": "doormat", "label": "出口", "act": { "warp": "town1", "tx": 4, "ty": 14 }, "walk": true }
       ],
       "npcs": [
@@ -249,19 +269,26 @@
       "spawn": { "x": 6, "y": 8, "dir": "up" }
     },
     "in_post": {
-      "name": "ひだまり配達センター", "bgm": "town1", "indoor": true, "w": 11, "h": 9, "fill": "g", "border": "W",
+      "name": "ひだまり配達センター", "bgm": "town1", "indoor": true, "w": 11, "h": 9, "fill": "_", "border": "W", "theme": { "wall": "#eaf7ea", "wall2": "#d6eed6", "pattern": "stripe", "base": "#27ae60", "floor": "tile", "f1": "#f3f6f2", "f2": "#e1e9de" },
       "rects": [
         { "x": 1, "y": 1, "w": 9, "h": 1, "t": "W" },
-        { "x": 5, "y": 8, "w": 1, "h": 1, "t": "g" }
+        { "x": 5, "y": 8, "w": 1, "h": 1, "t": "_" }
       ],
       "points": [],
       "buildings": [],
       "objects": [
+        { "id": "holes", "x": 1, "y": 0, "w": 3, "h": 2, "kind": "pigeonhole", "label": "手紙の仕分けだな", "act": { "talk": "in_pigeonhole" } },
+        { "id": "clock", "x": 5, "y": 0, "h": 2, "kind": "clock", "label": "時計", "act": { "talk": "in_clock" } },
+        { "id": "cal", "x": 7, "y": 0, "h": 2, "kind": "calendar", "label": "カレンダー", "act": { "talk": "in_calendar" } },
+        { "id": "win", "x": 8, "y": 0, "w": 2, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#27ae60" },
         { "id": "counter", "x": 4, "y": 3, "w": 3, "kind": "counter", "label": "受付", "act": { "job": "delivery" } },
-        { "id": "crate1", "x": 1, "y": 2, "w": 2, "h": 2, "kind": "crate", "label": "荷物", "act": { "talk": "in_parcel" } },
-        { "id": "crate2", "x": 8, "y": 2, "w": 2, "kind": "crate", "label": "荷物", "act": { "talk": "in_parcel" } },
-        { "id": "crate3", "x": 9, "y": 5, "h": 2, "kind": "crate", "label": "荷物", "act": { "talk": "in_parcel" } },
-        { "id": "plant1", "x": 1, "y": 7, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_plant" } },
+        { "id": "shelf1", "x": 1, "y": 2, "w": 2, "kind": "shelfmetal", "label": "荷物のたな", "act": { "talk": "in_parcel" } },
+        { "id": "shelf2", "x": 8, "y": 2, "w": 2, "kind": "shelfmetal", "label": "荷物のたな", "act": { "talk": "in_parcel" } },
+        { "id": "scale", "x": 7, "y": 4, "kind": "scale", "label": "はかり", "act": { "talk": "in_scale" } },
+        { "id": "crate1", "x": 9, "y": 5, "h": 2, "kind": "crate", "label": "荷物", "act": { "talk": "in_parcel" } },
+        { "id": "crate2", "x": 1, "y": 5, "kind": "crate", "label": "荷物", "act": { "talk": "in_parcel" } },
+        { "id": "mailbox", "x": 1, "y": 7, "kind": "mailbox", "label": "ポスト", "act": { "talk": "in_mailbox" } },
+        { "id": "plant1", "x": 9, "y": 7, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_plant" } },
         { "id": "exit", "x": 5, "y": 8, "kind": "doormat", "label": "出口", "act": { "warp": "town1", "tx": 16, "ty": 14 }, "walk": true }
       ],
       "npcs": [
@@ -270,7 +297,7 @@
       "spawn": { "x": 5, "y": 7, "dir": "up" }
     },
     "in_d1": {
-      "name": "赤い屋根の家", "bgm": "home", "indoor": true, "w": 9, "h": 7, "fill": "_", "border": "W",
+      "name": "赤い屋根の家", "bgm": "home", "indoor": true, "w": 9, "h": 7, "fill": "_", "border": "W", "theme": { "wall": "#fff0f0", "wall2": "#ffd9d9", "pattern": "dots", "base": "#a0522d", "floor": "wood", "f1": "#d9a86a", "f2": "#d09c5e", "rug": "#e57373", "rug2": "#ffffff" },
       "rects": [
         { "x": 1, "y": 1, "w": 7, "h": 1, "t": "W" },
         { "x": 3, "y": 3, "w": 3, "h": 2, "t": "k" },
@@ -279,9 +306,16 @@
       "points": [],
       "buildings": [],
       "objects": [
+        { "id": "dishes", "x": 1, "y": 0, "w": 2, "h": 2, "kind": "wallshelf", "label": "お皿の棚", "act": { "talk": "in_d1_kitchen" } },
+        { "id": "clock", "x": 4, "y": 0, "h": 2, "kind": "clock", "label": "時計", "act": { "talk": "in_clock" } },
+        { "id": "win", "x": 6, "y": 0, "w": 2, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#e57373" },
         { "id": "kitchen", "x": 1, "y": 2, "w": 2, "kind": "kitchen", "label": "台所", "act": { "talk": "in_d1_kitchen" } },
+        { "id": "fridge", "x": 3, "y": 2, "kind": "fridge", "label": "冷ぞう庫", "act": { "talk": "in_fridge" } },
         { "id": "shelf", "x": 6, "y": 2, "w": 2, "kind": "shelf", "label": "本だな", "act": { "talk": "in_d1_shelf" } },
         { "id": "table", "x": 4, "y": 3, "kind": "table", "label": "テーブル", "act": { "talk": "in_d1_table" } },
+        { "id": "chair1", "x": 3, "y": 3, "kind": "chair", "label": "いす", "act": { "talk": "in_chair" }, "color": "#e57373" },
+        { "id": "chair2", "x": 5, "y": 3, "kind": "chair", "label": "いす", "act": { "talk": "in_chair" }, "color": "#e57373" },
+        { "id": "vase", "x": 7, "y": 5, "kind": "vase", "label": "花びん", "act": { "talk": "in_vase" } },
         { "id": "exit", "x": 4, "y": 6, "kind": "doormat", "label": "出口", "act": { "warp": "town1", "tx": 3, "ty": 20 }, "walk": true }
       ],
       "npcs": [
@@ -290,7 +324,7 @@
       "spawn": { "x": 4, "y": 5, "dir": "up" }
     },
     "in_d2": {
-      "name": "青い屋根の家", "bgm": "home", "indoor": true, "w": 9, "h": 7, "fill": "_", "border": "W",
+      "name": "青い屋根の家", "bgm": "home", "indoor": true, "w": 9, "h": 7, "fill": "_", "border": "W", "theme": { "wall": "#eef6ff", "wall2": "#dcebff", "pattern": "stripe", "base": "#1565c0", "floor": "wood", "f1": "#b07a44", "f2": "#a46f3b", "rug": "#3949ab", "rug2": "#c5cae9" },
       "rects": [
         { "x": 1, "y": 1, "w": 7, "h": 1, "t": "W" },
         { "x": 2, "y": 4, "w": 5, "h": 1, "t": "k" },
@@ -299,8 +333,13 @@
       "points": [],
       "buildings": [],
       "objects": [
+        { "id": "paint", "x": 1, "y": 0, "w": 2, "h": 2, "kind": "painting", "label": "絵", "act": { "talk": "in_painting" } },
+        { "id": "win", "x": 4, "y": 0, "w": 3, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#3949ab" },
+        { "id": "clock", "x": 7, "y": 0, "h": 2, "kind": "clock", "label": "時計", "act": { "talk": "in_clock" } },
         { "id": "piano", "x": 4, "y": 2, "w": 3, "kind": "piano", "label": "ピアノ", "act": { "talk": "in_piano" } },
         { "id": "shelf", "x": 1, "y": 2, "w": 2, "kind": "shelf", "label": "楽譜のたな", "act": { "talk": "in_d2_shelf" } },
+        { "id": "lamp", "x": 7, "y": 2, "kind": "lamp", "label": "スタンド", "act": { "talk": "in_lamp" } },
+        { "id": "sofa", "x": 1, "y": 4, "w": 2, "kind": "sofa", "label": "ソファ", "act": { "talk": "in_sofa" }, "color": "#3949ab" },
         { "id": "plant", "x": 7, "y": 4, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_plant" } },
         { "id": "exit", "x": 4, "y": 6, "kind": "doormat", "label": "出口", "act": { "warp": "town1", "tx": 8, "ty": 20 }, "walk": true }
       ],
@@ -310,19 +349,22 @@
       "spawn": { "x": 4, "y": 5, "dir": "up" }
     },
     "in_d3": {
-      "name": "黄色い屋根の家", "bgm": "home", "indoor": true, "w": 9, "h": 7, "fill": "_", "border": "W",
+      "name": "黄色い屋根の家", "bgm": "home", "indoor": true, "w": 9, "h": 7, "fill": "_", "border": "W", "theme": { "wall": "#f5ecd7", "pattern": "plain", "base": "#6d4c41", "floor": "tatami", "f1": "#cfd69a", "f2": "#c3cb8a" },
       "rects": [
         { "x": 1, "y": 1, "w": 7, "h": 1, "t": "W" },
-        { "x": 1, "y": 4, "w": 3, "h": 2, "t": "k" },
         { "x": 4, "y": 6, "w": 1, "h": 1, "t": "_" }
       ],
       "points": [],
       "buildings": [],
       "objects": [
-        { "id": "cat", "x": 2, "y": 4, "kind": "cat", "label": "ねこ", "act": { "talk": "in_cat" } },
-        { "id": "shelf", "x": 1, "y": 2, "w": 2, "kind": "shelf", "label": "本だな", "act": { "talk": "in_d3_shelf" } },
+        { "id": "win", "x": 1, "y": 0, "w": 2, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#d7ccc8" },
+        { "id": "scroll", "x": 4, "y": 0, "h": 2, "kind": "hangscroll", "label": "掛け軸", "act": { "talk": "in_hangscroll" } },
+        { "id": "clock", "x": 6, "y": 0, "h": 2, "kind": "clock", "label": "時計", "act": { "talk": "in_clock" } },
+        { "id": "tansu", "x": 1, "y": 2, "w": 2, "kind": "shelf", "label": "たんす", "act": { "talk": "in_d3_shelf" } },
         { "id": "kitchen", "x": 6, "y": 2, "w": 2, "kind": "kitchen", "label": "台所", "act": { "talk": "in_d3_kitchen" } },
-        { "id": "table", "x": 6, "y": 4, "kind": "table", "label": "テーブル", "act": { "talk": "in_d3_table" } },
+        { "id": "cat", "x": 2, "y": 4, "kind": "cat", "label": "ねこ", "act": { "talk": "in_cat" } },
+        { "id": "kotatsu", "x": 6, "y": 4, "kind": "kotatsu", "label": "こたつ", "act": { "talk": "in_kotatsu" }, "color": "#c62828" },
+        { "id": "vase", "x": 7, "y": 5, "kind": "vase", "label": "花びん", "act": { "talk": "in_vase" } },
         { "id": "exit", "x": 4, "y": 6, "kind": "doormat", "label": "出口", "act": { "warp": "town1", "tx": 15, "ty": 20 }, "walk": true }
       ],
       "npcs": [
@@ -331,7 +373,7 @@
       "spawn": { "x": 4, "y": 5, "dir": "up" }
     },
     "in_d4": {
-      "name": "緑の屋根の家", "bgm": "home", "indoor": true, "w": 9, "h": 7, "fill": "_", "border": "W",
+      "name": "緑の屋根の家", "bgm": "home", "indoor": true, "w": 9, "h": 7, "fill": "_", "border": "W", "theme": { "wall": "#eef8e8", "wall2": "#dcefd2", "pattern": "check", "base": "#5d4037", "floor": "wood", "f1": "#d8b07c", "f2": "#cfa470" },
       "rects": [
         { "x": 1, "y": 1, "w": 7, "h": 1, "t": "W" },
         { "x": 4, "y": 6, "w": 1, "h": 1, "t": "_" }
@@ -339,11 +381,15 @@
       "points": [],
       "buildings": [],
       "objects": [
-        { "id": "plant1", "x": 1, "y": 2, "kind": "plant", "label": "トマトのなえ", "act": { "talk": "in_d4_plant" } },
-        { "id": "plant2", "x": 2, "y": 2, "kind": "plant", "label": "きゅうりのなえ", "act": { "talk": "in_d4_plant" } },
-        { "id": "plant3", "x": 7, "y": 2, "kind": "plant", "label": "なすのなえ", "act": { "talk": "in_d4_plant" } },
-        { "id": "crate", "x": 6, "y": 4, "kind": "crate", "label": "野菜のかご", "act": { "talk": "in_d4_crate" } },
+        { "id": "shelfw", "x": 1, "y": 0, "w": 2, "h": 2, "kind": "wallshelf", "label": "棚", "act": { "talk": "in_d4_shelf" } },
+        { "id": "win", "x": 3, "y": 0, "w": 2, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#66bb6a" },
+        { "id": "cal", "x": 6, "y": 0, "h": 2, "kind": "calendar", "label": "カレンダー", "act": { "talk": "in_calendar" } },
+        { "id": "plant1", "x": 1, "y": 2, "kind": "veggie", "label": "トマトのなえ", "act": { "talk": "in_d4_plant" }, "color": "#e53935" },
+        { "id": "plant2", "x": 2, "y": 2, "kind": "veggie", "label": "きゅうりのなえ", "act": { "talk": "in_d4_plant" }, "color": "#7cb342" },
+        { "id": "plant3", "x": 7, "y": 2, "kind": "veggie", "label": "なすのなえ", "act": { "talk": "in_d4_plant" }, "color": "#6a1b9a" },
+        { "id": "basket", "x": 6, "y": 4, "kind": "basket", "label": "野菜のかご", "act": { "talk": "in_d4_crate" } },
         { "id": "table", "x": 2, "y": 4, "kind": "table", "label": "テーブル", "act": { "talk": "in_d4_table" } },
+        { "id": "chair", "x": 1, "y": 4, "kind": "chair", "label": "いす", "act": { "talk": "in_chair" }, "color": "#8d6e63" },
         { "id": "exit", "x": 4, "y": 6, "kind": "doormat", "label": "出口", "act": { "warp": "town1", "tx": 20, "ty": 20 }, "walk": true }
       ],
       "npcs": [
@@ -352,7 +398,7 @@
       "spawn": { "x": 4, "y": 5, "dir": "up" }
     },
     "in_d5": {
-      "name": "紫の屋根の家", "bgm": "home", "indoor": true, "w": 9, "h": 7, "fill": "_", "border": "W",
+      "name": "紫の屋根の家", "bgm": "home", "indoor": true, "w": 9, "h": 7, "fill": "_", "border": "W", "theme": { "wall": "#f7f0ff", "wall2": "#e8dcff", "pattern": "dots", "base": "#6a1b9a", "floor": "wood", "f1": "#d9a86a", "f2": "#cf9b5d", "rug": "#7e57c2", "rug2": "#ede7f6" },
       "rects": [
         { "x": 1, "y": 1, "w": 7, "h": 1, "t": "W" },
         { "x": 2, "y": 2, "w": 5, "h": 3, "t": "k" },
@@ -361,8 +407,14 @@
       "points": [],
       "buildings": [],
       "objects": [
-        { "id": "table", "x": 3, "y": 3, "w": 3, "kind": "table", "label": "カードを広げたテーブル", "act": { "talk": "in_cardtable" } },
+        { "id": "poster1", "x": 1, "y": 0, "h": 2, "kind": "poster", "label": "モンスターのポスター", "act": { "talk": "in_poster" }, "color": "#b05dff" },
+        { "id": "poster2", "x": 2, "y": 0, "h": 2, "kind": "poster", "label": "モンスターのポスター", "act": { "talk": "in_poster" }, "color": "#e5484d" },
+        { "id": "win", "x": 4, "y": 0, "w": 2, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#7e57c2" },
+        { "id": "clock", "x": 7, "y": 0, "h": 2, "kind": "clock", "label": "時計", "act": { "talk": "in_clock" } },
+        { "id": "tv", "x": 1, "y": 2, "kind": "tv", "label": "テレビ", "act": { "talk": "in_tv" } },
+        { "id": "table", "x": 3, "y": 3, "w": 3, "kind": "cardtable", "label": "カードを広げたテーブル", "act": { "talk": "in_cardtable" } },
         { "id": "shelf", "x": 6, "y": 2, "w": 2, "kind": "shelf", "label": "カードファイルのたな", "act": { "talk": "in_d5_shelf" } },
+        { "id": "sofa", "x": 1, "y": 5, "w": 2, "kind": "sofa", "label": "ソファ", "act": { "talk": "in_sofa" }, "color": "#7e57c2" },
         { "id": "exit", "x": 4, "y": 6, "kind": "doormat", "label": "出口", "act": { "warp": "town1", "tx": 21, "ty": 14 }, "walk": true }
       ],
       "npcs": [
@@ -372,22 +424,34 @@
       "spawn": { "x": 4, "y": 5, "dir": "up" }
     },
     "in_shop2": {
-      "name": "メガカードショップ にぎわい", "bgm": "shop", "indoor": true, "w": 15, "h": 10, "fill": "g", "border": "W",
+      "name": "メガカードショップ にぎわい", "bgm": "shop", "indoor": true, "w": 15, "h": 10, "fill": "_", "border": "W", "theme": { "wall": "#fff3e0", "wall2": "#ffe0b2", "pattern": "check", "base": "#e67e22", "floor": "tile", "f1": "#fafafa", "f2": "#e8ecef", "rug": "#e67e22", "rug2": "#ffe0b2" },
       "rects": [
         { "x": 1, "y": 1, "w": 13, "h": 1, "t": "W" },
-        { "x": 7, "y": 4, "w": 1, "h": 5, "t": "k" },
-        { "x": 7, "y": 9, "w": 1, "h": 1, "t": "g" }
+        { "x": 6, "y": 4, "w": 3, "h": 5, "t": "k" },
+        { "x": 7, "y": 9, "w": 1, "h": 1, "t": "_" }
       ],
       "points": [],
       "buildings": [],
       "objects": [
+        { "id": "win1", "x": 1, "y": 0, "w": 2, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#e67e22" },
+        { "id": "poster1", "x": 3, "y": 0, "h": 2, "kind": "poster", "label": "カードのポスター", "act": { "talk": "in_poster" }, "color": "#e5484d" },
+        { "id": "poster2", "x": 4, "y": 0, "h": 2, "kind": "poster", "label": "カードのポスター", "act": { "talk": "in_poster" }, "color": "#3c8dff" },
+        { "id": "banner", "x": 5, "y": 0, "w": 5, "h": 2, "kind": "banner", "label": "旗のかざり", "act": { "talk": "in_banner" } },
+        { "id": "poster3", "x": 10, "y": 0, "h": 2, "kind": "poster", "label": "カードのポスター", "act": { "talk": "in_poster" }, "color": "#ffcc33" },
+        { "id": "poster4", "x": 11, "y": 0, "h": 2, "kind": "poster", "label": "カードのポスター", "act": { "talk": "in_poster" }, "color": "#2ead5b" },
+        { "id": "win2", "x": 12, "y": 0, "w": 2, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#e67e22" },
         { "id": "counter", "x": 6, "y": 3, "w": 3, "kind": "counter", "label": "レジ", "act": { "shop": "shop2" } },
         { "id": "case1", "x": 1, "y": 2, "w": 4, "kind": "showcase", "label": "ショーケース", "act": { "talk": "in_showcase" } },
         { "id": "case2", "x": 10, "y": 2, "w": 4, "kind": "showcase", "label": "ショーケース", "act": { "talk": "in_showcase" } },
         { "id": "case3", "x": 1, "y": 5, "w": 2, "kind": "showcase", "label": "ショーケース", "act": { "talk": "in_showcase2" } },
         { "id": "case4", "x": 12, "y": 5, "w": 2, "kind": "showcase", "label": "ショーケース", "act": { "talk": "in_showcase2" } },
-        { "id": "table1", "x": 3, "y": 7, "kind": "table", "label": "対戦テーブル", "act": { "talk": "in_playtable" } },
-        { "id": "table2", "x": 11, "y": 7, "kind": "table", "label": "対戦テーブル", "act": { "talk": "in_playtable" } },
+        { "id": "pack1", "x": 4, "y": 4, "kind": "packstand", "label": "パックの台", "act": { "talk": "in_packstand" } },
+        { "id": "pack2", "x": 12, "y": 4, "kind": "packstand", "label": "パックの台", "act": { "talk": "in_packstand" } },
+        { "id": "table1", "x": 2, "y": 7, "w": 2, "kind": "cardtable", "label": "対戦テーブル", "act": { "talk": "in_playtable" } },
+        { "id": "chair1", "x": 1, "y": 7, "kind": "chair", "label": "いす", "act": { "talk": "in_chair" }, "color": "#e57373" },
+        { "id": "table2", "x": 11, "y": 7, "w": 2, "kind": "cardtable", "label": "対戦テーブル", "act": { "talk": "in_playtable" } },
+        { "id": "chair2", "x": 10, "y": 7, "kind": "chair", "label": "いす", "act": { "talk": "in_chair" }, "color": "#64b5f6" },
+        { "id": "chair3", "x": 13, "y": 7, "kind": "chair", "label": "いす", "act": { "talk": "in_chair" }, "color": "#64b5f6" },
         { "id": "exit", "x": 7, "y": 9, "kind": "doormat", "label": "出口", "act": { "warp": "town2", "tx": 5, "ty": 6 }, "walk": true }
       ],
       "npcs": [
@@ -398,22 +462,31 @@
       "spawn": { "x": 7, "y": 8, "dir": "up" }
     },
     "in_hall2": {
-      "name": "にぎわいアリーナ", "bgm": "cup", "indoor": true, "w": 13, "h": 10, "fill": "g", "border": "W",
+      "name": "にぎわいアリーナ", "bgm": "cup", "indoor": true, "w": 13, "h": 10, "fill": "_", "border": "W", "theme": { "wall": "#ffe9ec", "wall2": "#ffd3da", "pattern": "stripe", "base": "#922b21", "floor": "wood", "f1": "#d39b62", "f2": "#c98e55", "rug": "#c0392b", "rug2": "#ffd23b" },
       "rects": [
         { "x": 1, "y": 1, "w": 11, "h": 1, "t": "W" },
         { "x": 6, "y": 2, "w": 1, "h": 7, "t": "k" },
-        { "x": 6, "y": 9, "w": 1, "h": 1, "t": "g" }
+        { "x": 6, "y": 9, "w": 1, "h": 1, "t": "_" }
       ],
       "points": [],
       "buildings": [],
       "objects": [
+        { "id": "win1", "x": 1, "y": 0, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#c0392b" },
+        { "id": "poster1", "x": 3, "y": 0, "h": 2, "kind": "poster", "label": "大会のポスター", "act": { "talk": "in_cuposter" }, "color": "#ff7a3c" },
+        { "id": "board", "x": 5, "y": 0, "w": 3, "h": 2, "kind": "scoreboard", "label": "電光掲示板", "act": { "talk": "in_scoreboard" } },
+        { "id": "poster2", "x": 9, "y": 0, "h": 2, "kind": "poster", "label": "大会のポスター", "act": { "talk": "in_cuposter" }, "color": "#3c8dff" },
+        { "id": "win2", "x": 11, "y": 0, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#c0392b" },
         { "id": "counter", "x": 5, "y": 3, "w": 3, "kind": "counter", "label": "受付", "act": { "cup": "cup2" } },
         { "id": "trophy1", "x": 1, "y": 2, "w": 3, "kind": "trophy", "label": "トロフィーの棚", "act": { "talk": "in_trophy" } },
         { "id": "trophy2", "x": 9, "y": 2, "w": 3, "kind": "trophy", "label": "トロフィーの棚", "act": { "talk": "in_trophy" } },
+        { "id": "light1", "x": 1, "y": 4, "kind": "spotlight", "label": "ライト", "act": { "talk": "in_spotlight" } },
+        { "id": "light2", "x": 11, "y": 4, "kind": "spotlight", "label": "ライト", "act": { "talk": "in_spotlight" } },
         { "id": "bench1", "x": 2, "y": 5, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
         { "id": "bench2", "x": 8, "y": 5, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
         { "id": "bench3", "x": 2, "y": 7, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
         { "id": "bench4", "x": 8, "y": 7, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
+        { "id": "plant1", "x": 1, "y": 8, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_plant" } },
+        { "id": "plant2", "x": 11, "y": 8, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_plant" } },
         { "id": "exit", "x": 6, "y": 9, "kind": "doormat", "label": "出口", "act": { "warp": "town2", "tx": 18, "ty": 6 }, "walk": true }
       ],
       "npcs": [
@@ -423,19 +496,25 @@
       "spawn": { "x": 6, "y": 8, "dir": "up" }
     },
     "in_warehouse": {
-      "name": "にぎわい倉庫", "bgm": "town2", "indoor": true, "w": 13, "h": 10, "fill": "g", "border": "W",
+      "name": "にぎわい倉庫", "bgm": "town2", "indoor": true, "w": 13, "h": 10, "fill": "_", "border": "W", "theme": { "wall": "#cfd8dc", "wall2": "#b8c4c9", "pattern": "brick", "base": "#546e7a", "floor": "concrete", "f1": "#b9c0c6", "f2": "#a6aeb5" },
       "rects": [
         { "x": 1, "y": 1, "w": 11, "h": 1, "t": "W" },
-        { "x": 6, "y": 9, "w": 1, "h": 1, "t": "g" }
+        { "x": 6, "y": 9, "w": 1, "h": 1, "t": "_" }
       ],
       "points": [],
       "buildings": [],
       "objects": [
+        { "id": "win1", "x": 1, "y": 0, "w": 2, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#78909c" },
+        { "id": "clock", "x": 6, "y": 0, "h": 2, "kind": "clock", "label": "時計", "act": { "talk": "in_clock" } },
+        { "id": "cal", "x": 8, "y": 0, "h": 2, "kind": "calendar", "label": "カレンダー", "act": { "talk": "in_calendar" } },
+        { "id": "win2", "x": 10, "y": 0, "w": 2, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#78909c" },
         { "id": "counter", "x": 5, "y": 3, "w": 3, "kind": "counter", "label": "受付", "act": { "job": "sorting" } },
-        { "id": "crate1", "x": 1, "y": 2, "w": 3, "h": 2, "kind": "crate", "label": "荷物の山", "act": { "talk": "in_parcel" } },
-        { "id": "crate2", "x": 9, "y": 2, "w": 3, "h": 2, "kind": "crate", "label": "荷物の山", "act": { "talk": "in_parcel" } },
-        { "id": "crate3", "x": 1, "y": 6, "w": 2, "h": 2, "kind": "crate", "label": "荷物の山", "act": { "talk": "in_parcel" } },
-        { "id": "crate4", "x": 10, "y": 6, "w": 2, "h": 2, "kind": "crate", "label": "荷物の山", "act": { "talk": "in_parcel" } },
+        { "id": "rack1", "x": 1, "y": 2, "w": 3, "kind": "shelfmetal", "label": "荷物のたな", "act": { "talk": "in_parcel" } },
+        { "id": "rack2", "x": 9, "y": 2, "w": 3, "kind": "shelfmetal", "label": "荷物のたな", "act": { "talk": "in_parcel" } },
+        { "id": "crate1", "x": 1, "y": 5, "w": 2, "h": 2, "kind": "crate", "label": "荷物の山", "act": { "talk": "in_parcel" } },
+        { "id": "belt", "x": 8, "y": 6, "w": 4, "kind": "conveyor", "label": "ベルトコンベア", "act": { "talk": "in_conveyor" } },
+        { "id": "crate2", "x": 10, "y": 4, "w": 2, "kind": "crate", "label": "荷物の山", "act": { "talk": "in_parcel" } },
+        { "id": "crate3", "x": 1, "y": 8, "w": 2, "kind": "crate", "label": "荷物", "act": { "talk": "in_parcel" } },
         { "id": "exit", "x": 6, "y": 9, "kind": "doormat", "label": "出口", "act": { "warp": "town2", "tx": 4, "ty": 17 }, "walk": true }
       ],
       "npcs": [
@@ -444,7 +523,7 @@
       "spawn": { "x": 6, "y": 8, "dir": "up" }
     },
     "in_ramen": {
-      "name": "ラーメン こがね", "bgm": "town2", "indoor": true, "w": 11, "h": 8, "fill": "_", "border": "W",
+      "name": "ラーメン こがね", "bgm": "town2", "indoor": true, "w": 11, "h": 8, "fill": "_", "border": "W", "theme": { "wall": "#fff8e1", "wall2": "#f3e2b3", "pattern": "wood", "base": "#5d4037", "floor": "tile", "f1": "#e9dcc4", "f2": "#dccdb0" },
       "rects": [
         { "x": 1, "y": 1, "w": 9, "h": 1, "t": "W" },
         { "x": 5, "y": 7, "w": 1, "h": 1, "t": "_" }
@@ -452,11 +531,19 @@
       "points": [],
       "buildings": [],
       "objects": [
+        { "id": "menu1", "x": 1, "y": 0, "w": 3, "h": 2, "kind": "menuboard", "label": "お品書き", "act": { "talk": "in_menuboard" } },
+        { "id": "noren", "x": 4, "y": 0, "w": 3, "h": 2, "kind": "noren", "label": "のれん", "act": { "talk": "in_noren" }, "color": "#283593" },
+        { "id": "menu2", "x": 7, "y": 0, "w": 2, "h": 2, "kind": "menuboard", "label": "お品書き", "act": { "talk": "in_menuboard" } },
+        { "id": "clock", "x": 9, "y": 0, "h": 2, "kind": "clock", "label": "時計", "act": { "talk": "in_clock" } },
+        { "id": "stove1", "x": 2, "y": 2, "w": 2, "kind": "stove", "label": "大なべ", "act": { "talk": "in_stove" } },
+        { "id": "stove2", "x": 7, "y": 2, "w": 2, "kind": "stove", "label": "大なべ", "act": { "talk": "in_stove" } },
         { "id": "counter", "x": 2, "y": 3, "w": 7, "kind": "counter", "label": "カウンター", "act": { "talk": "in_ramen" } },
         { "id": "stool1", "x": 2, "y": 4, "kind": "stool", "label": "いす", "act": { "talk": "in_stool" } },
         { "id": "stool2", "x": 4, "y": 4, "kind": "stool", "label": "いす", "act": { "talk": "in_stool" } },
         { "id": "stool3", "x": 6, "y": 4, "kind": "stool", "label": "いす", "act": { "talk": "in_stool" } },
         { "id": "stool4", "x": 8, "y": 4, "kind": "stool", "label": "いす", "act": { "talk": "in_stool" } },
+        { "id": "plant1", "x": 1, "y": 6, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_plant" } },
+        { "id": "plant2", "x": 9, "y": 6, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_plant" } },
         { "id": "exit", "x": 5, "y": 7, "kind": "doormat", "label": "出口", "act": { "warp": "town2", "tx": 16, "ty": 17 }, "walk": true }
       ],
       "npcs": [
@@ -466,7 +553,7 @@
       "spawn": { "x": 5, "y": 6, "dir": "up" }
     },
     "in_cloth": {
-      "name": "ブティック ルル", "bgm": "town2", "indoor": true, "w": 9, "h": 8, "fill": "_", "border": "W",
+      "name": "ブティック ルル", "bgm": "town2", "indoor": true, "w": 9, "h": 8, "fill": "_", "border": "W", "theme": { "wall": "#fce4ec", "wall2": "#f8cbdc", "pattern": "stripe", "base": "#ad1457", "floor": "wood", "f1": "#e8c9a8", "f2": "#dfbd99", "rug": "#f48fb1", "rug2": "#ffffff" },
       "rects": [
         { "x": 1, "y": 1, "w": 7, "h": 1, "t": "W" },
         { "x": 2, "y": 4, "w": 5, "h": 3, "t": "k" },
@@ -475,9 +562,15 @@
       "points": [],
       "buildings": [],
       "objects": [
+        { "id": "win", "x": 1, "y": 0, "w": 2, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#ec407a" },
+        { "id": "paint", "x": 4, "y": 0, "h": 2, "kind": "painting", "label": "絵", "act": { "talk": "in_painting" } },
+        { "id": "poster", "x": 6, "y": 0, "w": 2, "h": 2, "kind": "poster", "label": "ファッションのポスター", "act": { "talk": "in_fashionposter" }, "color": "#ec407a" },
         { "id": "counter", "x": 3, "y": 3, "w": 3, "kind": "counter", "label": "レジ", "act": { "talk": "in_boutique" } },
         { "id": "rack1", "x": 1, "y": 2, "w": 2, "kind": "rack", "label": "服のラック", "act": { "talk": "in_rack" } },
         { "id": "rack2", "x": 6, "y": 2, "w": 2, "kind": "rack", "label": "服のラック", "act": { "talk": "in_rack" } },
+        { "id": "man1", "x": 1, "y": 4, "kind": "mannequin", "label": "マネキン", "act": { "talk": "in_mannequin" }, "color": "#ab47bc" },
+        { "id": "man2", "x": 1, "y": 5, "kind": "mannequin", "label": "マネキン", "act": { "talk": "in_mannequin" }, "color": "#26a69a" },
+        { "id": "fit", "x": 7, "y": 3, "kind": "fitting", "label": "試着室", "act": { "talk": "in_fitting" }, "color": "#7b1fa2" },
         { "id": "mirror", "x": 7, "y": 5, "h": 2, "kind": "mirror", "label": "鏡", "act": { "talk": "in_mirror" } },
         { "id": "exit", "x": 4, "y": 7, "kind": "doormat", "label": "出口", "act": { "warp": "town2", "tx": 21, "ty": 17 }, "walk": true }
       ],
@@ -487,7 +580,7 @@
       "spawn": { "x": 4, "y": 6, "dir": "up" }
     },
     "in_shop3": {
-      "name": "森のカード屋 こもれび", "bgm": "shop", "indoor": true, "w": 11, "h": 9, "fill": "_", "border": "W",
+      "name": "森のカード屋 こもれび", "bgm": "shop", "indoor": true, "w": 11, "h": 9, "fill": "_", "border": "W", "theme": { "wall": "#d7b98e", "wall2": "#c49a6c", "pattern": "wood", "base": "#6d4c2f", "floor": "wood", "f1": "#a8794a", "f2": "#9c6e40", "rug": "#6b8e23", "rug2": "#d4e7a8" },
       "rects": [
         { "x": 1, "y": 1, "w": 9, "h": 1, "t": "W" },
         { "x": 4, "y": 4, "w": 3, "h": 4, "t": "k" },
@@ -496,11 +589,19 @@
       "points": [],
       "buildings": [],
       "objects": [
+        { "id": "win1", "x": 1, "y": 0, "w": 2, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#6b8e23" },
+        { "id": "paint", "x": 3, "y": 0, "h": 2, "kind": "painting", "label": "森の絵", "act": { "talk": "in_painting" } },
+        { "id": "clock", "x": 5, "y": 0, "h": 2, "kind": "clock", "label": "時計", "act": { "talk": "in_clock" } },
+        { "id": "poster", "x": 7, "y": 0, "h": 2, "kind": "poster", "label": "カードのポスター", "act": { "talk": "in_poster" }, "color": "#2ead5b" },
+        { "id": "win2", "x": 8, "y": 0, "w": 2, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#6b8e23" },
         { "id": "counter", "x": 4, "y": 3, "w": 3, "kind": "counter", "label": "レジ", "act": { "shop": "shop3" } },
         { "id": "shelf", "x": 1, "y": 2, "w": 2, "kind": "shelf", "label": "木のたな", "act": { "talk": "in_forestshelf" } },
         { "id": "case1", "x": 8, "y": 2, "w": 2, "kind": "showcase", "label": "ショーケース", "act": { "talk": "in_showcase" } },
-        { "id": "table", "x": 2, "y": 5, "kind": "table", "label": "対戦テーブル", "act": { "talk": "in_playtable" } },
-        { "id": "plant1", "x": 1, "y": 7, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
+        { "id": "stove", "x": 9, "y": 4, "kind": "woodstove", "label": "まきストーブ", "act": { "talk": "in_woodstove" } },
+        { "id": "pack", "x": 1, "y": 4, "kind": "packstand", "label": "パックの台", "act": { "talk": "in_packstand" } },
+        { "id": "table", "x": 1, "y": 6, "w": 2, "kind": "cardtable", "label": "対戦テーブル", "act": { "talk": "in_playtable" } },
+        { "id": "chair", "x": 3, "y": 6, "kind": "chair", "label": "いす", "act": { "talk": "in_chair" }, "color": "#8d6e63" },
+        { "id": "plant1", "x": 9, "y": 6, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
         { "id": "plant2", "x": 9, "y": 7, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
         { "id": "exit", "x": 5, "y": 8, "kind": "doormat", "label": "出口", "act": { "warp": "town3", "tx": 3, "ty": 6 }, "walk": true }
       ],
@@ -510,7 +611,7 @@
       "spawn": { "x": 5, "y": 7, "dir": "up" }
     },
     "in_hall3": {
-      "name": "みどりの森ステージ", "bgm": "cup", "indoor": true, "w": 13, "h": 10, "fill": "_", "border": "W",
+      "name": "みどりの森ステージ", "bgm": "cup", "indoor": true, "w": 13, "h": 10, "fill": "_", "border": "W", "theme": { "wall": "#d7b98e", "wall2": "#c8a675", "pattern": "wood", "base": "#4e342e", "floor": "wood", "f1": "#b08050", "f2": "#a37445", "rug": "#2e7d32", "rug2": "#c5e1a5" },
       "rects": [
         { "x": 1, "y": 1, "w": 11, "h": 1, "t": "W" },
         { "x": 6, "y": 2, "w": 1, "h": 7, "t": "k" },
@@ -519,15 +620,22 @@
       "points": [],
       "buildings": [],
       "objects": [
+        { "id": "win1", "x": 1, "y": 0, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#558b2f" },
+        { "id": "poster1", "x": 3, "y": 0, "h": 2, "kind": "poster", "label": "大会のポスター", "act": { "talk": "in_cuposter" }, "color": "#ff7a3c" },
+        { "id": "board", "x": 5, "y": 0, "w": 3, "h": 2, "kind": "scoreboard", "label": "電光掲示板", "act": { "talk": "in_scoreboard" } },
+        { "id": "poster2", "x": 9, "y": 0, "h": 2, "kind": "poster", "label": "大会のポスター", "act": { "talk": "in_cuposter" }, "color": "#3c8dff" },
+        { "id": "win2", "x": 11, "y": 0, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#558b2f" },
         { "id": "counter", "x": 5, "y": 3, "w": 3, "kind": "counter", "label": "受付", "act": { "cup": "cup3" } },
         { "id": "trophy1", "x": 1, "y": 2, "w": 3, "kind": "trophy", "label": "トロフィーの棚", "act": { "talk": "in_trophy" } },
         { "id": "trophy2", "x": 9, "y": 2, "w": 3, "kind": "trophy", "label": "トロフィーの棚", "act": { "talk": "in_trophy" } },
+        { "id": "light1", "x": 1, "y": 4, "kind": "spotlight", "label": "ライト", "act": { "talk": "in_spotlight" } },
+        { "id": "light2", "x": 11, "y": 4, "kind": "spotlight", "label": "ライト", "act": { "talk": "in_spotlight" } },
         { "id": "bench1", "x": 2, "y": 5, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
         { "id": "bench2", "x": 8, "y": 5, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
         { "id": "bench3", "x": 2, "y": 7, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
         { "id": "bench4", "x": 8, "y": 7, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
-        { "id": "plant1", "x": 1, "y": 4, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
-        { "id": "plant2", "x": 11, "y": 4, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
+        { "id": "plant1", "x": 1, "y": 8, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_forestplant" } },
+        { "id": "plant2", "x": 11, "y": 8, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_forestplant" } },
         { "id": "exit", "x": 6, "y": 9, "kind": "doormat", "label": "出口", "act": { "warp": "town3", "tx": 10, "ty": 8 }, "walk": true }
       ],
       "npcs": [
@@ -537,7 +645,7 @@
       "spawn": { "x": 6, "y": 8, "dir": "up" }
     },
     "in_ranger": {
-      "name": "森の案内所", "bgm": "town3", "indoor": true, "w": 11, "h": 8, "fill": "_", "border": "W",
+      "name": "森の案内所", "bgm": "town3", "indoor": true, "w": 11, "h": 8, "fill": "_", "border": "W", "theme": { "wall": "#d7b98e", "wall2": "#c49a6c", "pattern": "wood", "base": "#5d4037", "floor": "wood", "f1": "#9c6e40", "f2": "#916537" },
       "rects": [
         { "x": 1, "y": 1, "w": 9, "h": 1, "t": "W" },
         { "x": 5, "y": 7, "w": 1, "h": 1, "t": "_" }
@@ -545,11 +653,17 @@
       "points": [],
       "buildings": [],
       "objects": [
+        { "id": "map", "x": 1, "y": 0, "w": 3, "h": 2, "kind": "mapwall", "label": "森の地図", "act": { "talk": "in_forestmap" } },
+        { "id": "clock", "x": 5, "y": 0, "h": 2, "kind": "clock", "label": "時計", "act": { "talk": "in_clock" } },
+        { "id": "win", "x": 7, "y": 0, "w": 2, "h": 2, "kind": "window", "label": "窓", "act": { "talk": "in_window" }, "color": "#6b8e23" },
+        { "id": "paint", "x": 9, "y": 0, "h": 2, "kind": "painting", "label": "森の絵", "act": { "talk": "in_painting" } },
         { "id": "counter", "x": 4, "y": 3, "w": 3, "kind": "counter", "label": "受付", "act": { "job": "nature" } },
-        { "id": "board", "x": 1, "y": 2, "w": 2, "kind": "board", "label": "森の地図", "act": { "talk": "in_forestmap" } },
-        { "id": "plant1", "x": 9, "y": 2, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
-        { "id": "plant2", "x": 1, "y": 6, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
-        { "id": "plant3", "x": 9, "y": 6, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
+        { "id": "specimen", "x": 1, "y": 2, "w": 2, "kind": "specimen", "label": "標本のケース", "act": { "talk": "in_specimen" } },
+        { "id": "shelf", "x": 7, "y": 2, "w": 2, "kind": "shelf", "label": "図かんのたな", "act": { "talk": "in_rangershelf" } },
+        { "id": "stove", "x": 9, "y": 2, "kind": "woodstove", "label": "まきストーブ", "act": { "talk": "in_woodstove" } },
+        { "id": "bench", "x": 1, "y": 4, "w": 2, "kind": "bench", "label": "ベンチ", "act": { "talk": "in_bench2" } },
+        { "id": "plant1", "x": 1, "y": 6, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
+        { "id": "plant2", "x": 9, "y": 6, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
         { "id": "exit", "x": 5, "y": 7, "kind": "doormat", "label": "出口", "act": { "warp": "town3", "tx": 2, "ty": 15 }, "walk": true }
       ],
       "npcs": [

@@ -56,6 +56,8 @@ export interface Obj {
   label: string;
   act: Act;
   walk?: boolean;
+  /** 家具の色（カーテン・ソファ・ポスターなど） */
+  color?: string;
 }
 export interface Npc {
   id: string;
@@ -77,6 +79,8 @@ export interface MapDef {
   border: string;
   indoor?: boolean;
   night?: boolean;
+  /** 室内の見た目：壁紙・幅木・床の種類・じゅうたんの色 */
+  theme?: Theme;
   rects: { x: number; y: number; w: number; h: number; t: string }[];
   points: { x: number; y: number; t: string }[];
   buildings: Building[];
@@ -85,6 +89,17 @@ export interface MapDef {
   spawn: { x: number; y: number; dir: Dir };
 }
 export type Dir = 'up' | 'down' | 'left' | 'right';
+export interface Theme {
+  wall: string;
+  wall2?: string;
+  pattern?: 'plain' | 'stripe' | 'dots' | 'wood' | 'brick' | 'check';
+  base: string;
+  floor: 'wood' | 'tile' | 'concrete' | 'tatami';
+  f1: string;
+  f2?: string;
+  rug?: string;
+  rug2?: string;
+}
 export const MAPS = (mapsData as unknown as { maps: Record<string, MapDef> }).maps;
 
 const BLOCK = new Set(['T', '~', 'W', 'f', 'x']);
@@ -335,7 +350,139 @@ export function openField(mapId: string, hooks: FieldHooks, start?: { x: number;
   }
 
   // ---------- 描画 ----------
+  // ---------- 室内の壁と床（マップの theme で建物ごとに変える） ----------
+  const th = m.theme;
+  function indoorTile(t: string, x: number, y: number, sx: number, sy: number): boolean {
+    if (!th) return false;
+    const s = TS;
+    const r = hash(x, y);
+    if (t === 'W') {
+      const face = y <= 1 && x > 0 && x < m.w - 1;
+      if (face) {
+        // 奥の壁：壁紙＋上のふち＋下の幅木（2マスで1枚の壁に見えるように）
+        ctx.fillStyle = th.wall;
+        ctx.fillRect(sx, sy, s, s);
+        const w2 = th.wall2 ?? th.wall;
+        ctx.fillStyle = w2;
+        if (th.pattern === 'stripe') for (let i = 0; i < 4; i++) ctx.fillRect(sx + i * (s / 4), sy, s / 8, s);
+        else if (th.pattern === 'dots') {
+          for (let i = 0; i < 2; i++)
+            for (let j = 0; j < 2; j++) {
+              ctx.beginPath();
+              ctx.arc(sx + s * (0.25 + i * 0.5), sy + s * (0.25 + j * 0.5), s * 0.06, 0, 6.3);
+              ctx.fill();
+            }
+        } else if (th.pattern === 'wood') {
+          for (let i = 0; i < 3; i++) ctx.fillRect(sx, sy + i * (s / 3) + s / 3 - 2, s, 2);
+          ctx.fillRect(sx + ((y * 7 + x * 3) % 4) * (s / 4), sy, 2, s);
+        } else if (th.pattern === 'brick') {
+          for (let i = 0; i < 3; i++) {
+            ctx.fillRect(sx, sy + i * (s / 3), s, 1.5);
+            ctx.fillRect(sx + ((i + x) % 2) * (s / 2), sy + i * (s / 3), 1.5, s / 3);
+          }
+        } else if (th.pattern === 'check') {
+          ctx.fillRect(sx, sy, s / 2, s / 2);
+          ctx.fillRect(sx + s / 2, sy + s / 2, s / 2, s / 2);
+        }
+        if (y === 0) {
+          ctx.fillStyle = th.base;
+          ctx.fillRect(sx, sy, s, s * 0.12);
+          ctx.fillStyle = 'rgba(255,255,255,.35)';
+          ctx.fillRect(sx, sy + s * 0.12, s, 2);
+        } else {
+          ctx.fillStyle = 'rgba(0,0,0,.06)';
+          ctx.fillRect(sx, sy + s * 0.55, s, s * 0.25);
+          ctx.fillStyle = th.base;
+          ctx.fillRect(sx, sy + s * 0.8, s, s * 0.2);
+          ctx.fillStyle = 'rgba(255,255,255,.3)';
+          ctx.fillRect(sx, sy + s * 0.8, s, 2);
+        }
+        return true;
+      }
+      // 横と手前の壁：上から見た壁の厚み（暗い色）。部屋側のふちを明るく
+      ctx.fillStyle = '#4a3b30';
+      ctx.fillRect(sx, sy, s, s);
+      ctx.fillStyle = th.base;
+      const open = (dx: number, dy: number) => grid[y + dy]?.[x + dx] !== undefined && grid[y + dy][x + dx] !== 'W';
+      if (open(1, 0)) ctx.fillRect(sx + s - 5, sy, 5, s);
+      if (open(-1, 0)) ctx.fillRect(sx, sy, 5, s);
+      if (open(0, -1)) ctx.fillRect(sx, sy, s, 5);
+      if (open(0, 1)) ctx.fillRect(sx, sy + s - 5, s, 5);
+      return true;
+    }
+    if (t === '_' || t === 'g') {
+      const f1 = th.f1;
+      const f2 = th.f2 ?? th.f1;
+      if (th.floor === 'wood') {
+        // 横長の板。段ごとに継ぎ目をずらす
+        ctx.fillStyle = y % 2 ? f1 : f2;
+        ctx.fillRect(sx, sy, s, s);
+        ctx.fillStyle = 'rgba(0,0,0,.14)';
+        ctx.fillRect(sx, sy + s - 1.5, s, 1.5);
+        ctx.fillRect(sx + ((x * 2 + (y % 2) * 3) % 4 === 0 ? s * 0.5 : 0), sy, 1.5, s);
+        ctx.fillStyle = 'rgba(255,255,255,.07)';
+        ctx.fillRect(sx + 3, sy + s * (0.3 + r * 0.3), s * 0.6, 1);
+      } else if (th.floor === 'tile') {
+        ctx.fillStyle = (x + y) % 2 ? f1 : f2;
+        ctx.fillRect(sx, sy, s, s);
+        ctx.fillStyle = 'rgba(90,100,120,.22)';
+        ctx.fillRect(sx, sy + s - 1, s, 1);
+        ctx.fillRect(sx + s - 1, sy, 1, s);
+        ctx.fillStyle = 'rgba(255,255,255,.25)';
+        ctx.fillRect(sx + 2, sy + 2, s * 0.3, 2);
+      } else if (th.floor === 'concrete') {
+        ctx.fillStyle = f1;
+        ctx.fillRect(sx, sy, s, s);
+        ctx.fillStyle = f2;
+        for (let i = 0; i < 5; i++) ctx.fillRect(sx + hash(x * 5 + i, y) * s, sy + hash(x, y * 5 + i) * s, 2, 2);
+        ctx.fillStyle = 'rgba(0,0,0,.12)';
+        if (x % 4 === 0) ctx.fillRect(sx, sy, 1.5, s);
+        if (y % 4 === 0) ctx.fillRect(sx, sy, s, 1.5);
+      } else if (th.floor === 'tatami') {
+        ctx.fillStyle = (x + y) % 2 ? f1 : f2;
+        ctx.fillRect(sx, sy, s, s);
+        ctx.fillStyle = 'rgba(80,90,30,.18)';
+        for (let i = 1; i < 6; i++) ctx.fillRect(sx, sy + i * (s / 6), s, 1);
+        ctx.fillStyle = '#4e5a2a';
+        if ((x + y) % 2) ctx.fillRect(sx, sy, 3, s);
+        else ctx.fillRect(sx, sy, s, 3);
+      }
+      // 奥の壁ぎわの影
+      if (y === 2) {
+        const g = ctx.createLinearGradient(0, sy, 0, sy + s * 0.45);
+        g.addColorStop(0, 'rgba(0,0,0,.22)');
+        g.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(sx, sy, s, s * 0.45);
+      }
+      return true;
+    }
+    if (t === 'k' && th.rug) {
+      // じゅうたん：ふちどり＋もよう（となりもじゅうたんなら、ふちを描かない）
+      ctx.fillStyle = th.rug;
+      ctx.fillRect(sx, sy, s, s);
+      const k = (dx: number, dy: number) => grid[y + dy]?.[x + dx] === 'k';
+      ctx.fillStyle = th.rug2 ?? '#ffffff';
+      const b = s * 0.12;
+      if (!k(0, -1)) ctx.fillRect(sx, sy + b * 0.6, s, b * 0.6);
+      if (!k(0, 1)) ctx.fillRect(sx, sy + s - b * 1.2, s, b * 0.6);
+      if (!k(-1, 0)) ctx.fillRect(sx + b * 0.6, sy, b * 0.6, s);
+      if (!k(1, 0)) ctx.fillRect(sx + s - b * 1.2, sy, b * 0.6, s);
+      ctx.globalAlpha = 0.35;
+      ctx.beginPath();
+      ctx.moveTo(sx + s / 2, sy + s * 0.3);
+      ctx.lineTo(sx + s * 0.7, sy + s / 2);
+      ctx.lineTo(sx + s / 2, sy + s * 0.7);
+      ctx.lineTo(sx + s * 0.3, sy + s / 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      return true;
+    }
+    return false;
+  }
+
   function drawTile(t: string, x: number, y: number, sx: number, sy: number) {
+    if (m.indoor && indoorTile(t, x, y, sx, sy)) return;
     const s = TS;
     const r = hash(x, y);
     switch (t) {
@@ -1279,6 +1426,584 @@ export function openField(mapId: string, hooks: FieldHooks, start?: { x: number;
         ctx.fill();
         ctx.fillStyle = '#616161';
         ctx.fillRect(x + s * 0.47, y + s * 0.5, s * 0.06, s * 0.38);
+        break;
+      // ---------- 壁のかざり（奥の壁 y=0〜1 に置く） ----------
+      case 'window': {
+        // 窓：外の空と、両わきのカーテン
+        const wx = x + s * 0.12;
+        const wy = y + s * 0.3;
+        const ww = w - s * 0.24;
+        const wh = hh - s * 0.85;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(wx - 3, wy - 3, ww + 6, wh + 6);
+        const sky = ctx.createLinearGradient(0, wy, 0, wy + wh);
+        sky.addColorStop(0, m.night ? '#1a237e' : '#7cc4ff');
+        sky.addColorStop(1, m.night ? '#3949ab' : '#d4efff');
+        ctx.fillStyle = sky;
+        ctx.fillRect(wx, wy, ww, wh);
+        ctx.fillStyle = 'rgba(255,255,255,.85)';
+        ctx.beginPath();
+        ctx.ellipse(wx + ww * 0.3, wy + wh * 0.35, ww * 0.16, wh * 0.08, 0, 0, 6.3);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(wx + ww / 2 - 1.5, wy, 3, wh);
+        ctx.fillRect(wx, wy + wh / 2 - 1.5, ww, 3);
+        ctx.fillStyle = o.color ?? '#e57373';
+        ctx.fillRect(wx - 5, wy - 6, ww * 0.22, wh + 8);
+        ctx.fillRect(wx + ww * 0.78 + 5, wy - 6, ww * 0.22, wh + 8);
+        ctx.fillStyle = 'rgba(0,0,0,.15)';
+        ctx.fillRect(wx - 5, wy - 8, ww + 10, 3);
+        break;
+      }
+      case 'clock': {
+        const cx = x + w / 2;
+        const cy = y + hh * 0.38;
+        ctx.fillStyle = '#5d4037';
+        ctx.beginPath();
+        ctx.arc(cx, cy, s * 0.3, 0, 6.3);
+        ctx.fill();
+        ctx.fillStyle = '#fffdf5';
+        ctx.beginPath();
+        ctx.arc(cx, cy, s * 0.24, 0, 6.3);
+        ctx.fill();
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        const now = new Date();
+        const hA = ((now.getHours() % 12) + now.getMinutes() / 60) * (Math.PI / 6) - Math.PI / 2;
+        const mA = now.getMinutes() * (Math.PI / 30) - Math.PI / 2;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(hA) * s * 0.12, cy + Math.sin(hA) * s * 0.12);
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(mA) * s * 0.19, cy + Math.sin(mA) * s * 0.19);
+        ctx.stroke();
+        ctx.lineWidth = 1;
+        break;
+      }
+      case 'poster': {
+        // カードのポスター（文字なし。モンスターの影と星）
+        const px = x + s * 0.14;
+        const py = y + s * 0.28;
+        const pw = w - s * 0.28;
+        const ph = hh - s * 0.85;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(px - 2, py - 2, pw + 4, ph + 4);
+        const g = ctx.createLinearGradient(px, py, px + pw, py + ph);
+        g.addColorStop(0, o.color ?? '#ff7a3c');
+        g.addColorStop(1, '#2a1f5a');
+        ctx.fillStyle = g;
+        ctx.fillRect(px, py, pw, ph);
+        ctx.fillStyle = 'rgba(0,0,0,.45)';
+        ctx.beginPath();
+        ctx.ellipse(px + pw / 2, py + ph * 0.62, pw * 0.3, ph * 0.26, 0, 0, 6.3);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(px + pw / 2, py + ph * 0.32, pw * 0.18, 0, 6.3);
+        ctx.fill();
+        ctx.fillStyle = '#ffe27a';
+        for (let i = 0; i < 3; i++) {
+          ctx.beginPath();
+          ctx.arc(px + pw * (0.2 + i * 0.3), py + ph * 0.12, 2, 0, 6.3);
+          ctx.fill();
+        }
+        ctx.fillStyle = '#e53935';
+        ctx.beginPath();
+        ctx.arc(px + pw / 2, py - 1, 2.5, 0, 6.3);
+        ctx.fill();
+        break;
+      }
+      case 'painting': {
+        const px = x + s * 0.15;
+        const py = y + s * 0.3;
+        const pw = w - s * 0.3;
+        const ph = hh - s * 0.95;
+        ctx.fillStyle = '#c9a227';
+        ctx.fillRect(px - 4, py - 4, pw + 8, ph + 8);
+        ctx.fillStyle = '#9ed0ff';
+        ctx.fillRect(px, py, pw, ph);
+        ctx.fillStyle = '#5aa25a';
+        ctx.beginPath();
+        ctx.moveTo(px, py + ph);
+        ctx.lineTo(px + pw * 0.35, py + ph * 0.35);
+        ctx.lineTo(px + pw * 0.6, py + ph * 0.7);
+        ctx.lineTo(px + pw * 0.8, py + ph * 0.45);
+        ctx.lineTo(px + pw, py + ph);
+        ctx.fill();
+        ctx.fillStyle = '#fff59d';
+        ctx.beginPath();
+        ctx.arc(px + pw * 0.8, py + ph * 0.22, ph * 0.1, 0, 6.3);
+        ctx.fill();
+        break;
+      }
+      case 'hangscroll': {
+        // 掛け軸（山と月の絵）
+        const px = x + w * 0.28;
+        const pw = w * 0.44;
+        ctx.fillStyle = '#6d4c41';
+        ctx.fillRect(px - 3, y + s * 0.2, pw + 6, 4);
+        ctx.fillRect(px - 3, y + hh - s * 0.5, pw + 6, 4);
+        ctx.fillStyle = '#f5f0e1';
+        ctx.fillRect(px, y + s * 0.24, pw, hh - s * 0.74);
+        ctx.fillStyle = '#90a4ae';
+        ctx.beginPath();
+        ctx.moveTo(px + 2, y + hh * 0.62);
+        ctx.lineTo(px + pw * 0.45, y + hh * 0.35);
+        ctx.lineTo(px + pw - 2, y + hh * 0.62);
+        ctx.fill();
+        ctx.fillStyle = '#e57373';
+        ctx.beginPath();
+        ctx.arc(px + pw * 0.7, y + hh * 0.25, pw * 0.1, 0, 6.3);
+        ctx.fill();
+        break;
+      }
+      case 'calendar':
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(x + s * 0.22, y + s * 0.4, w - s * 0.44, hh - s * 1.0);
+        ctx.fillStyle = '#e53935';
+        ctx.fillRect(x + s * 0.22, y + s * 0.4, w - s * 0.44, s * 0.16);
+        ctx.fillStyle = '#9e9e9e';
+        for (let i = 0; i < 4; i++) for (let j = 0; j < 3; j++) ctx.fillRect(x + s * 0.28 + i * s * 0.12, y + s * 0.66 + j * s * 0.12, s * 0.07, s * 0.06);
+        break;
+      case 'menuboard': {
+        // お品書き（木の札。字は線で表す）
+        ctx.fillStyle = '#5d4037';
+        ctx.fillRect(x + 3, y + s * 0.25, w - 6, hh - s * 0.75);
+        ctx.fillStyle = '#d7b98e';
+        const n = Math.max(3, Math.round(w / (s * 0.34)));
+        for (let i = 0; i < n; i++) {
+          const fx = x + 7 + i * ((w - 14) / n);
+          ctx.fillRect(fx, y + s * 0.32, (w - 14) / n - 3, hh - s * 0.9);
+          ctx.fillStyle = '#3e2723';
+          for (let j = 0; j < 3; j++) ctx.fillRect(fx + ((w - 14) / n - 3) / 2 - 1.5, y + s * 0.42 + j * s * 0.22, 3, s * 0.13);
+          ctx.fillStyle = '#d7b98e';
+        }
+        break;
+      }
+      case 'noren': {
+        // のれん（台所の入口）
+        ctx.fillStyle = '#5d4037';
+        ctx.fillRect(x + 2, y + s * 0.3, w - 4, 3);
+        const n = Math.max(2, Math.round(w / (s * 0.5)));
+        for (let i = 0; i < n; i++) {
+          ctx.fillStyle = o.color ?? '#283593';
+          ctx.fillRect(x + 4 + i * ((w - 8) / n), y + s * 0.34, (w - 8) / n - 3, hh * 0.42);
+        }
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(x + w / 2, y + s * 0.34 + hh * 0.2, s * 0.14, 0, 6.3);
+        ctx.fill();
+        break;
+      }
+      case 'banner': {
+        // 三角の旗のひも
+        ctx.strokeStyle = '#5d4037';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(x + 2, y + s * 0.3);
+        ctx.quadraticCurveTo(x + w / 2, y + s * 0.62, x + w - 2, y + s * 0.3);
+        ctx.stroke();
+        ctx.lineWidth = 1;
+        const cols = ['#e53935', '#fdd835', '#43a047', '#1e88e5', '#8e24aa'];
+        const n = Math.max(3, Math.floor(w / (s * 0.42)));
+        for (let i = 0; i < n; i++) {
+          const t = (i + 0.5) / n;
+          const fx = x + 2 + (w - 4) * t;
+          const fy = y + s * 0.3 + Math.sin(Math.PI * t) * s * 0.16;
+          ctx.fillStyle = cols[i % cols.length];
+          ctx.beginPath();
+          ctx.moveTo(fx - s * 0.14, fy);
+          ctx.lineTo(fx + s * 0.14, fy);
+          ctx.lineTo(fx, fy + s * 0.32);
+          ctx.fill();
+        }
+        break;
+      }
+      case 'scoreboard': {
+        // 大会の電光掲示板（左右の選手と VS）
+        const bx = x + 4;
+        const by = y + s * 0.22;
+        const bw = w - 8;
+        const bh = hh - s * 0.72;
+        ctx.fillStyle = '#263238';
+        ctx.fillRect(bx, by, bw, bh);
+        ctx.fillStyle = '#ffd23b';
+        ctx.fillRect(bx, by, bw, 3);
+        ctx.fillStyle = '#e53935';
+        ctx.fillRect(bx + bw * 0.08, by + bh * 0.3, bw * 0.28, bh * 0.45);
+        ctx.fillStyle = '#1e88e5';
+        ctx.fillRect(bx + bw * 0.64, by + bh * 0.3, bw * 0.28, bh * 0.45);
+        ctx.fillStyle = `rgba(255,236,120,${0.7 + Math.sin(frame / 12) * 0.3})`;
+        ctx.font = `900 ${Math.round(s * 0.36)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText('VS', bx + bw / 2, by + bh * 0.7);
+        ctx.textAlign = 'left';
+        break;
+      }
+      case 'pigeonhole': {
+        // 手紙の仕分けだな
+        ctx.fillStyle = '#8d6e63';
+        ctx.fillRect(x + 3, y + s * 0.25, w - 6, hh - s * 0.65);
+        const cols = Math.max(2, Math.round(w / (s * 0.35)));
+        for (let i = 0; i < cols; i++)
+          for (let j = 0; j < 3; j++) {
+            const cx = x + 6 + i * ((w - 12) / cols);
+            const cy = y + s * 0.3 + j * ((hh - s * 0.8) / 3);
+            ctx.fillStyle = '#4e342e';
+            ctx.fillRect(cx, cy, (w - 12) / cols - 2, (hh - s * 0.8) / 3 - 2);
+            if (hash(i + o.x, j) > 0.35) {
+              ctx.fillStyle = hash(j, i) > 0.5 ? '#ffffff' : '#fff59d';
+              ctx.fillRect(cx + 2, cy + 3, (w - 12) / cols - 6, (hh - s * 0.8) / 3 - 7);
+            }
+          }
+        break;
+      }
+      case 'wallshelf': {
+        // 壁の棚（お皿・びん）
+        ctx.fillStyle = '#8d6e63';
+        ctx.fillRect(x + 3, y + hh * 0.42, w - 6, 4);
+        ctx.fillRect(x + 3, y + hh * 0.7, w - 6, 4);
+        const items = ['#ffffff', '#ffcc80', '#81d4fa', '#ef9a9a', '#c5e1a5'];
+        const n = Math.max(2, Math.round(w / (s * 0.3)));
+        for (let i = 0; i < n; i++) {
+          ctx.fillStyle = items[(i + o.x) % items.length];
+          ctx.fillRect(x + 6 + i * ((w - 12) / n), y + hh * 0.42 - s * 0.2, (w - 12) / n - 4, s * 0.2);
+          ctx.fillStyle = items[(i + o.x + 2) % items.length];
+          ctx.beginPath();
+          ctx.arc(x + 6 + i * ((w - 12) / n) + ((w - 12) / n - 4) / 2, y + hh * 0.7 - s * 0.1, s * 0.09, 0, 6.3);
+          ctx.fill();
+        }
+        break;
+      }
+      case 'mapwall': {
+        // 森の地図
+        ctx.fillStyle = '#6d4c2f';
+        ctx.fillRect(x + 3, y + s * 0.22, w - 6, hh - s * 0.68);
+        ctx.fillStyle = '#f1e3b6';
+        ctx.fillRect(x + 7, y + s * 0.28, w - 14, hh - s * 0.8);
+        ctx.fillStyle = '#7cb342';
+        for (let i = 0; i < 7; i++) {
+          ctx.beginPath();
+          ctx.arc(x + 12 + hash(i, o.x) * (w - 24), y + s * 0.42 + hash(o.x, i) * (hh - s * 1.1), s * 0.1, 0, 6.3);
+          ctx.fill();
+        }
+        ctx.strokeStyle = '#4fc3f7';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x + 8, y + hh * 0.6);
+        ctx.quadraticCurveTo(x + w / 2, y + hh * 0.3, x + w - 8, y + hh * 0.55);
+        ctx.stroke();
+        ctx.lineWidth = 1;
+        ctx.fillStyle = '#e53935';
+        for (let i = 0; i < 3; i++) {
+          ctx.beginPath();
+          ctx.arc(x + w * (0.25 + i * 0.25), y + hh * (0.4 + (i % 2) * 0.12), 2.5, 0, 6.3);
+          ctx.fill();
+        }
+        break;
+      }
+      // ---------- 床の家具 ----------
+      case 'packstand': {
+        // パックを積んだ台
+        ctx.fillStyle = '#6d4c2f';
+        ctx.fillRect(x + s * 0.15, y + s * 0.55, s * 0.7, s * 0.4);
+        const cols = ['#e5484d', '#3c8dff', '#ffcc33', '#2ead5b', '#b05dff'];
+        for (let r2 = 0; r2 < 2; r2++)
+          for (let i = 0; i < 3 - r2; i++) {
+            ctx.fillStyle = cols[(i + r2 * 2 + o.x) % cols.length];
+            ctx.fillRect(x + s * (0.18 + i * 0.22 + r2 * 0.11), y + s * (0.35 - r2 * 0.22), s * 0.19, s * 0.24);
+            ctx.fillStyle = 'rgba(255,255,255,.6)';
+            ctx.fillRect(x + s * (0.2 + i * 0.22 + r2 * 0.11), y + s * (0.37 - r2 * 0.22), s * 0.05, s * 0.18);
+          }
+        break;
+      }
+      case 'cardtable': {
+        // 対戦テーブル（緑のマットにカード）
+        ctx.fillStyle = 'rgba(0,0,0,.18)';
+        ctx.fillRect(x + 4, y + hh - 5, w - 8, 5);
+        ctx.fillStyle = '#6d4c2f';
+        ctx.fillRect(x + 2, y + s * 0.15, w - 4, hh - s * 0.25);
+        ctx.fillStyle = '#2e7d32';
+        ctx.fillRect(x + 5, y + s * 0.2, w - 10, hh - s * 0.4);
+        ctx.strokeStyle = 'rgba(255,255,255,.4)';
+        ctx.strokeRect(x + 7.5, y + s * 0.24, w - 15, hh - s * 0.48);
+        const n = Math.max(2, Math.round(w / (s * 0.5)));
+        for (let i = 0; i < n; i++) {
+          ctx.fillStyle = i % 2 ? '#fff8e1' : '#ffcc80';
+          ctx.fillRect(x + 10 + i * ((w - 20) / n), y + s * 0.32, s * 0.18, s * 0.26);
+        }
+        break;
+      }
+      case 'chair':
+        ctx.fillStyle = '#795548';
+        ctx.fillRect(x + s * 0.25, y + s * 0.15, s * 0.5, s * 0.25);
+        ctx.fillStyle = o.color ?? '#a1887f';
+        ctx.fillRect(x + s * 0.22, y + s * 0.4, s * 0.56, s * 0.3);
+        ctx.fillStyle = '#5d4037';
+        ctx.fillRect(x + s * 0.25, y + s * 0.7, 3, s * 0.22);
+        ctx.fillRect(x + s * 0.72, y + s * 0.7, 3, s * 0.22);
+        break;
+      case 'sofa': {
+        const c = o.color ?? '#5c6bc0';
+        ctx.fillStyle = 'rgba(0,0,0,.18)';
+        ctx.fillRect(x + 4, y + hh - 5, w - 8, 5);
+        ctx.fillStyle = c;
+        ctx.fillRect(x + 3, y + s * 0.15, w - 6, s * 0.4);
+        ctx.fillRect(x + 3, y + s * 0.15, s * 0.2, hh - s * 0.25);
+        ctx.fillRect(x + w - 3 - s * 0.2, y + s * 0.15, s * 0.2, hh - s * 0.25);
+        ctx.fillStyle = 'rgba(255,255,255,.22)';
+        ctx.fillRect(x + 3 + s * 0.2, y + s * 0.5, w - 6 - s * 0.4, hh - s * 0.65);
+        ctx.fillStyle = 'rgba(0,0,0,.12)';
+        ctx.fillRect(x + w / 2 - 1, y + s * 0.5, 2, hh - s * 0.65);
+        break;
+      }
+      case 'tv':
+        ctx.fillStyle = '#5d4037';
+        ctx.fillRect(x + 3, y + s * 0.6, w - 6, s * 0.35);
+        ctx.fillStyle = '#212121';
+        ctx.fillRect(x + s * 0.1, y + s * 0.05, w - s * 0.2, s * 0.55);
+        ctx.fillStyle = `hsl(${(frame * 2) % 360},60%,${45 + Math.sin(frame / 20) * 8}%)`;
+        ctx.fillRect(x + s * 0.15, y + s * 0.1, w - s * 0.3, s * 0.42);
+        break;
+      case 'lamp':
+        ctx.fillStyle = '#5d4037';
+        ctx.fillRect(x + s * 0.47, y + s * 0.2, s * 0.06, s * 0.7);
+        ctx.fillRect(x + s * 0.32, y + s * 0.86, s * 0.36, s * 0.08);
+        ctx.fillStyle = o.color ?? '#fff3c4';
+        ctx.beginPath();
+        ctx.moveTo(x + s * 0.3, y + s * 0.38);
+        ctx.lineTo(x + s * 0.7, y + s * 0.38);
+        ctx.lineTo(x + s * 0.6, y + s * 0.08);
+        ctx.lineTo(x + s * 0.4, y + s * 0.08);
+        ctx.fill();
+        ctx.fillStyle = 'rgba(255,236,150,.18)';
+        ctx.beginPath();
+        ctx.arc(x + s / 2, y + s * 0.3, s * 0.55, 0, 6.3);
+        ctx.fill();
+        break;
+      case 'spotlight': {
+        // 会場のライト
+        ctx.fillStyle = '#424242';
+        ctx.fillRect(x + s * 0.46, y + s * 0.3, s * 0.08, s * 0.62);
+        ctx.fillRect(x + s * 0.28, y + s * 0.88, s * 0.44, s * 0.08);
+        ctx.fillStyle = '#212121';
+        ctx.beginPath();
+        ctx.arc(x + s / 2, y + s * 0.25, s * 0.18, 0, 6.3);
+        ctx.fill();
+        ctx.fillStyle = `rgba(255,245,180,${0.75 + Math.sin(frame / 15 + o.x) * 0.25})`;
+        ctx.beginPath();
+        ctx.arc(x + s / 2, y + s * 0.25, s * 0.11, 0, 6.3);
+        ctx.fill();
+        break;
+      }
+      case 'shelfmetal': {
+        // 金属のたなに箱
+        ctx.fillStyle = '#90a4ae';
+        ctx.fillRect(x + 3, y + 2, 3, hh - 4);
+        ctx.fillRect(x + w - 6, y + 2, 3, hh - 4);
+        for (let j = 0; j < 3; j++) ctx.fillRect(x + 3, y + 4 + j * ((hh - 8) / 2.4), w - 6, 2.5);
+        for (let i = 0; i < (o.w ?? 1) * 2; i++)
+          for (let j = 0; j < 2; j++) {
+            if (hash(i + o.x, j + o.y) < 0.25) continue;
+            ctx.fillStyle = hash(j + o.x, i) > 0.5 ? '#c8a165' : '#a1887f';
+            const bw = (w - 14) / ((o.w ?? 1) * 2);
+            ctx.fillRect(x + 7 + i * bw, y + 4 + j * ((hh - 8) / 2.4) - (hh - 8) / 3 + (hh - 8) / 2.4, bw - 2, (hh - 8) / 3.2);
+          }
+        break;
+      }
+      case 'conveyor': {
+        // ベルトコンベア（荷物が流れる）
+        ctx.fillStyle = '#546e7a';
+        ctx.fillRect(x + 1, y + s * 0.3, w - 2, s * 0.45);
+        ctx.fillStyle = '#263238';
+        ctx.fillRect(x + 1, y + s * 0.36, w - 2, s * 0.32);
+        ctx.fillStyle = '#455a64';
+        const off = (frame * 0.6) % 8;
+        for (let i = -1; i < w / 8; i++) ctx.fillRect(x + 2 + i * 8 + off, y + s * 0.36, 2, s * 0.32);
+        ctx.fillStyle = '#c8a165';
+        for (let i = 0; i < 3; i++) {
+          const bx = x + (((frame * 0.6 + i * (w / 3)) % (w - s * 0.4)) + 2);
+          ctx.fillRect(bx, y + s * 0.18, s * 0.36, s * 0.32);
+          ctx.fillStyle = '#a07a40';
+          ctx.fillRect(bx, y + s * 0.3, s * 0.36, 2);
+          ctx.fillStyle = '#c8a165';
+        }
+        break;
+      }
+      case 'scale':
+        ctx.fillStyle = '#b0bec5';
+        ctx.fillRect(x + s * 0.18, y + s * 0.55, s * 0.64, s * 0.35);
+        ctx.fillStyle = '#eceff1';
+        ctx.fillRect(x + s * 0.12, y + s * 0.42, s * 0.76, s * 0.14);
+        ctx.fillStyle = '#263238';
+        ctx.fillRect(x + s * 0.3, y + s * 0.62, s * 0.4, s * 0.16);
+        ctx.fillStyle = '#76ff03';
+        ctx.fillRect(x + s * 0.34, y + s * 0.65, s * 0.2, s * 0.1);
+        break;
+      case 'mailbox':
+        ctx.fillStyle = '#c62828';
+        ctx.fillRect(x + s * 0.25, y + s * 0.2, s * 0.5, s * 0.72);
+        ctx.beginPath();
+        ctx.arc(x + s / 2, y + s * 0.22, s * 0.25, Math.PI, 0);
+        ctx.fill();
+        ctx.fillStyle = '#212121';
+        ctx.fillRect(x + s * 0.33, y + s * 0.35, s * 0.34, s * 0.06);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(x + s * 0.33, y + s * 0.55, s * 0.34, s * 0.14);
+        break;
+      case 'stove': {
+        // ラーメンの大なべ（湯気が立つ）
+        ctx.fillStyle = '#9e9e9e';
+        ctx.fillRect(x + 2, y + s * 0.45, w - 4, hh - s * 0.5);
+        ctx.fillStyle = '#616161';
+        ctx.fillRect(x + 2, y + s * 0.45, w - 4, 4);
+        const n = Math.max(1, Math.round(w / s));
+        for (let i = 0; i < n; i++) {
+          const cx = x + (i + 0.5) * (w / n);
+          ctx.fillStyle = '#cfd8dc';
+          ctx.fillRect(cx - s * 0.28, y + s * 0.12, s * 0.56, s * 0.38);
+          ctx.fillStyle = '#795548';
+          ctx.fillRect(cx - s * 0.24, y + s * 0.12, s * 0.48, s * 0.08);
+          for (let k = 0; k < 2; k++) {
+            const t = ((frame / 40 + k * 0.5 + i * 0.3) % 1);
+            ctx.fillStyle = `rgba(255,255,255,${0.5 * (1 - t)})`;
+            ctx.beginPath();
+            ctx.arc(cx + Math.sin(t * 6 + k) * 4, y + s * 0.1 - t * s * 0.5, s * (0.08 + t * 0.1), 0, 6.3);
+            ctx.fill();
+          }
+        }
+        break;
+      }
+      case 'mannequin': {
+        ctx.fillStyle = '#9e9e9e';
+        ctx.fillRect(x + s * 0.47, y + s * 0.7, s * 0.06, s * 0.2);
+        ctx.fillRect(x + s * 0.32, y + s * 0.88, s * 0.36, s * 0.06);
+        ctx.fillStyle = '#f5e6d3';
+        ctx.beginPath();
+        ctx.arc(x + s / 2, y + s * 0.1, s * 0.1, 0, 6.3);
+        ctx.fill();
+        ctx.fillStyle = o.color ?? '#ab47bc';
+        ctx.beginPath();
+        ctx.moveTo(x + s * 0.34, y + s * 0.2);
+        ctx.lineTo(x + s * 0.66, y + s * 0.2);
+        ctx.lineTo(x + s * 0.78, y + s * 0.72);
+        ctx.lineTo(x + s * 0.22, y + s * 0.72);
+        ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,.35)';
+        ctx.fillRect(x + s * 0.36, y + s * 0.4, s * 0.28, 2);
+        break;
+      }
+      case 'fitting': {
+        // 試着室（カーテン）
+        ctx.fillStyle = '#8d6e63';
+        ctx.fillRect(x + 2, y, w - 4, 3);
+        ctx.fillStyle = o.color ?? '#7b1fa2';
+        const n = 4 * (o.w ?? 1);
+        for (let i = 0; i < n; i++) {
+          ctx.fillStyle = i % 2 ? (o.color ?? '#7b1fa2') : '#9c27b0';
+          ctx.fillRect(x + 3 + i * ((w - 6) / n), y + 3, (w - 6) / n + 0.5, hh - 6);
+        }
+        break;
+      }
+      case 'woodstove': {
+        // まきストーブ
+        ctx.fillStyle = '#37474f';
+        ctx.fillRect(x + s * 0.44, y - s * 0.4, s * 0.12, s * 0.5);
+        ctx.fillStyle = '#263238';
+        ctx.fillRect(x + s * 0.16, y + s * 0.1, s * 0.68, s * 0.8);
+        ctx.fillStyle = `rgba(255,${140 + Math.floor(Math.sin(frame / 6) * 40)},40,.95)`;
+        ctx.fillRect(x + s * 0.28, y + s * 0.42, s * 0.44, s * 0.3);
+        ctx.fillStyle = 'rgba(255,160,60,.18)';
+        ctx.beginPath();
+        ctx.arc(x + s / 2, y + s * 0.6, s * 0.7, 0, 6.3);
+        ctx.fill();
+        break;
+      }
+      case 'specimen': {
+        // 葉っぱと虫の標本ケース
+        ctx.fillStyle = '#6d4c2f';
+        ctx.fillRect(x + 2, y + s * 0.15, w - 4, hh - s * 0.25);
+        ctx.fillStyle = '#fffde7';
+        ctx.fillRect(x + 5, y + s * 0.2, w - 10, hh - s * 0.38);
+        const n = Math.max(3, Math.round(w / (s * 0.3)));
+        for (let i = 0; i < n; i++) {
+          ctx.fillStyle = ['#7cb342', '#ff8f00', '#5d4037', '#c0ca33'][(i + o.x) % 4];
+          ctx.beginPath();
+          ctx.ellipse(x + 10 + i * ((w - 20) / (n - 1 || 1)), y + s * 0.42, s * 0.08, s * 0.13, i, 0, 6.3);
+          ctx.fill();
+        }
+        break;
+      }
+      case 'veggie': {
+        // 野菜のはち（色で種類を変える）
+        ctx.fillStyle = '#a1662f';
+        ctx.fillRect(x + s * 0.28, y + s * 0.6, s * 0.44, s * 0.34);
+        ctx.fillStyle = '#388e3c';
+        ctx.fillRect(x + s * 0.48, y + s * 0.15, s * 0.04, s * 0.46);
+        ctx.beginPath();
+        ctx.ellipse(x + s * 0.38, y + s * 0.35, s * 0.14, s * 0.07, -0.5, 0, 6.3);
+        ctx.ellipse(x + s * 0.62, y + s * 0.28, s * 0.14, s * 0.07, 0.5, 0, 6.3);
+        ctx.fill();
+        ctx.fillStyle = o.color ?? '#e53935';
+        for (const [vx, vy] of [[0.36, 0.48], [0.62, 0.44], [0.5, 0.22]]) {
+          ctx.beginPath();
+          ctx.arc(x + s * vx, y + s * vy, s * 0.08, 0, 6.3);
+          ctx.fill();
+        }
+        break;
+      }
+      case 'basket': {
+        ctx.fillStyle = '#c8a165';
+        ctx.beginPath();
+        ctx.ellipse(x + s / 2, y + s * 0.62, s * 0.38, s * 0.26, 0, 0, 6.3);
+        ctx.fill();
+        for (const [vx, vy, c] of [[0.35, 0.48, '#e53935'], [0.55, 0.45, '#7b1fa2'], [0.65, 0.55, '#43a047'], [0.45, 0.58, '#fb8c00']] as [number, number, string][]) {
+          ctx.fillStyle = c;
+          ctx.beginPath();
+          ctx.arc(x + s * vx, y + s * vy, s * 0.1, 0, 6.3);
+          ctx.fill();
+        }
+        ctx.strokeStyle = '#8d6e63';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.ellipse(x + s / 2, y + s * 0.62, s * 0.38, s * 0.26, 0, 0, Math.PI);
+        ctx.stroke();
+        ctx.lineWidth = 1;
+        break;
+      }
+      case 'kotatsu': {
+        // こたつ（ふとん＋天板＋みかん）
+        ctx.fillStyle = o.color ?? '#c62828';
+        ctx.fillRect(x + 2, y + s * 0.12, w - 4, hh - s * 0.16);
+        ctx.fillStyle = '#8d6e63';
+        ctx.fillRect(x + s * 0.12, y + s * 0.2, w - s * 0.24, hh - s * 0.36);
+        ctx.fillStyle = '#ff9800';
+        ctx.beginPath();
+        ctx.arc(x + w / 2 - s * 0.08, y + hh / 2, s * 0.09, 0, 6.3);
+        ctx.arc(x + w / 2 + s * 0.12, y + hh / 2 + s * 0.04, s * 0.09, 0, 6.3);
+        ctx.fill();
+        break;
+      }
+      case 'vase':
+        ctx.fillStyle = '#5c6bc0';
+        ctx.beginPath();
+        ctx.ellipse(x + s / 2, y + s * 0.7, s * 0.16, s * 0.22, 0, 0, 6.3);
+        ctx.fill();
+        for (const [fx, fy, c] of [[0.4, 0.3, '#ec407a'], [0.6, 0.28, '#ffee58'], [0.5, 0.18, '#ab47bc']] as [number, number, string][]) {
+          ctx.fillStyle = '#43a047';
+          ctx.fillRect(x + s * 0.49, y + s * fy, 1.5, s * (0.5 - fy));
+          ctx.fillStyle = c;
+          ctx.beginPath();
+          ctx.arc(x + s * fx, y + s * fy, s * 0.08, 0, 6.3);
+          ctx.fill();
+        }
+        break;
+      case 'fridge':
+        ctx.fillStyle = '#eceff1';
+        ctx.fillRect(x + s * 0.12, y - s * 0.3, s * 0.76, s * 1.22);
+        ctx.fillStyle = '#b0bec5';
+        ctx.fillRect(x + s * 0.12, y + s * 0.15, s * 0.76, 2);
+        ctx.fillRect(x + s * 0.72, y - s * 0.15, 3, s * 0.22);
+        ctx.fillRect(x + s * 0.72, y + s * 0.28, 3, s * 0.3);
         break;
       default:
         ctx.fillStyle = '#999';
