@@ -1,0 +1,19 @@
+{
+  "startMoney": 500,
+  "currency": "コイン",
+  "cups": {
+    "cup1": { "name": "ひだまりカップ", "town": "town1", "fee": 200, "prize": 900, "entrants": ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8", "h9", "h10"], "feature": "初心者向け。基本の攻撃と守備でルールを覚えよう。" },
+    "cup2": { "name": "にぎわいカップ", "town": "town2", "fee": 500, "prize": 2000, "entrants": ["n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10"], "feature": "攻撃重視とコンボ重視の相手が多い。相手の戦術への対策が大事。" },
+    "cup3": { "name": "みどりカップ", "town": "town3", "fee": 900, "prize": 3400, "entrants": ["m1", "m2", "m3", "m4", "m5", "m6", "m7", "m8", "m9", "m10"], "feature": "属性ごとのデッキが多い。属性相性と組み合わせを読もう。" }
+  },
+  "jobs": {
+    "delivery": { "name": "配達のアルバイト", "town": "town1", "base": 100, "perExtra": 3, "max": 260, "time": 60, "count": 3 },
+    "sorting": { "name": "商品仕分けのアルバイト", "town": "town2", "base": 120, "perPoint": 12, "max": 300, "time": 30 },
+    "nature": { "name": "自然探索のアルバイト", "town": "town3", "base": 150, "perPoint": 14, "max": 360, "time": 45 }
+  },
+  "battleMoney": { "default": 0 },
+  "forage": { "coinMin": 20, "coinMax": 60, "cardChance": 0.3, "cardRarity": ["N"] },
+  "chores": { "chance": 0.3, "pity": 5 },
+  "starterPrice": 1500,
+  "singlePrice": { "N": 80, "R": 250, "SR": 800, "UR": 2400 }
+}

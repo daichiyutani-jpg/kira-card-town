@@ -1,0 +1,12 @@
+node_modules
+dist
+test-results
+*.tsbuildinfo
+# 絵の作業用（大きい候補画像・一覧画像）。使う絵は public/art/ に入っている
+design/leonardo/inbox/
+design/leonardo/candidates/
+design/leonardo/sheets/
+design/leonardo/bg/*.jpg
+design/leonardo/bg/*.png
+design/leonardo/bg/*.webp
+design/leonardo/bg/*.src

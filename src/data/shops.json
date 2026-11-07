@@ -1,0 +1,17 @@
+{
+  "packs": {
+    "pack1": { "name": "ひだまりパック", "price": 300, "count": 5, "tags": ["pack1", "pack2"], "rates": { "N": 80, "R": 20 } },
+    "pack2": { "name": "にぎわいパック", "price": 450, "count": 5, "tags": ["pack2", "pack3"], "rates": { "N": 55, "R": 35, "SR": 10 } },
+    "pack3": { "name": "みどりパック", "price": 600, "count": 5, "tags": ["pack2", "pack3", "gacha"], "rates": { "N": 40, "R": 38, "SR": 18, "UR": 4 } }
+  },
+  "shops": {
+    "shop1": { "name": "カードショップ ひだまり", "keeper": "ミドリ店長", "packs": ["pack1"], "singles": ["f01", "f07", "w03", "w06", "a03", "a06", "e06", "e08", "l06", "l07", "d07", "d09", "g01", "g05", "g10", "g19", "i01", "i02", "i04", "i06"], "starters": true },
+    "shop2": { "name": "メガカードショップ にぎわい", "keeper": "店員のタクミ", "packs": ["pack1", "pack2"], "singles": ["f10", "f12", "f13", "w10", "w13", "w15", "a11", "a12", "a16", "e10", "e13", "e14", "l11", "l14", "l15", "d12", "d14", "d16", "g03", "g07", "g13", "g16", "i07", "i08", "i09", "i13"], "starters": true },
+    "shop3": { "name": "森のカード屋 こもれび", "keeper": "森のおじいさん", "packs": ["pack2", "pack3"], "singles": ["f17", "f18", "w18", "w20", "a19", "a20", "e17", "e19", "l18", "l19", "d17", "d20", "g09", "g18", "g22", "i11", "i12", "i22"], "starters": false }
+  },
+  "festival": {
+    "kuji": { "name": "カードくじ", "price": 300, "tags": ["fest", "pack1", "pack2"], "rates": { "N": 55, "R": 35, "SR": 8, "UR": 2 } },
+    "gacha": { "name": "星のガチャ", "price": 500, "tags": ["fest", "gacha", "pack2", "pack3"], "rates": { "N": 30, "R": 45, "SR": 20, "UR": 5 } },
+    "schedule": { "days": [1, 3, 5, 0], "start": 18, "end": 20 }
+  }
+}

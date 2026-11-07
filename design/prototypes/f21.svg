@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+<!-- 太陽竜ソルガドラ（炎・竜・UR）：見上げの構図。黒曜石の鱗に溶岩の亀裂、太陽のコロナのような金の角冠。咆哮して火炎を吐く。 -->
+<defs>
+  <radialGradient id="sky" cx="70%" cy="30%" r="90%">
+    <stop offset="0" stop-color="#ffcf6a"/><stop offset=".18" stop-color="#ff7a1e"/><stop offset=".45" stop-color="#8a1a12"/><stop offset="1" stop-color="#1a0606"/>
+  </radialGradient>
+  <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#fffbe0"/><stop offset=".55" stop-color="#ffd35a"/><stop offset="1" stop-color="#ff8a1e" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="obs" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#4a3a3a"/><stop offset=".4" stop-color="#1e1416"/><stop offset="1" stop-color="#0a0608"/>
+  </linearGradient>
+  <linearGradient id="belly" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffb347"/><stop offset="1" stop-color="#b8420e"/>
+  </linearGradient>
+  <linearGradient id="memb" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ff9a3c" stop-opacity=".95"/><stop offset=".6" stop-color="#a3200f" stop-opacity=".9"/><stop offset="1" stop-color="#3a0808" stop-opacity=".95"/>
+  </linearGradient>
+  <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#fff2b0"/><stop offset=".5" stop-color="#e8a628"/><stop offset="1" stop-color="#7a4a08"/>
+  </linearGradient>
+  <linearGradient id="breath" x1="1" y1="0" x2="0" y2="0">
+    <stop offset="0" stop-color="#fffbe0"/><stop offset=".3" stop-color="#ffd35a"/><stop offset=".7" stop-color="#ff5a1e" stop-opacity=".8"/><stop offset="1" stop-color="#ff2a00" stop-opacity="0"/>
+  </linearGradient>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <pattern id="scale" width="12" height="9" patternUnits="userSpaceOnUse"><path d="M0 9 C3 3 9 3 12 9" fill="none" stroke="#5a4446" stroke-width="1" opacity=".55"/></pattern>
+  <clipPath id="bodyClip"><path d="M192 148 C168 162 156 196 170 224 C186 254 240 262 272 240 C296 222 290 188 266 172 C248 160 226 148 210 144Z"/></clipPath>
+  <filter id="soft"><feGaussianBlur stdDeviation="6"/></filter>
+  <filter id="heat"><feTurbulence type="fractalNoise" baseFrequency=".02 .06" numOctaves="2" seed="3"/><feDisplacementMap in="SourceGraphic" scale="8"/></filter>
+</defs>
+<rect width="400" height="300" fill="url(#sky)"/>
+<!-- 太陽とコロナ -->
+<circle cx="292" cy="78" r="92" fill="url(#sun)" opacity=".9"/>
+<g stroke="#ffe69a" stroke-width="2" opacity=".55">
+  <path d="M292 78 L392 20 M292 78 L400 96 M292 78 L370 170 M292 78 L230 -10 M292 78 L330 -10"/>
+</g>
+<!-- 遠くの火山の稜線 -->
+<path d="M0 230 L60 200 L95 214 L140 180 L175 205 L230 190 L290 215 L340 196 L400 214 V300 H0Z" fill="#2a0a08"/>
+<path d="M0 250 L80 236 L160 248 L240 232 L320 246 L400 236 V300 H0Z" fill="#140404"/>
+<!-- 魔法陣（UR） -->
+<g transform="translate(205 268) scale(1 .28)" opacity=".85" filter="url(#glow)">
+  <circle r="150" fill="none" stroke="#ffcf6a" stroke-width="3"/>
+  <circle r="128" fill="none" stroke="#ff8a1e" stroke-width="2" stroke-dasharray="6 5"/>
+  <path d="M0 -150 L130 75 L-130 75Z M0 150 L130 -75 L-130 -75Z" fill="none" stroke="#ffdf8a" stroke-width="2"/>
+</g>
+<!-- 遠い側の翼 -->
+<path d="M176 150 C150 110 110 70 54 40 C70 70 66 96 40 120 C66 118 82 130 74 156 C96 146 116 154 118 176 C134 166 152 170 160 184Z" fill="url(#memb)" stroke="#2a0606" stroke-width="2.5"/>
+<path d="M176 150 L54 40 M160 160 L44 118 M150 170 L76 154 M152 178 L118 174" stroke="#1a0606" stroke-width="3" fill="none"/>
+<!-- 尾 -->
+<path d="M240 238 C290 252 330 236 352 206 C364 190 380 196 384 178 C370 188 360 180 350 192 C332 220 296 236 252 222Z" fill="url(#obs)" stroke="#000" stroke-width="2"/>
+<path d="M372 182 L392 168 L382 190Z" fill="url(#gold)"/>
+<!-- 太もも（大きく力強い） -->
+<path d="M242 196 C282 190 302 224 288 252 L306 266 L300 278 L254 276 L262 258 C244 250 232 224 242 196Z" fill="url(#obs)" stroke="#000" stroke-width="2.5"/>
+<path d="M300 268 l10 -6 M290 272 l8 -8" stroke="url(#gold)" stroke-width="3" stroke-linecap="round"/>
+<!-- 胴体（前かがみの胸と腰） -->
+<path d="M192 148 C168 162 156 196 170 224 C186 254 240 262 272 240 C296 222 290 188 266 172 C248 160 226 148 210 144Z" fill="url(#obs)" stroke="#000" stroke-width="2.5"/>
+<rect x="150" y="140" width="160" height="130" fill="url(#scale)" clip-path="url(#bodyClip)"/>
+<!-- 腹の鱗板（溶けた金属のように光る） -->
+<path d="M180 160 C166 186 170 222 194 244 C208 252 220 250 214 238 C196 220 190 192 200 162 C194 154 186 154 180 160Z" fill="url(#belly)" stroke="#5a1a06" stroke-width="1.5"/>
+<path d="M176 176 h24 M172 192 h24 M174 208 h24 M182 224 h22 M194 238 h16" stroke="#7a2a08" stroke-width="2"/>
+<!-- 背中のとげ -->
+<g fill="url(#gold)" stroke="#3a1a04" stroke-width="1">
+  <path d="M232 150 l10 -18 l4 22Z"/><path d="M250 160 l14 -16 l0 22Z"/><path d="M266 174 l16 -10 l-6 20Z"/><path d="M280 192 l16 -4 l-10 16Z"/>
+  <path d="M208 132 l4 -18 l8 20Z"/><path d="M196 112 l2 -16 l8 18Z"/>
+</g>
+<!-- 首 -->
+<path d="M188 160 C176 128 166 108 150 94 L176 78 C196 98 214 124 222 150Z" fill="url(#obs)" stroke="#000" stroke-width="2.5"/>
+<path d="M170 98 C178 112 186 128 192 150" stroke="url(#belly)" stroke-width="9" fill="none" stroke-linecap="round"/>
+<!-- 溶岩の亀裂（体を走る） -->
+<g stroke="#ffb52a" stroke-width="2" fill="none" filter="url(#glow)">
+  <path d="M214 156 l10 14 l-6 10 l12 12 l-4 14"/>
+  <path d="M240 178 l-8 12 l10 8 l-4 16"/>
+  <path d="M190 120 l8 10 l-4 8 l8 8"/>
+  <path d="M234 232 l10 4 l4 12"/>
+  <path d="M300 226 l12 -6 l6 -12"/>
+</g>
+<!-- 前足（振り上げた爪） -->
+<path d="M196 196 C214 196 226 178 230 160 L246 150 L250 158 L240 166 L254 166 L250 174 L236 176 C230 196 214 212 196 212Z" fill="url(#obs)" stroke="#000" stroke-width="2"/>
+<path d="M246 150 l10 -6 M254 166 l10 -2 M250 174 l8 4" stroke="url(#gold)" stroke-width="3.5" stroke-linecap="round"/>
+<!-- 近い側の翼（大きく広げる） -->
+<path d="M214 146 C230 96 266 52 334 18 C328 46 340 60 372 64 C352 80 352 98 376 116 C350 118 338 130 344 152 C320 142 300 148 290 168 C276 156 256 156 244 168Z" fill="url(#memb)" stroke="#2a0606" stroke-width="3"/>
+<path d="M214 146 L334 18 M226 152 L372 64 M238 158 L376 116 M250 164 L344 152 M262 166 L290 168" stroke="#1a0606" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M334 18 l12 -10 M372 64 l14 -4 M376 116 l14 4" stroke="url(#gold)" stroke-width="4" stroke-linecap="round"/>
+<path d="M230 120 C260 84 300 52 330 30" stroke="#ffd35a" stroke-width="1.5" opacity=".6" fill="none"/>
+<!-- 火炎のブレス -->
+<g filter="url(#heat)">
+  <path d="M96 92 C70 84 40 70 0 60 L0 140 C40 124 70 112 98 104Z" fill="url(#breath)"/>
+  <path d="M96 96 C76 92 52 88 20 92 C52 98 76 102 96 102Z" fill="#fffbe0" opacity=".9"/>
+</g>
+<!-- 頭（左を向いて咆哮） -->
+<path d="M176 78 C170 62 156 54 140 56 L112 62 L84 74 L96 82 L120 80 L110 92 L88 98 L98 108 L124 106 L150 114 C168 110 180 96 176 78Z" fill="url(#obs)" stroke="#000" stroke-width="2.5"/>
+<path d="M120 80 L110 92 L124 94Z" fill="#3a0606"/>
+<path d="M96 82 l4 6 l4 -6 M108 80 l3 6 l3 -6 M100 98 l4 -6 l4 6" fill="#fff6d0"/>
+<!-- 口の中の光 -->
+<path d="M98 86 C108 88 116 92 112 96 C104 96 98 92 98 86Z" fill="#ffe08a" filter="url(#glow)"/>
+<!-- 目 -->
+<path d="M140 70 L156 66 L150 74Z" fill="#fff6c0" filter="url(#glow)"/>
+<!-- 角の冠（太陽のコロナ） -->
+<g fill="url(#gold)" stroke="#5a3006" stroke-width="1.5">
+  <path d="M160 60 C170 40 190 26 214 22 C196 34 184 48 172 66Z"/>
+  <path d="M150 58 C152 36 166 16 186 6 C174 22 166 40 162 60Z"/>
+  <path d="M140 58 C134 40 136 24 146 10 C146 28 150 44 152 58Z"/>
+  <path d="M168 72 C186 64 206 64 222 72 C204 72 190 76 176 84Z"/>
+</g>
+<!-- ハイライト（左上の光源・縁の光） -->
+<path d="M152 196 C150 170 170 148 200 146" stroke="#ff9a4a" stroke-width="2" fill="none" opacity=".7"/>
+<path d="M156 60 C166 62 172 70 172 80" stroke="#ffcf8a" stroke-width="1.5" fill="none" opacity=".8"/>
+<!-- 火の粉 -->
+<g fill="#ffd35a" filter="url(#glow)">
+  <circle cx="60" cy="180" r="2"/><circle cx="110" cy="150" r="1.6"/><circle cx="320" cy="250" r="2"/><circle cx="350" cy="160" r="1.5"/><circle cx="30" cy="210" r="1.4"/><circle cx="270" cy="120" r="1.6"/><circle cx="130" cy="240" r="1.8"/><circle cx="380" cy="230" r="1.5"/>
+</g>
+</svg>

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+<!-- ドリルライノ（地・機械獣・SR）：斜め前から突進してくる構図。鋲打ちの重装甲、回転する角のドリル、排気口、砕ける岩。 -->
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a4a3a"/><stop offset=".55" stop-color="#3a2c22"/><stop offset="1" stop-color="#1a120c"/></linearGradient>
+  <linearGradient id="steel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8d0c0"/><stop offset=".35" stop-color="#8a8274"/><stop offset=".7" stop-color="#4a4438"/><stop offset="1" stop-color="#26221c"/></linearGradient>
+  <linearGradient id="plate" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c8862a"/><stop offset=".6" stop-color="#7a4a14"/><stop offset="1" stop-color="#3a220a"/></linearGradient>
+  <linearGradient id="drill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff4d0"/><stop offset=".4" stop-color="#d8a83a"/><stop offset="1" stop-color="#6a4a0a"/></linearGradient>
+  <radialGradient id="dust" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#c8a878" stop-opacity=".7"/><stop offset="1" stop-color="#c8a878" stop-opacity="0"/></radialGradient>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="blur"><feGaussianBlur stdDeviation="4"/></filter>
+</defs>
+<rect width="400" height="300" fill="url(#bg)"/>
+<!-- 坑道の岩壁 -->
+<path d="M0 0 L120 0 L90 60 L40 90 L0 80Z M400 0 L300 0 L330 50 L380 70 L400 60Z" fill="#241a12"/>
+<path d="M0 220 L70 196 L140 210 L220 190 L300 206 L400 190 V300 H0Z" fill="#2a1e14"/>
+<!-- 結晶の鉱脈 -->
+<g fill="#6ad8c8" opacity=".85" filter="url(#glow)"><path d="M346 40 l8 -20 l6 22Z M360 46 l10 -14 l2 18Z M30 60 l6 -18 l6 20Z"/></g>
+<!-- 砂ぼこり -->
+<ellipse cx="270" cy="236" rx="140" ry="40" fill="url(#dust)"/>
+<ellipse cx="330" cy="200" rx="80" ry="50" fill="url(#dust)" opacity=".7"/>
+<!-- 速度の線 -->
+<g stroke="#e8d8b8" stroke-width="2" opacity=".35"><path d="M300 120 h100 M310 150 h90 M290 90 h110 M320 180 h80"/></g>
+<!-- 奥の脚 -->
+<path d="M262 196 L280 252 L306 252 L300 232 L286 196Z" fill="#3a342a" stroke="#14100c" stroke-width="2"/>
+<path d="M150 196 L132 250 L156 254 L172 206Z" fill="#3a342a" stroke="#14100c" stroke-width="2"/>
+<!-- 胴体（重装甲・遠近で手前が大きい） -->
+<path d="M120 130 C150 96 236 88 296 104 C330 114 346 140 336 172 C328 198 296 214 246 214 L168 214 C130 210 108 186 110 160 C111 148 114 138 120 130Z" fill="url(#steel)" stroke="#14100c" stroke-width="2.5"/>
+<!-- 装甲板（重なり） -->
+<path d="M170 100 C210 90 262 92 300 106 C306 126 300 146 290 158 C250 150 206 150 168 160 C160 140 162 118 170 100Z" fill="url(#plate)" stroke="#2a1806" stroke-width="2"/>
+<path d="M240 96 C276 100 312 114 334 140 C330 156 320 168 306 176 C298 150 280 124 244 112Z" fill="url(#plate)" stroke="#2a1806" stroke-width="2"/>
+<path d="M176 128 C214 120 254 120 290 130" stroke="#2a1806" stroke-width="2" fill="none"/>
+<g fill="#f0e0b0"><circle cx="180" cy="110" r="2.2"/><circle cx="210" cy="104" r="2.2"/><circle cx="240" cy="102" r="2.2"/><circle cx="270" cy="106" r="2.2"/><circle cx="300" cy="118" r="2.2"/><circle cx="318" cy="134" r="2.2"/><circle cx="176" cy="150" r="2.2"/><circle cx="286" cy="150" r="2.2"/></g>
+<!-- 排気口（背中・煙） -->
+<path d="M270 92 l6 -20 l14 0 l2 22Z M292 98 l8 -16 l12 2 l-2 20Z" fill="#26221c" stroke="#14100c" stroke-width="1.5"/>
+<g fill="#8a7a68" opacity=".55" filter="url(#blur)"><circle cx="286" cy="58" r="12"/><circle cx="306" cy="44" r="14"/><circle cx="330" cy="30" r="16"/></g>
+<g fill="#ff8a2a" filter="url(#glow)"><rect x="278" y="74" width="8" height="3"/><rect x="301" y="84" width="7" height="3"/></g>
+<!-- 手前の脚（踏み込み） -->
+<path d="M190 190 L176 252 L210 258 L218 236 L222 196Z" fill="url(#steel)" stroke="#14100c" stroke-width="2.5"/>
+<path d="M172 250 L214 256 L212 268 L168 264Z" fill="#26221c"/>
+<path d="M300 186 L318 236 L346 238 L338 216 L322 184Z" fill="url(#steel)" stroke="#14100c" stroke-width="2.5"/>
+<!-- 頭（大きく手前へ） -->
+<path d="M120 130 C96 124 72 132 58 150 C46 166 50 190 66 200 C84 212 112 210 130 198 C146 186 150 160 140 144Z" fill="url(#steel)" stroke="#14100c" stroke-width="2.5"/>
+<path d="M70 150 C86 140 110 138 128 146 L124 162 C106 156 88 158 74 168Z" fill="url(#plate)" stroke="#2a1806" stroke-width="1.5"/>
+<!-- 目（警告灯のような赤） -->
+<path d="M98 168 L118 162 L116 172 L100 174Z" fill="#ff3a1a" filter="url(#glow)"/>
+<!-- 耳状のセンサー -->
+<path d="M130 132 L146 108 L148 136Z" fill="url(#steel)" stroke="#14100c" stroke-width="2"/>
+<!-- 角のドリル（回転） -->
+<g transform="rotate(-18 64 162)">
+  <path d="M62 150 L-12 162 L62 176Z" fill="url(#drill)" stroke="#3a2a06" stroke-width="2"/>
+  <path d="M50 152 L44 175 M36 154 L30 172 M22 156 L18 168 M8 158 L6 165" stroke="#6a4a0a" stroke-width="2.5"/>
+  <rect x="58" y="146" width="12" height="34" rx="3" fill="#4a4438" stroke="#14100c" stroke-width="2"/>
+</g>
+<!-- 回転の火花と飛び散る岩 -->
+<g stroke="#ffd35a" stroke-width="2" filter="url(#glow)"><path d="M0 130 l14 6 M4 150 l16 0 M8 170 l12 -6 M18 120 l8 10"/></g>
+<g fill="#4a3a2a" stroke="#1a120c" stroke-width="1"><path d="M30 100 l10 -6 l6 8 l-8 6Z M20 196 l12 -2 l2 10 l-10 2Z M44 220 l8 -6 l6 6 l-6 6Z M60 92 l6 -4 l4 6 l-6 3Z"/></g>
+<!-- 縁の光（左上） -->
+<path d="M124 128 C152 98 230 90 290 102" stroke="#fff4d8" stroke-width="2" fill="none" opacity=".7"/>
+<path d="M60 150 C74 132 98 126 118 130" stroke="#fff4d8" stroke-width="1.5" fill="none" opacity=".7"/>
+</svg>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>カードイラスト試作の比較</title>
+<style>
+  body { margin: 0; background: #1a1430; color: #fff; font-family: system-ui, sans-serif; }
+  h1 { font-size: 18px; margin: 12px; }
+  .row { margin: 8px; padding: 8px; background: #2a2248; border-radius: 12px; }
+  .row h2 { font-size: 15px; margin: 0 0 6px; }
+  .row p { font-size: 12px; margin: 0 0 8px; color: #d8d0f0; }
+  .cmp { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; }
+  .cmp figure { margin: 0; text-align: center; font-size: 11px; color: #c8c0e0; }
+  .big { width: min(300px, 43vw); aspect-ratio: 4/3; border-radius: 8px; background-size: cover; background-position: center; }
+  .mini { width: 76px; height: 60px; border-radius: 4px; background-size: cover; background-position: center; }
+</style>
+</head>
+<body>
+<h1>カードイラスト試作（今の絵 → 試作）</h1>
+<div id="list"></div>
+<script type="module">
+  import data from '/src/data/cards.json';
+  import { cardArtUrl } from '/src/art/cardArt.ts';
+  const notes = {
+    f21: '見上げの構図・黒曜石の鱗と溶岩の亀裂・太陽のコロナの角冠・火炎の咆哮・魔法陣（UR）',
+    f01: '跳躍の横向き・すすけた灰色の毛・炎そのものの渦巻く尾・耳先の火の房（N）',
+    w17: '深海から見上げ・S字にうねる長い体・半透明のひれ膜・体側の発光器官（SR）',
+    e20: '斜め前から突進・鋲打ちの重装甲・角のドリル・背中の排気口と砕ける岩（SR）',
+    l21: '夜明けの空に浮かぶ・結晶の羽根の翼・文字入りの光輪・紋章陣と光の柱（UR）',
+    d20: '見上げで大鎌を振りかぶる・裂けた外套・骨の仮面と細く光る目・胸の鎖と錠前（SR）',
+  };
+  const list = document.getElementById('list');
+  for (const id of Object.keys(notes)) {
+    const c = data.cards.find((x) => x.id === id);
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `<h2>${c.name}（${c.id}・${c.el}・${c.art.body}・${c.r}）</h2><p>${notes[id]}</p>
+      <div class="cmp">
+        <figure><div class="big" style="background-image:url('${cardArtUrl(c)}')"></div>今の絵</figure>
+        <figure><div class="big" style="background-image:url('./${id}.svg')"></div>試作</figure>
+        <figure><div class="mini" style="background-image:url('${cardArtUrl(c)}')"></div>今・小</figure>
+        <figure><div class="mini" style="background-image:url('./${id}.svg')"></div>試作・小</figure>
+      </div>`;
+    list.append(row);
+  }
+</script>
+</body>
+</html>

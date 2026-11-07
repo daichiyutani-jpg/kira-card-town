@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+<!-- ヒノコリス（炎・獣・N）：焦げた枝から枝へ跳ぶ横向きの構図。すすけた灰色の毛、炎そのものの大きな尾、耳先に火の房。 -->
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2030"/><stop offset=".6" stop-color="#7a3420"/><stop offset="1" stop-color="#2a140e"/></linearGradient>
+  <linearGradient id="fur" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a7a76"/><stop offset=".55" stop-color="#4e4240"/><stop offset="1" stop-color="#2a2222"/></linearGradient>
+  <linearGradient id="belly" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffcf8a"/><stop offset="1" stop-color="#e0702a"/></linearGradient>
+  <linearGradient id="flame" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff4a10"/><stop offset=".5" stop-color="#ff9a2a"/><stop offset="1" stop-color="#ffe9a0"/></linearGradient>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="flick"><feTurbulence type="fractalNoise" baseFrequency=".03 .08" numOctaves="2" seed="9"/><feDisplacementMap in="SourceGraphic" scale="10"/></filter>
+  <filter id="blur3"><feGaussianBlur stdDeviation="3"/></filter>
+</defs>
+<rect width="400" height="300" fill="url(#bg)"/>
+<!-- 奥の木々（ぼかし） -->
+<g fill="#24100e" filter="url(#blur3)" opacity=".9">
+  <path d="M20 300 L34 120 L48 300Z M90 300 L100 150 L112 300Z M330 300 L344 110 L358 300Z M380 300 L388 160 L396 300Z"/>
+</g>
+<!-- 夕方の光 -->
+<ellipse cx="300" cy="200" rx="160" ry="70" fill="#ff8a3a" opacity=".18" filter="url(#blur3)"/>
+<!-- 焦げた枝（左下→右上） -->
+<path d="M-10 262 C80 252 160 250 230 236 C290 224 340 214 410 206 L410 222 C340 230 290 242 232 254 C160 268 80 272 -10 280Z" fill="#1e1210"/>
+<path d="M60 262 l18 -4 M150 252 l16 -6 M300 222 l14 -2" stroke="#ff7a2a" stroke-width="1.5" opacity=".7" filter="url(#glow)"/>
+<path d="M120 256 C116 240 104 232 92 232" stroke="#1e1210" stroke-width="7" fill="none" stroke-linecap="round"/>
+<!-- 炎の尾（大きく渦を巻く） -->
+<g filter="url(#flick)">
+  <path d="M168 176 C120 186 76 166 66 124 C58 90 80 56 116 52 C150 48 168 76 154 98 C146 112 126 110 124 98 C140 102 146 86 134 76 C116 64 92 82 96 112 C100 146 136 160 176 150Z" fill="url(#flame)"/>
+  <path d="M116 52 C108 36 116 22 128 16 C124 32 134 40 130 54Z M80 70 C66 60 64 44 70 34 C74 50 86 54 88 64Z M66 126 C50 126 40 116 38 104 C50 112 60 110 68 114Z" fill="#ffb54a" opacity=".9"/>
+  <path d="M150 162 C118 162 96 144 94 118 C104 140 128 150 156 148Z" fill="#fff2c0" opacity=".8"/>
+</g>
+<!-- 後ろ足（跳躍で伸びる） -->
+<path d="M176 172 C160 182 150 196 136 204 L120 210 L124 216 L144 214 C162 206 180 194 192 180Z" fill="url(#fur)" stroke="#1a1414" stroke-width="2"/>
+<!-- 胴体（しなやかに伸びた跳躍姿勢） -->
+<path d="M164 160 C182 136 226 126 258 132 C282 136 296 152 290 168 C284 184 258 190 230 190 C204 190 176 186 164 172Z" fill="url(#fur)" stroke="#1a1414" stroke-width="2"/>
+<path d="M190 182 C214 190 250 190 276 180 C268 172 236 176 200 172Z" fill="url(#belly)" opacity=".9"/>
+<!-- 毛並み -->
+<g stroke="#a89894" stroke-width="1.2" fill="none" opacity=".7">
+  <path d="M190 146 l10 -4 M206 140 l12 -2 M226 136 l12 0 M244 136 l10 2 M200 156 l12 -4 M222 150 l12 -2"/>
+</g>
+<!-- 前足（前へ伸ばす） -->
+<path d="M270 172 C286 184 300 198 316 204 L328 202 L326 210 L310 214 C292 208 274 196 262 184Z" fill="url(#fur)" stroke="#1a1414" stroke-width="2"/>
+<path d="M326 202 l6 -2 M326 208 l6 1" stroke="#fff0d8" stroke-width="1.5"/>
+<!-- 頭 -->
+<path d="M272 130 C282 112 304 104 324 110 C340 114 352 126 354 136 L362 140 L352 146 C344 156 326 160 308 158 C290 156 276 148 272 130Z" fill="url(#fur)" stroke="#1a1414" stroke-width="2"/>
+<path d="M330 150 C340 150 350 146 352 142 C346 150 336 154 326 154Z" fill="url(#belly)"/>
+<!-- 耳と火の房 -->
+<path d="M290 116 L284 88 L302 108Z M306 110 L308 82 L320 108Z" fill="#4e4240" stroke="#1a1414" stroke-width="2"/>
+<g filter="url(#glow)"><path d="M284 88 C278 76 284 66 290 62 C290 72 296 78 292 90Z M308 82 C306 70 312 60 320 58 C318 68 322 76 314 86Z" fill="#ffb54a"/></g>
+<!-- 目（鋭い琥珀色） -->
+<path d="M322 124 C328 120 336 122 338 128 C332 130 326 130 322 124Z" fill="#ffcf4a" filter="url(#glow)"/>
+<path d="M330 123 l0 6" stroke="#1a0a00" stroke-width="2"/>
+<!-- ひげと鼻 -->
+<circle cx="360" cy="141" r="2.4" fill="#1a1010"/>
+<path d="M350 146 l20 -2 M350 148 l18 4" stroke="#d8c8c0" stroke-width=".8"/>
+<!-- 縁の光（尾の炎に照らされる） -->
+<path d="M166 162 C182 140 222 130 256 134" stroke="#ff9a4a" stroke-width="2" fill="none" opacity=".8"/>
+<path d="M274 128 C282 114 300 108 318 110" stroke="#ff9a4a" stroke-width="1.5" fill="none" opacity=".7"/>
+<!-- 火の粉 -->
+<g fill="#ffcf6a" filter="url(#glow)"><circle cx="60" cy="40" r="1.8"/><circle cx="40" cy="160" r="1.5"/><circle cx="200" cy="90" r="1.4"/><circle cx="150" cy="30" r="1.6"/></g>
+</svg>

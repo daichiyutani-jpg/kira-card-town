@@ -1,0 +1,202 @@
+{
+  "legend": {
+    ".": "草地", ",": "花", "=": "道", ":": "石畳", "T": "木（通れない）", "~": "水（通れない）", "b": "橋", "s": "砂",
+    "_": "床", "W": "壁（通れない）", "k": "じゅうたん", "f": "柵（通れない）", "x": "見えない壁"
+  },
+  "maps": {
+    "town1": {
+      "name": "ひだまり町", "bgm": "town1", "w": 24, "h": 22, "fill": ".", "border": "T",
+      "rects": [
+        { "x": 1, "y": 8, "w": 22, "h": 2, "t": "=" },
+        { "x": 11, "y": 1, "w": 2, "h": 20, "t": "=" },
+        { "x": 1, "y": 15, "w": 22, "h": 2, "t": "=" },
+        { "x": 1, "y": 20, "w": 22, "h": 1, "t": "=" },
+        { "x": 7, "y": 2, "w": 3, "h": 3, "t": "," },
+        { "x": 8, "y": 11, "w": 3, "h": 2, "t": "~" }
+      ],
+      "points": [{ "x": 7, "y": 6, "t": "T" }, { "x": 9, "y": 6, "t": "T" }, { "x": 20, "y": 10, "t": "," }, { "x": 21, "y": 10, "t": "," }],
+      "buildings": [
+        { "id": "home", "x": 2, "y": 2, "w": 5, "h": 4, "kind": "house", "wall": "#f4e1c1", "roof": "#d2553f", "label": "じぶんの家", "door": { "x": 4, "y": 5 }, "act": { "warp": "home", "tx": 6, "ty": 8 } },
+        { "id": "shop1", "x": 14, "y": 2, "w": 6, "h": 4, "kind": "shop", "wall": "#fdf6e3", "roof": "#2e86de", "label": "カードショップ ひだまり", "door": { "x": 16, "y": 5 }, "act": { "shop": "shop1" } },
+        { "id": "hall1", "x": 2, "y": 10, "w": 6, "h": 4, "kind": "hall", "wall": "#efe6ff", "roof": "#8e44ad", "label": "ひだまり大会会場", "door": { "x": 4, "y": 13 }, "act": { "cup": "cup1" } },
+        { "id": "post", "x": 14, "y": 10, "w": 5, "h": 4, "kind": "office", "wall": "#eaf7ea", "roof": "#27ae60", "label": "ひだまり配達センター", "door": { "x": 16, "y": 13 }, "act": { "job": "delivery" } },
+        { "id": "d1", "x": 2, "y": 17, "w": 4, "h": 3, "kind": "house", "wall": "#fff0f0", "roof": "#e74c3c", "label": "赤い屋根の家", "door": { "x": 3, "y": 19 }, "act": { "talk": "house_d1" } },
+        { "id": "d2", "x": 7, "y": 17, "w": 4, "h": 3, "kind": "house", "wall": "#f0f8ff", "roof": "#3498db", "label": "青い屋根の家", "door": { "x": 8, "y": 19 }, "act": { "talk": "house_d2" } },
+        { "id": "d3", "x": 14, "y": 17, "w": 4, "h": 3, "kind": "house", "wall": "#fffbe6", "roof": "#f1c40f", "label": "黄色い屋根の家", "door": { "x": 15, "y": 19 }, "act": { "talk": "house_d3" } },
+        { "id": "d4", "x": 19, "y": 17, "w": 4, "h": 3, "kind": "house", "wall": "#f3fff0", "roof": "#2ecc71", "label": "緑の屋根の家", "door": { "x": 20, "y": 19 }, "act": { "talk": "house_d4" } },
+        { "id": "d5", "x": 20, "y": 11, "w": 3, "h": 3, "kind": "house", "wall": "#f7f0ff", "roof": "#9b59b6", "label": "紫の屋根の家", "door": { "x": 21, "y": 13 }, "act": { "talk": "house_d5" } }
+      ],
+      "objects": [
+        { "id": "bus1", "x": 21, "y": 6, "kind": "busstop", "label": "バス停", "act": { "travel": true } },
+        { "id": "sign1", "x": 13, "y": 6, "kind": "sign", "label": "看板", "act": { "talk": "sign_town1" } }
+      ],
+      "npcs": [
+        { "id": "kenta", "x": 9, "y": 9, "dir": "down", "look": { "hair": "#3a2a1a", "shirt": "#f39c12", "skin": "#f3c9a4", "pants": "#34495e" }, "name": "ケンタ", "talk": "kenta" },
+        { "id": "obaachan", "x": 6, "y": 7, "dir": "down", "look": { "hair": "#ddd", "shirt": "#a0522d", "skin": "#efc9a0", "pants": "#6b4a2a" }, "name": "近所のおばあちゃん", "talk": "obaachan" },
+        { "id": "postman", "x": 18, "y": 14, "dir": "left", "look": { "hair": "#222", "shirt": "#27ae60", "skin": "#e9c29a", "pants": "#1e5631" }, "name": "配達のおじさん", "talk": "postman" }
+      ],
+      "spawn": { "x": 4, "y": 6, "dir": "down" }
+    },
+    "home": {
+      "name": "じぶんの家", "bgm": "home", "indoor": true, "w": 13, "h": 10, "fill": "_", "border": "W",
+      "rects": [
+        { "x": 6, "y": 1, "w": 1, "h": 4, "t": "W" },
+        { "x": 1, "y": 1, "w": 5, "h": 1, "t": "W" },
+        { "x": 2, "y": 4, "w": 3, "h": 2, "t": "k" },
+        { "x": 8, "y": 5, "w": 3, "h": 2, "t": "k" },
+        { "x": 6, "y": 9, "w": 1, "h": 1, "t": "_" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "desk", "x": 1, "y": 2, "w": 2, "h": 1, "kind": "desk", "label": "自分の机", "act": { "desk": true } },
+        { "id": "bed", "x": 4, "y": 2, "w": 1, "h": 2, "kind": "bed", "label": "ベッド", "act": { "talk": "bed" } },
+        { "id": "shelf", "x": 7, "y": 1, "w": 2, "h": 1, "kind": "shelf", "label": "本だな", "act": { "talk": "shelf" } },
+        { "id": "kitchen", "x": 10, "y": 1, "w": 2, "h": 1, "kind": "kitchen", "label": "台所", "act": { "talk": "kitchen" } },
+        { "id": "table", "x": 9, "y": 5, "w": 1, "h": 1, "kind": "table", "label": "テーブル", "act": { "talk": "table" } },
+        { "id": "exit", "x": 6, "y": 9, "kind": "doormat", "label": "玄関", "act": { "warp": "town1", "tx": 4, "ty": 6 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "mom", "x": 10, "y": 3, "dir": "down", "look": { "hair": "#5a3a2a", "shirt": "#e88aa8", "skin": "#f3c9a4", "pants": "#7a4a6a", "apron": "#ffffff" }, "name": "お母さん", "talk": "mom" }
+      ],
+      "spawn": { "x": 6, "y": 8, "dir": "up" }
+    },
+    "town2": {
+      "name": "にぎわい通り", "bgm": "town2", "w": 24, "h": 20, "fill": ":", "border": "x",
+      "rects": [
+        { "x": 0, "y": 0, "w": 24, "h": 1, "t": "W" },
+        { "x": 1, "y": 8, "w": 22, "h": 3, "t": "=" },
+        { "x": 10, "y": 1, "w": 4, "h": 18, "t": "=" },
+        { "x": 1, "y": 18, "w": 22, "h": 1, "t": "f" },
+        { "x": 3, "y": 12, "w": 2, "h": 1, "t": "," },
+        { "x": 19, "y": 12, "w": 2, "h": 1, "t": "," }
+      ],
+      "points": [{ "x": 1, "y": 12, "t": "T" }, { "x": 22, "y": 12, "t": "T" }, { "x": 8, "y": 6, "t": "T" }, { "x": 15, "y": 6, "t": "T" }],
+      "buildings": [
+        { "id": "shop2", "x": 1, "y": 1, "w": 8, "h": 5, "kind": "mall", "wall": "#fff3e0", "roof": "#e67e22", "label": "メガカードショップ にぎわい", "door": { "x": 5, "y": 5 }, "act": { "shop": "shop2" } },
+        { "id": "hall2", "x": 15, "y": 1, "w": 8, "h": 5, "kind": "hall", "wall": "#ffe9ec", "roof": "#c0392b", "label": "にぎわいアリーナ", "door": { "x": 18, "y": 5 }, "act": { "cup": "cup2" } },
+        { "id": "warehouse", "x": 1, "y": 13, "w": 7, "h": 4, "kind": "warehouse", "wall": "#e8eef2", "roof": "#7f8c8d", "label": "にぎわい倉庫（仕分けのアルバイト）", "door": { "x": 4, "y": 16 }, "act": { "job": "sorting" } },
+        { "id": "ramen", "x": 15, "y": 13, "w": 4, "h": 4, "kind": "shop", "wall": "#fff8e1", "roof": "#d35400", "label": "ラーメン こがね", "door": { "x": 16, "y": 16 }, "act": { "talk": "ramen" } },
+        { "id": "cloth", "x": 20, "y": 13, "w": 3, "h": 4, "kind": "shop", "wall": "#fce4ec", "roof": "#e91e63", "label": "ブティック ルル", "door": { "x": 21, "y": 16 }, "act": { "talk": "boutique" } }
+      ],
+      "objects": [
+        { "id": "bus2", "x": 14, "y": 12, "kind": "busstop", "label": "バス停", "act": { "travel": true } },
+        { "id": "fountain", "x": 11, "y": 13, "w": 2, "h": 2, "kind": "fountain", "label": "噴水", "act": { "talk": "fountain" } },
+        { "id": "sign2", "x": 9, "y": 12, "kind": "sign", "label": "看板", "act": { "talk": "sign_town2" } }
+      ],
+      "npcs": [
+        { "id": "merchant", "x": 7, "y": 9, "dir": "down", "look": { "hair": "#222", "shirt": "#16a085", "skin": "#e9c29a", "pants": "#2c3e50" }, "name": "商店街の会長", "talk": "merchant" },
+        { "id": "girl2", "x": 17, "y": 9, "dir": "left", "look": { "hair": "#e86b9a", "shirt": "#fff", "skin": "#f3c9a4", "pants": "#e86b9a" }, "name": "おしゃれな女の子", "talk": "girl2" },
+        { "id": "worker", "x": 6, "y": 17, "dir": "up", "look": { "hair": "#333", "shirt": "#7f8c8d", "skin": "#e0b48a", "pants": "#34495e" }, "name": "倉庫の主任", "talk": "worker" }
+      ],
+      "spawn": { "x": 13, "y": 12, "dir": "down" }
+    },
+    "town3": {
+      "name": "みどりの森町", "bgm": "town3", "w": 26, "h": 22, "fill": ".", "border": "T",
+      "rects": [
+        { "x": 1, "y": 10, "w": 24, "h": 2, "t": "=" },
+        { "x": 6, "y": 1, "w": 2, "h": 20, "t": "=" },
+        { "x": 15, "y": 1, "w": 2, "h": 22, "t": "~" },
+        { "x": 15, "y": 10, "w": 2, "h": 2, "t": "b" },
+        { "x": 15, "y": 16, "w": 2, "h": 1, "t": "b" },
+        { "x": 18, "y": 2, "w": 6, "h": 6, "t": "T" },
+        { "x": 19, "y": 3, "w": 4, "h": 4, "t": "," },
+        { "x": 20, "y": 7, "w": 2, "h": 1, "t": "," },
+        { "x": 18, "y": 13, "w": 7, "h": 8, "t": "," },
+        { "x": 1, "y": 15, "w": 4, "h": 5, "t": "T" },
+        { "x": 9, "y": 14, "w": 5, "h": 5, "t": "," }
+      ],
+      "points": [
+        { "x": 10, "y": 3, "t": "T" }, { "x": 13, "y": 7, "t": "T" }, { "x": 19, "y": 15, "t": "T" }, { "x": 23, "y": 14, "t": "T" },
+        { "x": 21, "y": 18, "t": "T" }, { "x": 11, "y": 16, "t": "T" }, { "x": 24, "y": 19, "t": "T" }, { "x": 20, "y": 20, "t": "T" }
+      ],
+      "buildings": [
+        { "id": "shop3", "x": 1, "y": 2, "w": 5, "h": 4, "kind": "cabin", "wall": "#c49a6c", "roof": "#6d4c2f", "label": "森のカード屋 こもれび", "door": { "x": 3, "y": 5 }, "act": { "shop": "shop3" } },
+        { "id": "hall3", "x": 8, "y": 4, "w": 6, "h": 4, "kind": "hall", "wall": "#e8f5e9", "roof": "#2e7d32", "label": "みどりの森ステージ", "door": { "x": 10, "y": 7 }, "act": { "cup": "cup3" } },
+        { "id": "ranger", "x": 1, "y": 12, "w": 4, "h": 3, "kind": "cabin", "wall": "#d7b98e", "roof": "#8d6e63", "label": "森の案内所（自然探索のアルバイト）", "door": { "x": 2, "y": 14 }, "act": { "job": "nature" } }
+      ],
+      "objects": [
+        { "id": "bus3", "x": 8, "y": 9, "kind": "busstop", "label": "バス停", "act": { "travel": true } },
+        { "id": "spot1", "x": 21, "y": 5, "kind": "sparkle", "label": "キラキラ光る草むら", "act": { "forage": "spot1" } },
+        { "id": "spot2", "x": 22, "y": 16, "kind": "sparkle", "label": "キラキラ光る花畑", "act": { "forage": "spot2" } },
+        { "id": "spot3", "x": 12, "y": 18, "kind": "sparkle", "label": "キラキラ光る切り株", "act": { "forage": "spot3" } },
+        { "id": "spot4", "x": 3, "y": 8, "kind": "sparkle", "label": "キラキラ光る落ち葉", "act": { "forage": "spot4" } },
+        { "id": "bigtree", "x": 20, "y": 9, "kind": "bigtree", "label": "森の大樹", "act": { "talk": "bigtree" } },
+        { "id": "sign3", "x": 8, "y": 12, "kind": "sign", "label": "看板", "act": { "talk": "sign_town3" } }
+      ],
+      "npcs": [
+        { "id": "ranger_npc", "x": 5, "y": 13, "dir": "right", "look": { "hair": "#5a3a1a", "shirt": "#558b2f", "skin": "#e0b48a", "pants": "#3e2723", "hat": "#33691e" }, "name": "森の案内人", "talk": "ranger" },
+        { "id": "bugkid", "x": 11, "y": 13, "dir": "down", "look": { "hair": "#222", "shirt": "#fbc02d", "skin": "#f3c9a4", "pants": "#1565c0", "hat": "#fbc02d" }, "name": "虫とりの子", "talk": "bugkid" },
+        { "id": "forestlady", "x": 21, "y": 12, "dir": "down", "look": { "hair": "#2e7d32", "shirt": "#a5d6a7", "skin": "#f3d7b6", "pants": "#1b5e20" }, "name": "森の精？", "talk": "forestlady" }
+      ],
+      "spawn": { "x": 9, "y": 10, "dir": "down" }
+    },
+    "school": {
+      "name": "キラ星学園", "bgm": "school", "indoor": true, "w": 22, "h": 18, "fill": "_", "border": "W",
+      "rects": [
+        { "x": 1, "y": 6, "w": 20, "h": 1, "t": "W" },
+        { "x": 1, "y": 11, "w": 20, "h": 1, "t": "W" },
+        { "x": 5, "y": 6, "w": 2, "h": 1, "t": "_" },
+        { "x": 15, "y": 6, "w": 2, "h": 1, "t": "_" },
+        { "x": 10, "y": 11, "w": 2, "h": 1, "t": "_" },
+        { "x": 11, "y": 1, "w": 1, "h": 5, "t": "W" },
+        { "x": 1, "y": 7, "w": 20, "h": 4, "t": "k" },
+        { "x": 10, "y": 17, "w": 2, "h": 1, "t": "_" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "board", "x": 3, "y": 12, "w": 2, "h": 1, "kind": "board", "label": "学園の掲示板", "act": { "schoolBoard": true } },
+        { "id": "stairs", "x": 19, "y": 12, "kind": "stairs", "label": "屋上への階段", "act": { "rooftop": true } },
+        { "id": "desk_a", "x": 3, "y": 2, "w": 2, "h": 1, "kind": "schooldesk", "label": "机", "act": { "talk": "schooldesk" } },
+        { "id": "desk_b", "x": 7, "y": 2, "w": 2, "h": 1, "kind": "schooldesk", "label": "机", "act": { "talk": "schooldesk" } },
+        { "id": "desk_c", "x": 14, "y": 2, "w": 2, "h": 1, "kind": "schooldesk", "label": "机", "act": { "talk": "schooldesk" } },
+        { "id": "desk_d", "x": 18, "y": 2, "w": 2, "h": 1, "kind": "schooldesk", "label": "机", "act": { "talk": "schooldesk" } },
+        { "id": "schoolexit", "x": 10, "y": 17, "w": 2, "h": 1, "kind": "doormat", "label": "校門（バス停）", "act": { "travel": true }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "st1", "x": 4, "y": 4, "dir": "down", "opp": "s1", "name": "ハルト" },
+        { "id": "st2", "x": 8, "y": 4, "dir": "down", "opp": "s2", "name": "カンナ" },
+        { "id": "st3", "x": 14, "y": 4, "dir": "down", "opp": "s3", "name": "ユウマ" },
+        { "id": "st4", "x": 18, "y": 4, "dir": "down", "opp": "s4", "name": "アオイ" },
+        { "id": "st5", "x": 4, "y": 9, "dir": "right", "opp": "s5", "name": "レン" },
+        { "id": "st6", "x": 17, "y": 9, "dir": "left", "opp": "s6", "name": "シオン" },
+        { "id": "st7", "x": 7, "y": 14, "dir": "down", "opp": "s7", "name": "ミク" },
+        { "id": "st8", "x": 15, "y": 14, "dir": "down", "opp": "s8", "name": "ジン" },
+        { "id": "teacher", "x": 10, "y": 8, "dir": "down", "look": { "hair": "#444", "shirt": "#5d4037", "skin": "#e9c29a", "pants": "#3e2723" }, "name": "ホシノ先生", "talk": "teacher" }
+      ],
+      "spawn": { "x": 10, "y": 15, "dir": "up" }
+    },
+    "festival": {
+      "name": "星まつり", "bgm": "festival", "night": true, "w": 22, "h": 18, "fill": "s", "border": "T",
+      "rects": [
+        { "x": 1, "y": 8, "w": 20, "h": 3, "t": ":" },
+        { "x": 10, "y": 1, "w": 2, "h": 16, "t": ":" },
+        { "x": 2, "y": 13, "w": 3, "h": 3, "t": "~" }
+      ],
+      "points": [],
+      "buildings": [
+        { "id": "kuji", "x": 2, "y": 3, "w": 4, "h": 3, "kind": "stall", "wall": "#fff3e0", "roof": "#e53935", "label": "カードくじ屋", "door": { "x": 3, "y": 5 }, "act": { "kuji": true } },
+        { "id": "gacha", "x": 15, "y": 3, "w": 4, "h": 3, "kind": "stall", "wall": "#e3f2fd", "roof": "#1e88e5", "label": "星のガチャ屋台", "door": { "x": 16, "y": 5 }, "act": { "gacha": true } },
+        { "id": "takoyaki", "x": 6, "y": 12, "w": 3, "h": 3, "kind": "stall", "wall": "#fffde7", "roof": "#fb8c00", "label": "たこ焼き屋", "door": { "x": 7, "y": 14 }, "act": { "talk": "takoyaki" } },
+        { "id": "kingyo", "x": 14, "y": 12, "w": 3, "h": 3, "kind": "stall", "wall": "#e0f7fa", "roof": "#00acc1", "label": "金魚すくい", "door": { "x": 15, "y": 14 }, "act": { "talk": "kingyo" } },
+        { "id": "shrine", "x": 8, "y": 1, "w": 6, "h": 3, "kind": "shrine", "wall": "#fbe9e7", "roof": "#b71c1c", "label": "星の社", "door": { "x": 10, "y": 3 }, "act": { "talk": "shrine" } }
+      ],
+      "objects": [
+        { "id": "l1", "x": 1, "y": 7, "kind": "lantern", "label": "提灯", "act": { "talk": "lantern" } },
+        { "id": "l2", "x": 7, "y": 7, "kind": "lantern", "label": "提灯", "act": { "talk": "lantern" } },
+        { "id": "l3", "x": 14, "y": 7, "kind": "lantern", "label": "提灯", "act": { "talk": "lantern" } },
+        { "id": "l4", "x": 20, "y": 7, "kind": "lantern", "label": "提灯", "act": { "talk": "lantern" } },
+        { "id": "l5", "x": 1, "y": 11, "kind": "lantern", "label": "提灯", "act": { "talk": "lantern" } },
+        { "id": "l6", "x": 20, "y": 11, "kind": "lantern", "label": "提灯", "act": { "talk": "lantern" } },
+        { "id": "festexit", "x": 10, "y": 16, "w": 2, "h": 1, "kind": "doormat", "label": "帰り道（バス停）", "act": { "travel": true }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "festboss", "x": 12, "y": 5, "dir": "down", "opp": "fest_boss", "name": "まつりの大将" },
+        { "id": "yukata", "x": 5, "y": 9, "dir": "right", "look": { "hair": "#222", "shirt": "#7e57c2", "skin": "#f3c9a4", "pants": "#7e57c2" }, "name": "浴衣の女の子", "talk": "yukata" },
+        { "id": "festkid", "x": 17, "y": 9, "dir": "left", "look": { "hair": "#5d4037", "shirt": "#ffca28", "skin": "#f3c9a4", "pants": "#ffca28", "hat": "#e53935" }, "name": "はっぴの男の子", "talk": "festkid" }
+      ],
+      "spawn": { "x": 10, "y": 15, "dir": "up" }
+    }
+  }
+}

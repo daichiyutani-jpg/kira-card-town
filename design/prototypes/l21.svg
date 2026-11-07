@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+<!-- 黎明神アウロラ（光・女神・UR）：夜明けの地平の上に浮かび、両腕を広げて光を放つ。結晶の羽根の翼、文字が刻まれた光輪、流れる長い髪と衣。 -->
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a2050"/><stop offset=".45" stop-color="#6a5a9a"/><stop offset=".75" stop-color="#ffb88a"/><stop offset="1" stop-color="#ffe8b0"/></linearGradient>
+  <radialGradient id="aura" cx="50%" cy="45%" r="50%"><stop offset="0" stop-color="#fffef0"/><stop offset=".35" stop-color="#ffe9a8" stop-opacity=".8"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient>
+  <linearGradient id="robe" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#e8ecff"/><stop offset="1" stop-color="#a8b4f0" stop-opacity=".2"/></linearGradient>
+  <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff4d0"/><stop offset=".5" stop-color="#f0c870"/><stop offset="1" stop-color="#c08ad8" stop-opacity=".6"/></linearGradient>
+  <linearGradient id="crys" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset=".5" stop-color="#c8e8ff" stop-opacity=".7"/><stop offset="1" stop-color="#9ab0ff" stop-opacity=".45"/></linearGradient>
+  <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff6c8"/><stop offset=".5" stop-color="#e0b040"/><stop offset="1" stop-color="#8a5a10"/></linearGradient>
+  <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2e6"/><stop offset="1" stop-color="#f0c8b0"/></linearGradient>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="blur"><feGaussianBlur stdDeviation="5"/></filter>
+</defs>
+<rect width="400" height="300" fill="url(#sky)"/>
+<!-- 光の柱 -->
+<g fill="#fff6d8" opacity=".25" filter="url(#blur)"><rect x="60" y="0" width="22" height="300"/><rect x="318" y="0" width="22" height="300"/><rect x="190" y="0" width="20" height="300"/></g>
+<!-- 地平と雲海 -->
+<path d="M0 262 C60 250 120 258 200 252 C280 246 340 256 400 250 V300 H0Z" fill="#fff0d0" opacity=".9"/>
+<path d="M0 276 C80 266 160 278 240 268 C310 260 360 272 400 266 V300 H0Z" fill="#f0d0b0"/>
+<!-- 後光 -->
+<circle cx="200" cy="120" r="140" fill="url(#aura)"/>
+<!-- 紋章陣（後ろに縦） -->
+<g transform="translate(200 120)" opacity=".8" filter="url(#glow)">
+  <circle r="104" fill="none" stroke="#fff2b8" stroke-width="1.5"/>
+  <circle r="92" fill="none" stroke="#ffe08a" stroke-width="1" stroke-dasharray="2 6"/>
+  <path d="M0 -104 L90 52 L-90 52Z M0 104 L90 -52 L-90 -52Z" fill="none" stroke="#fff2b8" stroke-width="1"/>
+</g>
+<!-- 結晶の翼（羽根の形の結晶片） -->
+<g fill="url(#crys)" stroke="#ffffff" stroke-width="1" stroke-opacity=".9">
+  <path d="M184 112 L96 40 L120 96Z"/><path d="M182 118 L62 78 L104 120Z"/><path d="M182 126 L50 128 L100 146Z"/><path d="M184 134 L70 176 L118 166Z"/><path d="M186 140 L104 210 L136 178Z"/>
+  <path d="M216 112 L304 40 L280 96Z"/><path d="M218 118 L338 78 L296 120Z"/><path d="M218 126 L350 128 L300 146Z"/><path d="M216 134 L330 176 L282 166Z"/><path d="M214 140 L296 210 L264 178Z"/>
+</g>
+<g stroke="#ffffff" stroke-width="1" opacity=".7"><path d="M150 84 L110 60 M146 120 L84 104 M150 148 L94 162 M250 84 L290 60 M254 120 L316 104 M250 148 L306 162"/></g>
+<!-- 流れる髪（風を受けて右へ） -->
+<path d="M190 70 C170 80 164 110 172 140 C176 160 166 190 150 214 C178 196 188 170 190 146 C196 176 214 200 246 214 C228 192 222 168 222 140 C232 112 230 82 210 70Z" fill="url(#hair)"/>
+<path d="M208 72 C236 70 270 84 296 110 C270 100 246 98 226 104Z" fill="url(#hair)" opacity=".85"/>
+<!-- 衣（裾が光にとける） -->
+<path d="M186 128 C178 160 168 200 150 250 C180 240 220 240 250 250 C232 200 222 160 214 128Z" fill="url(#robe)"/>
+<path d="M186 130 C200 136 206 136 214 130 L212 148 C204 152 196 152 188 148Z" fill="url(#gold)"/>
+<path d="M176 190 C190 196 210 196 224 190 M166 222 C188 230 212 230 236 222" stroke="#c8d0ff" stroke-width="1.5" fill="none"/>
+<!-- 腕（両側に広げる） -->
+<path d="M188 120 C170 116 150 104 132 90 L128 96 C146 112 166 126 186 132Z" fill="url(#skin)" stroke="#d8a890" stroke-width="1"/>
+<path d="M212 120 C230 116 250 104 268 90 L272 96 C254 112 234 126 214 132Z" fill="url(#skin)" stroke="#d8a890" stroke-width="1"/>
+<!-- 手のひらの光 -->
+<circle cx="128" cy="90" r="8" fill="#fffef0" filter="url(#glow)"/><circle cx="272" cy="90" r="8" fill="#fffef0" filter="url(#glow)"/>
+<!-- 首と顔（横顔ぎみ・目を閉じる） -->
+<path d="M194 104 L206 104 L206 122 L194 122Z" fill="url(#skin)"/>
+<path d="M186 84 C186 70 196 62 206 64 C216 66 220 76 218 88 C216 98 208 106 200 106 C192 106 186 96 186 84Z" fill="url(#skin)" stroke="#d8a890" stroke-width="1"/>
+<path d="M194 86 C198 89 202 89 204 86 M208 86 C211 88 214 88 216 86" stroke="#7a4a3a" stroke-width="1.4" fill="none"/>
+<path d="M200 98 C203 99 205 99 207 98" stroke="#c87a6a" stroke-width="1.2" fill="none"/>
+<path d="M186 82 C188 66 200 58 212 62 C220 66 222 74 220 80 C212 72 198 70 186 82Z" fill="url(#hair)"/>
+<!-- 額の宝石と光輪（文字入り） -->
+<path d="M201 70 l3 -5 l3 5 l-3 5Z" fill="#9ae0ff" filter="url(#glow)"/>
+<g transform="translate(202 64)" filter="url(#glow)">
+  <ellipse rx="36" ry="10" fill="none" stroke="url(#gold)" stroke-width="3"/>
+  <ellipse rx="30" ry="7.5" fill="none" stroke="#fff6c8" stroke-width="1" stroke-dasharray="3 3"/>
+</g>
+<!-- 光の粒子 -->
+<g fill="#ffffff" filter="url(#glow)"><circle cx="60" cy="40" r="1.6"/><circle cx="340" cy="30" r="1.6"/><circle cx="90" cy="220" r="1.4"/><circle cx="320" cy="220" r="1.6"/><circle cx="250" cy="40" r="1.2"/><circle cx="140" cy="30" r="1.2"/><circle cx="370" cy="150" r="1.4"/><circle cx="30" cy="150" r="1.4"/></g>
+<g fill="#fff6c8" filter="url(#glow)"><path d="M40 90 l2 -6 l2 6 l6 2 l-6 2 l-2 6 l-2 -6 l-6 -2Z M356 96 l2 -6 l2 6 l6 2 l-6 2 l-2 6 l-2 -6 l-6 -2Z"/></g>
+</svg>

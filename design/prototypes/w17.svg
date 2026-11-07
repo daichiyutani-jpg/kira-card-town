@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+<!-- タイカイリュウ（水・海竜・SR）：深海から見上げる構図。S字にうねる長い体、半透明のひれ膜、体側に並ぶ発光器官、海面からの光の筋。 -->
+<defs>
+  <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a8ab8"/><stop offset=".45" stop-color="#0c3a66"/><stop offset="1" stop-color="#020a1e"/></linearGradient>
+  <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3ac8c0"/><stop offset=".5" stop-color="#14607a"/><stop offset="1" stop-color="#0a2a44"/></linearGradient>
+  <linearGradient id="under" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8fff4"/><stop offset="1" stop-color="#6ac8d0"/></linearGradient>
+  <linearGradient id="fin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9af0ff" stop-opacity=".75"/><stop offset="1" stop-color="#2a7ab8" stop-opacity=".35"/></linearGradient>
+  <linearGradient id="ray" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8f8ff" stop-opacity=".45"/><stop offset="1" stop-color="#d8f8ff" stop-opacity="0"/></linearGradient>
+  <pattern id="sc" width="10" height="8" patternUnits="userSpaceOnUse"><path d="M0 8 C2.5 2 7.5 2 10 8" fill="none" stroke="#9af0ff" stroke-width=".8" opacity=".45"/></pattern>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="caus"><feTurbulence type="turbulence" baseFrequency=".035" numOctaves="2" seed="5"/><feColorMatrix values="0 0 0 0 .8  0 0 0 0 1  0 0 0 0 1  0 0 0 -2.2 1.1"/></filter>
+  <clipPath id="bc"><path id="bodyP" d="M30 300 C40 240 110 228 150 250 C196 276 250 270 262 220 C274 170 220 150 210 110 C200 70 240 38 286 40 L292 64 C258 66 236 86 244 110 C254 140 304 168 290 228 C276 292 196 304 140 282 C104 268 70 270 62 300Z"/></clipPath>
+</defs>
+<rect width="400" height="300" fill="url(#sea)"/>
+<rect width="400" height="140" filter="url(#caus)" opacity=".25"/>
+<!-- 海面からの光の筋 -->
+<path d="M120 0 L160 0 L110 300 L70 300Z M220 0 L250 0 L250 300 L200 300Z M320 0 L336 0 L380 300 L350 300Z" fill="url(#ray)"/>
+<!-- 遠くの影の群れ -->
+<g fill="#06203a" opacity=".8"><path d="M330 220 l14 -4 l-4 4 l4 4Z M350 236 l12 -3 l-3 3 l3 3Z M310 246 l12 -3 l-3 3 l3 3Z"/></g>
+<!-- 背びれ（体に沿って） -->
+<path d="M230 150 C214 126 206 96 214 72 C224 84 230 96 228 110 C236 100 248 92 262 92 C252 104 248 118 254 132 C262 124 276 122 288 128 C278 140 276 154 282 168Z" fill="url(#fin)" stroke="#9af0ff" stroke-width="1" stroke-opacity=".6"/>
+<path d="M120 252 C120 232 132 216 150 210 C148 224 152 236 160 244 C164 230 178 222 194 222 C186 236 186 252 194 264Z" fill="url(#fin)" stroke="#9af0ff" stroke-width="1" stroke-opacity=".6"/>
+<!-- 体（S字） -->
+<path d="M30 300 C40 240 110 228 150 250 C196 276 250 270 262 220 C274 170 220 150 210 110 C200 70 240 38 286 40 L292 64 C258 66 236 86 244 110 C254 140 304 168 290 228 C276 292 196 304 140 282 C104 268 70 270 62 300Z" fill="url(#skin)" stroke="#031a2e" stroke-width="2.5"/>
+<rect width="400" height="300" fill="url(#sc)" clip-path="url(#bc)"/>
+<!-- 腹側の明るい帯 -->
+<path d="M66 300 C76 276 108 272 140 284 C196 304 278 292 290 228 C300 176 258 146 246 116 C252 146 284 178 276 226 C266 280 200 290 150 270 C112 256 76 262 66 300Z" fill="url(#under)" opacity=".85"/>
+<!-- 発光器官（体側に点々） -->
+<g fill="#b8fff0" filter="url(#glow)">
+  <circle cx="92" cy="258" r="3"/><circle cx="122" cy="256" r="3"/><circle cx="160" cy="268" r="3"/><circle cx="200" cy="272" r="3"/><circle cx="238" cy="256" r="3"/><circle cx="262" cy="228" r="3"/><circle cx="266" cy="196" r="3"/><circle cx="250" cy="168" r="3"/><circle cx="232" cy="140" r="3"/><circle cx="226" cy="110" r="3"/><circle cx="236" cy="82" r="3"/>
+</g>
+<!-- 頭（上を向いて泳ぎ上がる） -->
+<path d="M262 52 C270 28 296 14 322 18 C340 20 356 30 366 42 L384 40 L372 54 C368 66 352 74 334 74 C316 74 300 70 288 64Z" fill="url(#skin)" stroke="#031a2e" stroke-width="2.5"/>
+<path d="M300 66 C320 72 350 70 370 56 L364 64 C348 76 318 80 296 72Z" fill="url(#under)"/>
+<path d="M340 64 l3 6 l3 -6 l3 6 l3 -6 l3 5" stroke="#eafffa" stroke-width="1.5" fill="none"/>
+<!-- えらのひれ・冠のひれ -->
+<path d="M296 46 C280 30 278 10 288 -4 C292 12 304 18 312 30Z M310 30 C304 12 312 -2 326 -8 C322 8 326 18 330 26Z" fill="url(#fin)" stroke="#9af0ff" stroke-width="1" stroke-opacity=".7"/>
+<path d="M290 60 C270 66 254 80 248 96 C262 86 278 80 294 76Z" fill="url(#fin)" stroke="#9af0ff" stroke-width="1" stroke-opacity=".7"/>
+<!-- ひげ（長く流れる） -->
+<path d="M376 46 C392 70 380 100 396 124 M370 58 C380 84 364 110 372 140" stroke="#9af0ff" stroke-width="2" fill="none" opacity=".8"/>
+<!-- 目（発光） -->
+<path d="M330 36 C338 32 348 34 350 40 C344 44 336 44 330 36Z" fill="#eaffd0" filter="url(#glow)"/>
+<path d="M341 34 l0 8" stroke="#0a2a2a" stroke-width="2"/>
+<!-- 縁の光（上からの光） -->
+<path d="M268 44 C278 26 300 18 322 20" stroke="#d8fff8" stroke-width="2" fill="none" opacity=".8"/>
+<path d="M212 104 C206 76 230 50 268 44" stroke="#d8fff8" stroke-width="1.5" fill="none" opacity=".6"/>
+<!-- 泡 -->
+<g fill="none" stroke="#d8f8ff" stroke-width="1.2" opacity=".85">
+  <circle cx="374" cy="20" r="4"/><circle cx="384" cy="6" r="2.5"/><circle cx="360" cy="10" r="2"/><circle cx="150" cy="200" r="3"/><circle cx="160" cy="186" r="2"/><circle cx="60" cy="210" r="3.5"/><circle cx="70" cy="196" r="2"/>
+</g>
+<!-- 水流の帯（SR演出） -->
+<path d="M0 150 C80 120 140 170 210 150" stroke="#9af0ff" stroke-width="2" fill="none" opacity=".35"/>
+<path d="M0 170 C90 140 150 190 220 166" stroke="#9af0ff" stroke-width="1.2" fill="none" opacity=".3"/>
+</svg>
