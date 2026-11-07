@@ -6,6 +6,7 @@ import { sfx } from '../audio/sound';
 import { choose, confirmBox, game, h, overlay, save, showScreen, titleBar, toast } from './app';
 import { miniCard, openCard } from './cardView';
 import { openDex } from './dex';
+import { pager } from './pager';
 
 export async function openDesk(back: () => void): Promise<void> {
   const c = await choose(
@@ -122,7 +123,7 @@ function filterBar(f: Filter, onChange: () => void): HTMLElement {
     });
     return s;
   };
-  const q = h('input', { placeholder: '🔍 名前でさがす', value: f.q }) as HTMLInputElement;
+  const q = h('input', { placeholder: '🔍 名前', value: f.q }) as HTMLInputElement;
   q.addEventListener('input', () => {
     f.q = q.value;
     onChange();
@@ -131,9 +132,9 @@ function filterBar(f: Filter, onChange: () => void): HTMLElement {
     'div',
     { class: 'filters' },
     q,
-    sel('el', [['', '属性：全部'], ...(Object.keys(EL_NAME) as Element[]).map((e) => [e, `${EL_ICON[e]}${EL_NAME[e]}`] as [string, string])]),
-    sel('r', [['', 'レア：全部'], ...(Object.keys(RARITY_NAME) as Rarity[]).map((r) => [r, RARITY_NAME[r]] as [string, string])]),
-    sel('t', [['', '種類：全部'], ['monster', 'モンスター'], ['magic', '魔法'], ['item', 'アイテム']]),
+    sel('el', [['', '全属性'], ...(Object.keys(EL_NAME) as Element[]).map((e) => [e, `${EL_ICON[e]}${EL_NAME[e]}`] as [string, string])]),
+    sel('r', [['', '全レア'], ...(Object.keys(RARITY_NAME) as Rarity[]).map((r) => [r, RARITY_NAME[r]] as [string, string])]),
+    sel('t', [['', '全種類'], ['monster', 'モンスター'], ['magic', '魔法'], ['item', 'アイテム']]),
   );
 }
 export function matches(c: CardDef, f: Filter, hideSecretName = false): boolean {
@@ -149,18 +150,16 @@ const sortCards = (a: CardDef, b: CardDef) => ({ monster: 0, magic: 1, item: 2 }
 export function openCollection(ids: string[] | null, title: string, back: () => void, readonly = false): void {
   const f: Filter = { q: '', el: '', r: '', t: '' };
   const el = h('div', { class: 'screen', style: { background: 'var(--bg)' } });
-  const grid = h('div', { class: 'grid' });
+  const pg = pager({ body: 'grid', uniform: true, shrinkTo: 0.78 });
   const count = h('div', { class: 'deckbar' });
   const render = () => {
-    grid.replaceChildren();
     const list = ids ? [...new Set(ids)].map((id) => CARDS[id]) : CARD_LIST.filter((c) => (game.d.cards[c.id] ?? 0) > 0);
     const shown = list.filter((c) => matches(c, f)).sort(sortCards);
     const total = ids ? ids.length : Object.values(game.d.cards).reduce((a, b) => a + b, 0);
     count.textContent = ids ? `${ids.length}枚（${list.length}種類）` : `所持 ${total}枚・${list.length}種類　表示 ${shown.length}種類`;
-    for (const c of shown) grid.append(miniCard(c, { count: ids ? ids.filter((x) => x === c.id).length : game.d.cards[c.id], onClick: () => openCard(c, { showSource: !readonly }) }));
-    if (!shown.length) grid.append(h('div', { class: 'empty' }, 'カードがありません'));
+    pg.set(shown.map((c) => miniCard(c, { count: ids ? ids.filter((x) => x === c.id).length : game.d.cards[c.id], onClick: () => openCard(c, { showSource: !readonly }) })), { empty: 'カードがありません' });
   };
-  el.append(titleBar(title, back), filterBar(f, render), count, h('div', { class: 'scroll grow' }, grid));
+  el.append(titleBar(title, back), filterBar(f, render), count, pg.el);
   render();
   showScreen(el);
 }
@@ -168,13 +167,13 @@ export function openCollection(ids: string[] | null, title: string, back: () => 
 // ---------- デッキ切り替え ----------
 export function openDeckSwitch(back: () => void): void {
   const el = h('div', { class: 'screen', style: { background: 'var(--bg)' } });
-  const list = h('div', { class: 'list' });
+  const pg = pager({ body: 'list' });
   const render = () => {
-    list.replaceChildren();
+    const list: HTMLElement[] = [];
     game.d.decks.forEach((dk, i) => {
       const probs = deckProblems(dk.cards);
       const active = i === game.d.activeDeck;
-      list.append(
+      list.push(
         h(
           'div',
           { class: 'item-row' },
@@ -194,7 +193,7 @@ export function openDeckSwitch(back: () => void): void {
         ),
       );
     });
-    list.append(
+    list.push(
       h('div', { class: 'row' }, h('button', {
         class: 'btn grow',
         onclick: () => {
@@ -213,8 +212,9 @@ export function openDeckSwitch(back: () => void): void {
         },
       }, '使用中をコピー')),
     );
+    pg.set(list, { keepPage: true });
   };
-  el.append(titleBar('デッキ切り替え', back), h('div', { class: 'scroll grow' }, list));
+  el.append(titleBar('デッキ切り替え', back), pg.el);
   render();
   showScreen(el);
 }
@@ -229,11 +229,11 @@ export function openDeckEditor(index: number, back: () => void): void {
   const f: Filter = { q: '', el: '', r: '', t: '' };
   const el = h('div', { class: 'screen', style: { background: 'var(--bg)' } });
   const bar = h('div', { class: 'deckbar' });
-  const strip = h('div', { class: 'deck-strip' });
-  const grid = h('div', { class: 'grid' });
+  const strip = pager({ body: 'deck-strip', side: true, uniform: true });
+  const pg = pager({ body: 'grid', uniform: true, shrinkTo: 0.78 });
   const inDeck = (id: string) => dk.cards.filter((x) => x === id).length;
   const limit = (c: CardDef) => (c.r === 'UR' ? MAX_UR_COPIES : MAX_COPIES);
-  const render = () => {
+  const render = (keepPage = true) => {
     const probs = deckProblems(dk.cards);
     const nm = dk.cards.filter((id) => CARDS[id].type === 'monster').length;
     bar.replaceChildren(
@@ -251,11 +251,9 @@ export function openDeckEditor(index: number, back: () => void): void {
         },
       }, '名前'),
     );
-    strip.replaceChildren();
     const sorted = [...dk.cards].sort((a, b) => sortCards(CARDS[a], CARDS[b]));
-    if (!sorted.length) strip.append(h('div', { class: 'empty', style: { width: '100%' } }, '下の一覧からカードをタップして入れよう'));
-    for (const id of sorted)
-      strip.append(
+    strip.set(
+      sorted.map((id) =>
         miniCard(id, {
           onClick: () => {
             let close = () => {};
@@ -275,13 +273,14 @@ export function openDeckEditor(index: number, back: () => void): void {
             });
           },
         }),
-      );
-    grid.replaceChildren();
+      ),
+      { empty: '下の一覧からカードをタップして入れよう', keepPage: true },
+    );
     const owned = CARD_LIST.filter((c) => (game.d.cards[c.id] ?? 0) > 0 && matches(c, f)).sort(sortCards);
-    for (const c of owned) {
+    const cells = owned.map((c) => {
       const left = (game.d.cards[c.id] ?? 0) - inDeck(c.id);
       const full = inDeck(c.id) >= limit(c);
-      grid.append(
+      return (
         miniCard(c, {
           count: left,
           cls: left <= 0 || full ? 'dim' : '',
@@ -305,10 +304,10 @@ export function openDeckEditor(index: number, back: () => void): void {
               ],
             });
           },
-        }),
+        })
       );
-    }
-    if (!owned.length) grid.append(h('div', { class: 'empty' }, '条件に合うカードがありません'));
+    });
+    pg.set(cells, { empty: '条件に合うカードがありません', keepPage });
   };
   const extra = h('button', {
     class: 'btn small gray',
@@ -334,7 +333,7 @@ export function openDeckEditor(index: number, back: () => void): void {
       render();
     },
   }, '…');
-  el.append(titleBar(`${dk.name}${index === game.d.activeDeck ? '（使用中）' : ''}`, back, extra), bar, strip, filterBar(f, render), h('div', { class: 'scroll grow' }, grid));
+  el.append(titleBar(`${dk.name}${index === game.d.activeDeck ? '（使用中）' : ''}`, back, extra), bar, strip.el, filterBar(f, () => render(false)), pg.el);
   render();
   showScreen(el);
 }

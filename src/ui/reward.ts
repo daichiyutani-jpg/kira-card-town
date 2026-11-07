@@ -5,6 +5,7 @@ import { addCard, checkPrizes } from '../game/collection';
 import { sfx } from '../audio/sound';
 import { confetti, game, h, overlay, save, showScreen, titleBar } from './app';
 import { bigCard, miniCard, openCard } from './cardView';
+import { pager } from './pager';
 
 /** カード入手の演出（大きく表示） */
 export function showGet(id: string, caption = '手に入れた！'): Promise<void> {
@@ -32,11 +33,12 @@ export function pickReward(deck: string[], oppName: string, money: number): Prom
     const order = { UR: 0, SR: 1, R: 2, N: 3 } as const;
     ids.sort((a, b) => order[card(a).r] - order[card(b).r] || a.localeCompare(b));
     const el = h('div', { class: 'screen', style: { background: bgStyle('reward', '#1b1446') } });
-    const grid = h('div', { class: 'grid' });
-    const head = h('div', { class: 'panel', style: { margin: '10px' } }, h('div', { style: { fontSize: '20px', fontWeight: '900' } }, '🏆 勝利！'), money ? h('div', {}, `💰 ${money}コインもらった！`) : null, h('div', { style: { marginTop: '4px' } }, `${oppName}のデッキから、好きなカードを1枚選ぼう。（相手のカードはなくならないよ）`));
+    const pg = pager({ body: 'grid', uniform: true, shrinkTo: 0.8 });
+    const cells: HTMLElement[] = [];
+    const head = h('div', { class: 'panel', style: { margin: '8px 10px 0', padding: '10px 12px' } }, h('div', { style: { fontSize: '20px', fontWeight: '900' } }, '🏆 勝利！'), money ? h('div', {}, `💰 ${money}コインもらった！`) : null, h('div', { style: { marginTop: '4px' } }, `${oppName}のデッキから、好きなカードを1枚選ぼう。（相手のカードはなくならないよ）`));
     for (const id of ids) {
       const n = game.d.cards[id] ?? 0;
-      grid.append(
+      cells.push(
         miniCard(id, {
           badge: n ? `所持${n}` : 'NEW',
           onClick: () => {
@@ -61,7 +63,8 @@ export function pickReward(deck: string[], oppName: string, money: number): Prom
         }),
       );
     }
-    el.append(titleBar('カードをえらぶ', null), h('div', { class: 'scroll grow' }, head, grid));
+    el.append(titleBar('カードをえらぶ', null), head, pg.el);
+    pg.set(cells);
     showScreen(el);
   });
 }

@@ -3,6 +3,7 @@ import { playBgm, setVolumes, sfx } from '../audio/sound';
 import { game, h, hasSave, save, showScreen, titleBar, toast } from './app';
 import { HERO_LABEL } from './hero';
 import { heroPicker } from './heroPick';
+import { pager } from './pager';
 
 export function applySettings(): void {
   setVolumes(game.d.settings);
@@ -38,11 +39,10 @@ export function openSettings(back: () => void): void {
     save();
   });
   const name = h('input', { value: game.d.name, maxlength: '8', style: { minHeight: '44px', borderRadius: '10px', border: '2px solid #d8d0f0', padding: '4px 10px', font: 'inherit', flex: '1' } }) as HTMLInputElement;
-  el.append(
-    titleBar('設定', back),
-    h(
-      'div',
-      { class: 'scroll grow list' },
+  const pg = pager({ body: 'list' });
+  el.append(titleBar('設定', back), pg.el);
+  pg.set(
+    [
       slider('🎵 BGM', 'bgm', 'bgmOn'),
       slider('🔔 効果音', 'se', 'seOn'),
       h('label', { class: 'panel row', style: { justifyContent: 'space-between', fontWeight: '800' } }, h('span', {}, '⚡ バトルの演出を短くする'), fast),
@@ -66,7 +66,7 @@ export function openSettings(back: () => void): void {
         },
       }, '決定'))),
       h('div', { class: 'panel', style: { fontSize: '13px', lineHeight: '1.6' } }, 'セーブはこの端末のブラウザの中だけに保存されます（外へ送りません）。ブラウザのデータを消すと記録も消えるので、自分の部屋の机で「引き継ぎコード」を作っておくと安心です。', h('br'), 'お金は遊びの中のコインだけで、本物のお金を払う場所はありません。'),
-    ),
+    ].filter(Boolean) as HTMLElement[],
   );
   showScreen(el);
 }

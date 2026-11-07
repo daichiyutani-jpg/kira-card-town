@@ -134,6 +134,7 @@ export function runBattle(o: BattleOpts): Promise<BattleResult> {
           return m;
         }),
       );
+      hand.style.setProperty('--n', String(Math.max(2, P.hand.length)));
       if (!P.hand.length) hand.append(h('div', { class: 'empty' }, '手札はありません'));
       // 真ん中の情報
       let info = '';

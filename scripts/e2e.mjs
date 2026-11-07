@@ -198,7 +198,21 @@ try {
   await talkAll();
   await page.waitForSelector('text=最初のデッキをえらぼう', { timeout: 10000 });
   await shot('04-choose-starter');
-  check('初期デッキが3種類から選べる', (await page.locator('button', { hasText: 'これにする！' }).count()) === 3);
+  // スクロールしない設計：ページ送りを全部めくって数える
+  const countPages = (sel) => page.evaluate(async (sel) => {
+    let n = 0;
+    for (let k = 0; k < 100; k++) {
+      n += document.querySelectorAll(sel).length;
+      const next = document.querySelector('.pager-nav .pg-btn:last-child');
+      if (!next || next.disabled || getComputedStyle(next).visibility === 'hidden') break;
+      next.click();
+      await new Promise((r) => setTimeout(r, 30));
+    }
+    while (document.querySelector('.pager-nav .pg-btn:first-child:not(:disabled)')) { document.querySelector('.pager-nav .pg-btn:first-child').click(); await new Promise((r) => setTimeout(r, 10)); }
+    return n;
+  }, sel);
+  const scrollFree = () => page.evaluate(() => [...document.querySelectorAll('body *')].every((e) => { const cs = getComputedStyle(e); return !(/auto|scroll/.test(cs.overflowY) && e.scrollHeight > e.clientHeight + 2) && !(/auto|scroll/.test(cs.overflowX) && e.scrollWidth > e.clientWidth + 2); }));
+  check('初期デッキが3種類から選べる（ページ送り・スクロールなし）', (await countPages('.pager-body button.primary')) === 3 && (await scrollFree()));
   await page.locator('button', { hasText: 'これにする！' }).nth(1).click({ force: true });
   await clickText('はい');
   await page.waitForTimeout(300);
@@ -422,7 +436,7 @@ try {
   await page.evaluate(() => { setTimeout(() => window.__kira.openDex(() => window.__kira.enterMap()), 0); });
   await page.waitForSelector('.grid .mini');
   await shot('18-dex');
-  check('図鑑に200種類が並び、未入手はシルエット', (await page.locator('.grid .mini').count()) === 200 && (await page.locator('.grid .mini.locked').count()) > 100);
+  check('図鑑に200種類が並び（ページ送り）、未入手はシルエット・スクロールなし', (await countPages('.grid .mini')) === 200 && (await countPages('.grid .mini.locked')) > 100 && (await scrollFree()));
   await clickText('もどる');
 
   // ---------- 星まつり（時刻を指定して確認） ----------

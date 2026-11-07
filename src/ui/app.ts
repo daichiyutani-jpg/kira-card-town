@@ -56,6 +56,11 @@ export function showScreen(el: HTMLElement, cleanup?: () => void): void {
 
 export function overlay(content: HTMLElement, opts: { bottom?: boolean; onClose?: () => void; closeOnBg?: boolean } = {}): () => void {
   const ov = h('div', { class: `overlay${opts.bottom ? ' bottom' : ''}` }, content);
+  // スクロールさせず、入りきらない時は少し小さくして全部見せる
+  autoFit(content, ov, () => {
+    const cs = getComputedStyle(ov);
+    return ov.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 4;
+  });
   const close = () => {
     ov.remove();
     opts.onClose?.();
@@ -69,6 +74,40 @@ export function overlay(content: HTMLElement, opts: { bottom?: boolean; onClose?
     });
   root().append(ov);
   return close;
+}
+
+/**
+ * 枠に収める：中身が枠より高い時だけ、全体を少し小さく（zoom）して全部見えるようにする。
+ * 中身が変わった時・枠の大きさが変わった時に測り直す。minZoom より小さくはしない。
+ */
+export function autoFit(inner: HTMLElement, frame: HTMLElement, avail: () => number, minZoom = 0.55): void {
+  let busy = false;
+  const fit = () => {
+    if (busy || !inner.isConnected) return;
+    busy = true;
+    inner.style.zoom = '1';
+    const H = avail();
+    let z = 1;
+    for (let k = 0; k < 4 && H > 0; k++) {
+      const hgt = inner.getBoundingClientRect().height;
+      if (hgt <= H + 0.5) break;
+      z = Math.max(minZoom, z * (H / hgt) - 0.004);
+      inner.style.zoom = String(z);
+      if (z === minZoom) break;
+    }
+    busy = false;
+  };
+  let raf = 0;
+  const soon = () => {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(fit);
+  };
+  new ResizeObserver(fit).observe(frame);
+  new MutationObserver(soon).observe(inner, { childList: true, subtree: true, characterData: true });
+  // 画像やフォントが読みこまれて高さが変わった時も
+  inner.addEventListener('load', soon, true);
+  // 出てくる時の拡大アニメの最中は小さく測れてしまうので、終わったら測り直す
+  inner.addEventListener('animationend', soon);
 }
 
 export function toast(msg: string, ms = 1800): void {

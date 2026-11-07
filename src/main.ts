@@ -12,8 +12,12 @@ import { openChores } from './ui/chores';
 import { openGacha, openKuji } from './ui/fest';
 import { openCup } from './ui/cup';
 import { openDex } from './ui/dex';
-import { openDeckEditor } from './ui/deck';
-import { openShop } from './ui/shop';
+import { openDeckEditor, openDeckSwitch, openCollection, openDesk } from './ui/deck';
+import { openSettings } from './ui/settings';
+import { pickReward } from './ui/reward';
+import { openCard } from './ui/cardView';
+import { CARDS } from './engine/cards';
+import { openShop, chooseStarter } from './ui/shop';
 import { drawHero } from './ui/hero';
 import { drawPersonSprite } from './ui/person';
 import { personSpec } from './ui/people';
@@ -21,7 +25,7 @@ import { fightCpu } from './ui/battleFlow';
 
 /** 自動テスト（?e2e がURLにある時だけ）用の入口。ふだんの遊びには関係しない */
 if (new URLSearchParams(location.search).has('e2e'))
-  (window as unknown as Record<string, unknown>).__kira = { game, enterMap, openSorting, openNature, openChores, openKuji, openGacha, openCup, openDex, openDeckEditor, openShop, fightCpu, drawHero, drawPersonSprite, personSpec };
+  (window as unknown as Record<string, unknown>).__kira = { game, enterMap, openSorting, openNature, openChores, openKuji, openGacha, openCup, openDex, openDeckEditor, openShop, fightCpu, drawHero, drawPersonSprite, personSpec, openDeckSwitch, openCollection, openDesk, openSettings, pickReward, chooseStarter, openOnline, openCard, CARDS };
 
 function boot() {
   // スマホの「戻る」やピンチで画面がずれないように

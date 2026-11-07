@@ -9,6 +9,7 @@ import { playBgm, sfx } from '../audio/sound';
 import { confirmBox, game, h, overlay, save, showScreen, sleep, titleBar, toast } from './app';
 import { miniCard, openCard } from './cardView';
 import { showGet } from './reward';
+import { pager } from './pager';
 
 type ShopDef = { name: string; keeper: string; packs: string[]; singles: string[]; starters: boolean };
 const SHOPS = shops.shops as Record<string, ShopDef>;
@@ -23,9 +24,10 @@ export function openShop(id: string, back: () => void): void {
   let tab = 'pack';
   playBgm('shop');
   const el = h('div', { class: 'screen', style: { background: bgStyle('shop', '#1b1446') } });
-  const body = h('div', { class: 'scroll grow' });
   const tabs = h('div', { class: 'tabs' });
+  const singlePg = pager({ body: 'grid', uniform: true, shrinkTo: 0.8 });
   const render = () => {
+    const body = h('div', { class: 'grow col', style: { minHeight: '0', gap: '0' } });
     el.replaceChildren(titleBar(sh.name, back), tabs, body);
     tabs.replaceChildren(
       ...[
@@ -34,32 +36,35 @@ export function openShop(id: string, back: () => void): void {
         ...(sh.starters ? [['deck', '🎁 デッキ']] : []),
       ].map(([k, l]) => h('button', { class: tab === k ? 'on' : '', onclick: () => ((tab = k), sfx('tap'), render()) }, l)),
     );
-    body.replaceChildren();
     if (tab === 'pack') {
-      body.append(h('div', { class: 'panel', style: { margin: '10px' } }, `${sh.keeper}「パックには5枚入り。何が出るかはお楽しみ！ 出る確率はここに書いてあるとおりよ」`));
+      const pg = pager({ body: 'list' });
+      const rows: HTMLElement[] = [h('div', { class: 'panel' }, `${sh.keeper}「パックには5枚入り。何が出るかはお楽しみ！ 出る確率はここに書いてあるとおりよ」`)];
       for (const pid of sh.packs) {
         const p = PACKS[pid];
         const pool = poolOf(p);
-        body.append(
+        rows.push(
           h(
             'div',
-            { class: 'item-row', style: { margin: '0 10px 10px' } },
+            { class: 'item-row' },
             h('div', { style: { fontSize: '40px' } }, '📦'),
             h('div', { class: 'grow' }, h('h4', {}, `${p.name}（${p.count}枚入り）`), h('div', { class: 'rates' }, `1枚ごとの確率：${ratesText(p)}`), h('div', { class: 'rates' }, `入っているカード：${Object.values(pool).reduce((a, l) => a + l.length, 0)}種類`)),
             h('button', { class: 'btn primary small', disabled: game.d.money < p.price, onclick: () => buyPack(pid) }, `${p.price}コイン`),
           ),
         );
       }
+      body.append(pg.el);
+      pg.set(rows);
     } else if (tab === 'single') {
-      body.append(h('div', { class: 'panel', style: { margin: '10px' } }, `タップするとくわしく見られるよ。値段：ノーマル${economy.singlePrice.N}・レア${economy.singlePrice.R}・スーパーレア${economy.singlePrice.SR}コイン`));
-      const grid = h('div', { class: 'grid' });
+      body.append(h('div', { class: 'panel', style: { margin: '8px 10px 0', padding: '8px 12px', fontSize: '14px' } }, `タップでくわしく見られるよ。ノーマル${economy.singlePrice.N}・レア${economy.singlePrice.R}・スーパーレア${economy.singlePrice.SR}コイン`));
+      const pg = singlePg;
+      const cells: HTMLElement[] = [];
       for (const cid of sh.singles) {
         const def = card(cid);
         const price = singlePrice(def);
-        grid.append(
+        cells.push(
           h(
             'div',
-            { class: 'col', style: { alignItems: 'center', gap: '4px' } },
+            { class: 'col shop-cell', style: { alignItems: 'center', gap: '4px' } },
             miniCard(def, {
               badge: game.d.cards[cid] ? `所持${game.d.cards[cid]}` : undefined,
               onClick: () => {
@@ -88,13 +93,17 @@ export function openShop(id: string, back: () => void): void {
           ),
         );
       }
-      body.append(grid);
+      body.append(pg.el);
+      pg.set(cells, { keepPage: true });
     } else {
-      body.append(h('div', { class: 'panel', style: { margin: '10px' } }, `最初に選ばなかったデッキも、${economy.starterPrice}コインで買えるよ。買うとカード20枚と、デッキが1つ増える。`));
+      const pg = pager({ body: 'list' });
+      const rows: HTMLElement[] = [h('div', { class: 'panel' }, `最初に選ばなかったデッキも、${economy.starterPrice}コインで買えるよ。買うとカード20枚と、デッキが1つ増える。`)];
       for (const [k, s] of Object.entries(STARTERS)) {
         const have = game.d.flags[`starter_${k}`];
-        body.append(h('div', { class: 'item-row', style: { margin: '0 10px 10px' } }, miniCard(s.deck[s.deck.length - 8]), h('div', { class: 'grow' }, h('h4', {}, s.name), h('div', { class: 'rates' }, s.desc)), h('button', { class: 'btn primary small', disabled: have || game.d.money < economy.starterPrice, onclick: () => buyStarter(k as keyof typeof STARTERS) }, have ? '購入済み' : `${economy.starterPrice}`)));
+        rows.push(h('div', { class: 'item-row' }, miniCard(s.deck[s.deck.length - 8]), h('div', { class: 'grow' }, h('h4', {}, s.name), h('div', { class: 'rates' }, s.desc)), h('button', { class: 'btn primary small', disabled: have || game.d.money < economy.starterPrice, onclick: () => buyStarter(k as keyof typeof STARTERS) }, have ? '購入済み' : `${economy.starterPrice}`)));
       }
+      body.append(pg.el);
+      pg.set(rows);
     }
   };
 
@@ -161,11 +170,12 @@ export function openPackAnim(name: string, ids: string[], fresh: boolean[]): Pro
 export function chooseStarter(free: boolean): Promise<keyof typeof STARTERS | null> {
   return new Promise((resolve) => {
     const el = h('div', { class: 'screen', style: { background: bgStyle('shop', '#1b1446') } });
-    const list = h('div', { class: 'list' });
+    const pg = pager({ body: 'list' });
+    const list: HTMLElement[] = [];
     for (const [k, s] of Object.entries(STARTERS)) {
       const key = k as keyof typeof STARTERS;
-      const sample = h('div', { class: 'row', style: { overflowX: 'auto', paddingBottom: '4px' } }, ...[...new Set(s.deck)].filter((id) => card(id).type === 'monster').slice(-4).map((id) => miniCard(id, { onClick: () => openCard(card(id)) })));
-      list.append(
+      const sample = h('div', { class: 'row starter-sample' }, ...[...new Set(s.deck)].filter((id) => card(id).type === 'monster').slice(-4).map((id) => miniCard(id, { onClick: () => openCard(card(id)) })));
+      list.push(
         h(
           'div',
           { class: 'panel col' },
@@ -187,7 +197,8 @@ export function chooseStarter(free: boolean): Promise<keyof typeof STARTERS | nu
       );
     }
     const showList = (key: keyof typeof STARTERS) => overlay(h('div', { class: 'modal' }, h('h3', { style: { marginTop: 0 } }, STARTERS[key].name), h('div', { class: 'grid' }, STARTERS[key].deck.map((id) => miniCard(id, { onClick: () => openCard(card(id)) })))));
-    el.append(titleBar('最初のデッキをえらぼう', () => resolve(null), h('span', { class: 'money' }, free ? '無料！' : '')), h('div', { class: 'scroll grow' }, list));
+    el.append(titleBar('最初のデッキをえらぼう', () => resolve(null), h('span', { class: 'money' }, free ? '無料！' : '')), pg.el);
+    pg.set(list);
     showScreen(el);
   });
 }

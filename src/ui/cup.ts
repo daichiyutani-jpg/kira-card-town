@@ -7,6 +7,7 @@ import { confetti, confirmBox, game, h, save, showScreen, titleBar, toast } from
 import { battleOnly } from './battleFlow';
 import { pickReward, showGet } from './reward';
 import { activeDeckOk, scene } from './world';
+import { fitBox, pager } from './pager';
 
 function bracket(run: CupRun): HTMLElement {
   const name = (id: string | null) => (id === 'me' ? game.d.name : id ? OPPONENTS[id].name : '？');
@@ -30,15 +31,16 @@ export function openCup(id: string, back: () => void): void {
   const el = h('div', { class: 'screen', style: { background: bgStyle('cup', '#1b1446') } });
   const wins = game.d.cupWins[id] ?? 0;
   const plays = game.d.cupPlays[id] ?? 0;
-  const list = h('div', { class: 'grid', style: { gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))' } }, ...cup.entrants.map((e) => h('div', { class: 'item-row', style: { padding: '8px' } }, h('div', { class: 'grow' }, h('h4', { style: { fontSize: '14px' } }, OPPONENTS[e].name), h('div', { class: 'rates' }, OPPONENTS[e].title), game.d.beaten[e] ? h('div', { class: 'rates', style: { color: 'var(--good)' } }, `勝利 ${game.d.beaten[e]}回`) : null))));
+  const pg = pager({ body: 'grid two' });
+  const entrants = cup.entrants.map((e) => h('div', { class: 'item-row', style: { padding: '6px 8px' } }, h('div', { class: 'grow' }, h('h4', { style: { fontSize: '14px' } }, OPPONENTS[e].name), h('div', { class: 'rates' }, OPPONENTS[e].title), game.d.beaten[e] ? h('div', { class: 'rates', style: { color: 'var(--good)' } }, `勝利 ${game.d.beaten[e]}回`) : null)));
   el.append(
     titleBar(cup.name, back),
     h(
       'div',
-      { class: 'scroll grow' },
+      { class: 'grow col', style: { minHeight: '0', gap: '0' } },
       h(
         'div',
-        { class: 'panel', style: { margin: '10px' } },
+        { class: 'panel cup-panel' },
         h('div', { style: { fontSize: '18px', fontWeight: '900' } }, `🏆 ${cup.name}`),
         h('div', {}, cup.feature),
         h('div', { style: { marginTop: '6px' } }, `参加費：${cup.fee}コイン（負けても返ってきません）`),
@@ -52,10 +54,11 @@ export function openCup(id: string, back: () => void): void {
           onclick: () => void enter(id, back),
         }, game.d.money < cup.fee ? `コインが足りません（${cup.fee}必要）` : `参加する（${cup.fee}コイン）`),
       ),
-      h('div', { style: { color: '#fff', fontWeight: '800', padding: '0 12px' } }, '出場するかもしれない選手'),
-      list,
+      h('div', { class: 'sec-label' }, '出場するかもしれない選手'),
+      pg.el,
     ),
   );
+  pg.set(entrants);
   showScreen(el);
 }
 
@@ -87,7 +90,7 @@ async function enter(id: string, back: () => void) {
 function showBracket(run: CupRun, msg: string): Promise<void> {
   return new Promise((resolve) => {
     const el = h('div', { class: 'screen', style: { background: bgStyle('cup', '#1b1446') } });
-    el.append(titleBar(`${CUPS[run.cup].name} 対戦表`, null), h('div', { class: 'scroll grow' }, bracket(run), h('div', { class: 'panel', style: { margin: '10px', whiteSpace: 'pre-wrap' } }, msg), h('div', { style: { padding: '0 10px' } }, h('button', { class: 'btn primary wide', onclick: () => resolve() }, 'バトルへ！'))));
+    el.append(titleBar(`${CUPS[run.cup].name} 対戦表`, null), fitBox(bracket(run), h('div', { class: 'panel', style: { margin: '10px', whiteSpace: 'pre-wrap' } }, msg), h('div', { style: { padding: '0 10px' } }, h('button', { class: 'btn primary wide', onclick: () => resolve() }, 'バトルへ！'))));
     showScreen(el);
   });
 }
@@ -98,9 +101,7 @@ async function finish(run: CupRun, back: () => void, prize = 0, firstWin = false
     const el = h('div', { class: 'screen', style: { background: bgStyle('cup', '#1b1446') } });
     el.append(
       titleBar('大会の結果', null),
-      h(
-        'div',
-        { class: 'scroll grow' },
+      fitBox(
         bracket(run),
         won ? h('div', { class: 'trophy' }, '🏆') : null,
         h('div', { class: 'panel', style: { margin: '10px', textAlign: 'center' } }, h('div', { style: { fontSize: '22px', fontWeight: '900' } }, won ? '優勝！おめでとう！' : run.finalOpp ? '準優勝！' : '準決勝で負けてしまった……'), won ? h('div', {}, `賞金 ${prize}コインを手に入れた！`) : h('div', {}, '参加費は戻らないけど、何度でも挑戦できるよ。'), h('div', { class: 'rates' }, `${CUPS[run.cup].name}：参加${game.d.cupPlays[run.cup] ?? 0}回・優勝${game.d.cupWins[run.cup] ?? 0}回`)),

@@ -8,6 +8,7 @@ import { confetti, confirmBox, game, h, overlay, save, showScreen, sleep, titleB
 import { miniCard, openCard } from './cardView';
 import { ratesText } from './shop';
 import { showGet } from './reward';
+import { pager } from './pager';
 
 function stillOpen(): boolean {
   if (isFestivalOpen(clockNow())) return true;
@@ -22,12 +23,13 @@ function stand(kind: 'kuji' | 'gacha', back: () => void) {
   const fest = nextFestival(clockNow());
   const limited = Object.values(pool).flat().filter((c) => c.get.includes('fest'));
   const el = h('div', { class: 'screen', style: { background: bgStyle('fest', '#120a28') } });
-  const body = h('div', { class: 'scroll grow' });
+  const body = h('div', { class: 'grow col', style: { minHeight: '0', gap: '0' } });
+  const pg = pager({ body: 'grid', uniform: true, shrinkTo: 0.8 });
   const render = () => {
     body.replaceChildren(
       h(
         'div',
-        { class: 'panel', style: { margin: '10px' } },
+        { class: 'panel fest-panel' },
         h('div', { style: { fontSize: '18px', fontWeight: '900' } }, kind === 'kuji' ? '🎫 カードくじ' : '🌟 星のガチャ'),
         h('div', {}, `1回 ${t.price}コインで1枚。${kind === 'kuji' ? '紙をひらくと当たりが分かる！' : 'カプセルの色でレア度が分かる！'}`),
         h('div', { class: 'rates', style: { marginTop: '6px' } }, `確率：${ratesText(t)}`),
@@ -35,9 +37,10 @@ function stand(kind: 'kuji' | 'gacha', back: () => void) {
         h('div', { class: 'rates' }, fest.open ? `今夜の星まつりは ${fmtDate(fest.at)} まで` : ''),
         h('div', { class: 'row', style: { marginTop: '10px' } }, h('button', { class: 'btn primary grow', disabled: game.d.money < t.price, onclick: () => void draw(1) }, `1回ひく（${t.price}）`), h('button', { class: 'btn primary grow', disabled: game.d.money < t.price * 5, onclick: () => void draw(5) }, `5回ひく（${t.price * 5}）`)),
       ),
-      h('div', { style: { color: '#fff', fontWeight: '800', padding: '0 12px' } }, '星まつり限定カード（ここでしか手に入らない）'),
-      h('div', { class: 'grid' }, ...limited.map((c) => miniCard(c, { locked: !game.d.dex[c.id], onClick: () => openCard(c, { locked: !game.d.dex[c.id], showSource: true }) }))),
+      h('div', { class: 'sec-label' }, '星まつり限定カード（ここでしか手に入らない）'),
+      pg.el,
     );
+    pg.set(limited.map((c) => miniCard(c, { locked: !game.d.dex[c.id], onClick: () => openCard(c, { locked: !game.d.dex[c.id], showSource: true }) })), { keepPage: true });
   };
   async function draw(n: number) {
     if (!stillOpen()) return back();

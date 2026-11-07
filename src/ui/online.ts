@@ -7,11 +7,14 @@ import { playBgm, sfx } from '../audio/sound';
 import { confirmBox, game, h, save, showScreen, talk, titleBar, toast } from './app';
 import { runBattle } from './battleView';
 import { activeDeckOk } from './world';
+import { pager } from './pager';
 
 export const PENDING_INVITE = 'kira-pending-invite';
 
 function screen(title: string, back: () => void, ...body: (HTMLElement | null)[]) {
-  const el = h('div', { class: 'screen', style: { background: 'var(--bg)' } }, titleBar(title, back), h('div', { class: 'scroll grow list' }, ...body.filter(Boolean) as HTMLElement[]));
+  const pg = pager({ body: 'list' });
+  const el = h('div', { class: 'screen', style: { background: 'var(--bg)' } }, titleBar(title, back), pg.el);
+  pg.set(body.filter(Boolean) as HTMLElement[]);
   showScreen(el);
   return el;
 }
