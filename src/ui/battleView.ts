@@ -134,7 +134,6 @@ export function runBattle(o: BattleOpts): Promise<BattleResult> {
           return m;
         }),
       );
-      hand.style.setProperty('--n', String(Math.max(2, P.hand.length)));
       if (!P.hand.length) hand.append(h('div', { class: 'empty' }, '手札はありません'));
       // 真ん中の情報
       let info = '';
@@ -213,7 +212,35 @@ export function runBattle(o: BattleOpts): Promise<BattleResult> {
       document.querySelectorAll('.hl').forEach((e) => e.classList.remove('hl'));
       const st = tutStep();
       if (st?.hl) document.querySelectorAll(st.hl).forEach((e) => e.classList.add('hl'));
+      fitBattle();
     }
+    // ---------- 画面に収める ----------
+    // 説明（ガイド）や手札の枚数で高さが足りない時は、場と手札のカードを同じ割合で小さくして、
+    // ボタンまで全部が画面に入るようにする。手札は横幅に入りきらない時に重ねる
+    function layoutHand(z: number) {
+      const kids = [...hand.querySelectorAll<HTMLElement>(':scope > .mini')];
+      const cs = getComputedStyle(hand);
+      const W = hand.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      const cw = 84 * z;
+      const m = kids.length > 1 ? Math.min(6, (W - cw) / (kids.length - 1) - cw) : 0;
+      kids.forEach((k, i) => (k.style.marginLeft = i ? `${m / z}px` : ''));
+    }
+    function fitBattle() {
+      if (!el.isConnected) return;
+      let z = 1;
+      el.style.setProperty('--bz', '1');
+      layoutHand(1);
+      for (let k = 0; k < 5; k++) {
+        const over = el.scrollHeight - el.clientHeight;
+        if (over <= 0) break;
+        const cardH = oppLane.offsetHeight + myLane.offsetHeight + hand.offsetHeight;
+        z = Math.max(0.5, z * (1 - over / cardH) - 0.01);
+        el.style.setProperty('--bz', z.toFixed(3));
+        layoutHand(z);
+        if (z === 0.5) break;
+      }
+    }
+    new ResizeObserver(() => fitBattle()).observe(el);
     function tutAllows(a: Action): boolean {
       const st = tutStep();
       if (!st) return true;

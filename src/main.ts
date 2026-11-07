@@ -22,10 +22,11 @@ import { drawHero } from './ui/hero';
 import { drawPersonSprite } from './ui/person';
 import { personSpec } from './ui/people';
 import { fightCpu } from './ui/battleFlow';
+import { runTutorial } from './ui/tutorial';
 
 /** 自動テスト（?e2e がURLにある時だけ）用の入口。ふだんの遊びには関係しない */
 if (new URLSearchParams(location.search).has('e2e'))
-  (window as unknown as Record<string, unknown>).__kira = { game, enterMap, openSorting, openNature, openChores, openKuji, openGacha, openCup, openDex, openDeckEditor, openShop, fightCpu, drawHero, drawPersonSprite, personSpec, openDeckSwitch, openCollection, openDesk, openSettings, pickReward, chooseStarter, openOnline, openCard, CARDS };
+  (window as unknown as Record<string, unknown>).__kira = { game, enterMap, openSorting, openNature, openChores, openKuji, openGacha, openCup, openDex, openDeckEditor, openShop, fightCpu, drawHero, drawPersonSprite, personSpec, openDeckSwitch, openCollection, openDesk, openSettings, pickReward, chooseStarter, openOnline, openCard, CARDS, runTutorial };
 
 function boot() {
   // スマホの「戻る」やピンチで画面がずれないように
@@ -46,7 +47,7 @@ function boot() {
     }
     sessionStorage.setItem(PENDING_INVITE, invite);
     openTitle();
-    root().append(h('div', { class: 'toast' }, '友達からの招待を受け取りました。最初のデッキをもらったら、メニューの「友達と対戦」から始まります'));
+    root().append(h('div', { class: 'toast keep' }, '友達からの招待を受け取りました。最初のデッキをもらったら、メニューの「友達と対戦」から始まります'));
     return;
   }
   openTitle();
@@ -66,7 +67,7 @@ function registerSw() {
     .register('./sw.js')
     .then((reg) => {
       const offer = (w: ServiceWorker) => {
-        const bar = h('div', { class: 'toast', style: { pointerEvents: 'auto', top: 'auto', bottom: 'calc(16px + var(--safe-b))' } }, '新しい版があります ', h('button', { class: 'btn small primary', onclick: () => ((wantReload = true), w.postMessage({ type: 'SKIP_WAITING' })) }, '更新する'));
+        const bar = h('div', { class: 'toast keep', style: { pointerEvents: 'auto', top: 'auto', bottom: 'calc(16px + var(--safe-b))' } }, '新しい版があります ', h('button', { class: 'btn small primary', onclick: () => ((wantReload = true), w.postMessage({ type: 'SKIP_WAITING' })) }, '更新する'));
         root().append(bar);
       };
       if (reg.waiting && navigator.serviceWorker.controller) offer(reg.waiting);

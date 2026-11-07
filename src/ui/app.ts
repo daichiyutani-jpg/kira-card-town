@@ -111,6 +111,8 @@ export function autoFit(inner: HTMLElement, frame: HTMLElement, avail: () => num
 }
 
 export function toast(msg: string, ms = 1800): void {
+  // 前のお知らせが残っていたら消してから出す（重なって文字が読めなくならないように）
+  root().querySelectorAll('.toast:not(.keep)').forEach((e) => e.remove());
   const t = h('div', { class: 'toast' }, msg);
   root().append(t);
   setTimeout(() => t.remove(), ms);

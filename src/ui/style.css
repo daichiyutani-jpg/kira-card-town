@@ -57,7 +57,7 @@ button:disabled { opacity: 0.45; }
 @keyframes fadein { from { opacity: 0; } }
 @keyframes up { from { transform: translateY(40px); opacity: 0; } }
 @keyframes pop { from { transform: scale(.9); opacity: 0; } }
-.toast { position: absolute; left: 50%; top: calc(70px + var(--safe-t)); transform: translateX(-50%); z-index: 90; background: rgba(20,14,50,.92); color: #fff; padding: 10px 18px; border-radius: 999px; font-size: 15px; font-weight: 700; pointer-events: none; animation: pop .2s; max-width: 92%; text-align: center; }
+.toast { position: absolute; left: 50%; top: calc(70px + var(--safe-t)); transform: translateX(-50%); z-index: 90; background: rgba(20,14,50,.92); color: #fff; padding: 10px 18px; border-radius: 20px; font-size: 15px; font-weight: 700; pointer-events: none; animation: pop .2s; max-width: 92%; text-align: center; }
 
 /* ---------- 会話 ---------- */
 .talk { position: absolute; left: 8px; right: 8px; bottom: calc(8px + var(--safe-b)); z-index: 60; background: #fffdf7; border: 3px solid #3b2f7a; border-radius: 16px; padding: 12px 14px 14px; min-height: 120px; box-shadow: 0 6px 20px rgba(0,0,0,.35); animation: up .15s; }
@@ -168,7 +168,10 @@ button:disabled { opacity: 0.45; }
 .reason { color: var(--bad); font-size: 14px; font-weight: 700; text-align: center; }
 
 /* ---------- バトル ---------- */
-.battle .lane { flex: 1 1 auto; align-items: center; }
+.battle .lane { flex: 1 0 auto; align-items: center; min-height: 0; padding: calc(18px * var(--bz, 1)) 6px; }
+.battle > * { flex-shrink: 0; }
+.battle .slot { zoom: var(--bz, 1); }
+.battle .hand .mini { zoom: var(--bz, 1); }
 .battle:has(.guide[style*="block"]) .bt-bar.top { padding-top: 6px; }
 .battle { background: radial-gradient(120% 60% at 50% 50%, #3b2a8a, #160f3a); color: #fff; }
 .bt-bar { display: flex; align-items: center; gap: 8px; padding: 6px 10px; font-size: 14px; }
@@ -191,10 +194,8 @@ button:disabled { opacity: 0.45; }
 .mid { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 2px 10px; min-height: 44px; }
 .mid .info { flex: 1; font-size: 13.5px; font-weight: 700; background: rgba(0,0,0,.5); border-radius: 10px; padding: 6px 10px; line-height: 1.35; }
 .mid .mbtn { min-height: 40px; padding: 4px 10px; border-radius: 10px; background: rgba(255,255,255,.18); color: #fff; font-weight: 800; font-size: 13px; }
-.hand { display: flex; gap: 0; overflow: hidden; padding: 6px 10px 8px; min-height: 132px; container-type: inline-size; }
+.hand { display: flex; gap: 0; overflow: hidden; padding: 6px 10px 8px; }
 .hand .mini { width: 84px; }
-/* 手札が多い時はカードを重ねて、横にスクロールさせずに全部見せる */
-.hand .mini + .mini { margin-left: min(6px, calc((100cqw - 84px) / (var(--n, 2) - 1) - 84px)); }
 .hand .mini.playable { outline: 2px solid #7dff8f; outline-offset: 1px; }
 .bt-actions { display: flex; gap: 8px; padding: 6px 10px calc(8px + var(--safe-b)); }
 .bt-actions .btn { flex: 1; min-height: 50px; font-size: 16px; }
