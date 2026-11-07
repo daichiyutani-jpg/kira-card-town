@@ -50,9 +50,11 @@ function boot() {
 
 function registerSw() {
   if (!('serviceWorker' in navigator) || !import.meta.env.PROD) return;
+  // 読みこみ直すのは「更新する」を押した時だけ（初めて開いた時にオフライン用の準備が終わっても、遊んでいる画面を消さない）
+  let wantReload = false;
   let reloading = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (reloading) return;
+    if (!wantReload || reloading) return;
     reloading = true;
     location.reload();
   });
@@ -60,7 +62,7 @@ function registerSw() {
     .register('./sw.js')
     .then((reg) => {
       const offer = (w: ServiceWorker) => {
-        const bar = h('div', { class: 'toast', style: { pointerEvents: 'auto', top: 'auto', bottom: 'calc(16px + var(--safe-b))' } }, '新しい版があります ', h('button', { class: 'btn small primary', onclick: () => w.postMessage({ type: 'SKIP_WAITING' }) }, '更新する'));
+        const bar = h('div', { class: 'toast', style: { pointerEvents: 'auto', top: 'auto', bottom: 'calc(16px + var(--safe-b))' } }, '新しい版があります ', h('button', { class: 'btn small primary', onclick: () => ((wantReload = true), w.postMessage({ type: 'SKIP_WAITING' })) }, '更新する'));
         root().append(bar);
       };
       if (reg.waiting && navigator.serviceWorker.controller) offer(reg.waiting);
