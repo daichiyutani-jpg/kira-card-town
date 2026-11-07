@@ -113,12 +113,13 @@ async function onInteract(t: Target) {
   const act = t.kind === 'npc' ? null : t.kind === 'obj' ? t.obj.act : t.b.act;
   if (t.kind === 'npc') return busy(() => talkNpc(t.npc));
   if (!act) return;
-  if (act.warp) {
-    sfx('ok');
-    return enterMap(act.warp, { x: act.tx ?? 0, y: act.ty ?? 0, dir: 'down' });
-  }
+  // 配達中は、家の扉の前で荷物をわたす（中には入らない）
   if (delivery && t.kind === 'bld') {
     if (delivery.deliver(t.b.id)) return;
+  }
+  if (act.warp) {
+    sfx('ok');
+    return enterMap(act.warp, { x: act.tx ?? 0, y: act.ty ?? 0, dir: act.dir ?? 'down' });
   }
   if (act.talk) return busy(() => talk(talkLines(act.talk!)));
   if (act.desk) return openDesk(() => enterMap());

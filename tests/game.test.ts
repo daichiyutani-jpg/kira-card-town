@@ -252,3 +252,76 @@ describe('町の人の見た目', () => {
     expect(sp.hair).toBe('#ddd');
   });
 });
+
+describe('建物の中', () => {
+  type M = { w: number; h: number; fill: string; border: string; rects: { x: number; y: number; w: number; h: number; t: string }[]; points: { x: number; y: number; t: string }[]; buildings: { id: string; x: number; y: number; w: number; h: number; kind: string; door: { x: number; y: number }; act: Record<string, unknown> }[]; objects: { id: string; x: number; y: number; w?: number; h?: number; walk?: boolean; act: Record<string, unknown> }[]; npcs: { x: number; y: number }[]; spawn: { x: number; y: number } };
+  const MAPS = (maps as unknown as { maps: Record<string, M> }).maps;
+  const tile = (m: M, x: number, y: number) => {
+    let t = x === 0 || y === 0 || x === m.w - 1 || y === m.h - 1 ? m.border : m.fill;
+    for (const r of m.rects) if (x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h) t = r.t;
+    for (const p of m.points) if (p.x === x && p.y === y) t = p.t;
+    return t;
+  };
+  const free = (m: M, x: number, y: number) => {
+    const o = m.objects.find((o) => x >= o.x && x < o.x + (o.w ?? 1) && y >= o.y && y < o.y + (o.h ?? 1));
+    if (o?.walk) return true;
+    if ('TW~fx'.includes(tile(m, x, y))) return false;
+    if (o || m.buildings.some((b) => x >= b.x && x < b.x + b.w && y >= b.y && y < b.y + b.h)) return false;
+    return !m.npcs.some((n) => n.x === x && n.y === y);
+  };
+  const towns = ['town1', 'town2', 'town3'];
+  it('町の建物（屋台・社のほか）はすべて中に入れて、出口から扉の前へ戻れる', () => {
+    for (const t of towns)
+      for (const b of MAPS[t].buildings) {
+        const w = b.act.warp as string;
+        expect(w, b.id).toBeTruthy();
+        const inside = MAPS[w];
+        expect(inside, b.id).toBeDefined();
+        expect(free(inside, b.act.tx as number, b.act.ty as number), `${b.id} 入った所`).toBe(true);
+        const exit = inside.objects.find((o) => o.walk && o.act.warp === t);
+        expect(exit, `${w} 出口`).toBeDefined();
+        expect([exit!.act.tx, exit!.act.ty], `${w} 出口の先`).toEqual([b.door.x, b.door.y + 1]);
+        expect(free(MAPS[t], b.door.x, b.door.y + 1), `${b.id} 扉の前`).toBe(true);
+      }
+  });
+  it('どの建物の扉の前にも、町の入り口から歩いて行ける・室内では入った所から受付や人の前まで歩ける', () => {
+    const reach = (m: M, sx: number, sy: number) => {
+      const seen = new Set([`${sx},${sy}`]);
+      const q = [[sx, sy]];
+      while (q.length) {
+        const [x, y] = q.pop()!;
+        for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+          const k = `${x + dx},${y + dy}`;
+          if (!seen.has(k) && x + dx > 0 && y + dy > 0 && x + dx < m.w && y + dy < m.h && free(m, x + dx, y + dy)) {
+            seen.add(k);
+            q.push([x + dx, y + dy]);
+          }
+        }
+      }
+      return seen;
+    };
+    for (const t of towns) {
+      const r = reach(MAPS[t], MAPS[t].spawn.x, MAPS[t].spawn.y);
+      for (const b of MAPS[t].buildings) expect(r.has(`${b.door.x},${b.door.y + 1}`), `${t}/${b.id}`).toBe(true);
+    }
+    for (const [id, m] of Object.entries(MAPS)) {
+      if (!id.startsWith('in_')) continue;
+      const r = reach(m, m.spawn.x, m.spawn.y);
+      for (const o of m.objects.filter((o) => !o.walk && (o.act.shop || o.act.cup || o.act.job || o.id === 'counter')))
+        expect([...Array(o.w ?? 1).keys()].some((i) => r.has(`${o.x + i},${o.y + (o.h ?? 1)}`)), `${id}/${o.id}`).toBe(true);
+    }
+  });
+  it('ショップ・大会・アルバイトの受付は、建物の中に1つずつある', () => {
+    const acts = Object.values(MAPS).flatMap((m) => m.objects.map((o) => o.act)).concat(Object.values(MAPS).flatMap((m) => m.buildings.map((b) => b.act)));
+    for (const [k, v] of [['shop', 'shop1'], ['shop', 'shop2'], ['shop', 'shop3'], ['cup', 'cup1'], ['cup', 'cup2'], ['cup', 'cup3'], ['job', 'delivery'], ['job', 'sorting'], ['job', 'nature']])
+      expect(acts.filter((a) => a[k] === v).length, `${k}:${v}`).toBe(1);
+  });
+  it('室内の会話がすべて story.json にある', () => {
+    const talk = (story as unknown as { talk: Record<string, unknown> }).talk;
+    for (const [id, m] of Object.entries(MAPS)) {
+      if (!id.startsWith('in_')) continue;
+      for (const o of m.objects) if (o.act.talk) expect(talk[o.act.talk as string], `${id}/${o.id}`).toBeDefined();
+      for (const n of m.npcs as { talk?: string; id?: string }[]) if (n.talk) expect(talk[n.talk], `${id}/${n.id}`).toBeDefined();
+    }
+  });
+});

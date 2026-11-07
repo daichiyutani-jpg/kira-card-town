@@ -19,6 +19,8 @@ export interface Act {
   warp?: string;
   tx?: number;
   ty?: number;
+  /** warp したあとの向き（建物に入る時は上向き） */
+  dir?: Dir;
   shop?: string;
   cup?: string;
   job?: string;
@@ -323,7 +325,7 @@ export function openField(mapId: string, hooks: FieldHooks, start?: { x: number;
     }
     // しらべるボタン
     const t = p.moving ? null : nearTarget();
-    const label = !t ? 'しらべる' : t.kind === 'npc' ? 'はなす' : t.kind === 'bld' ? '入る' : 'しらべる';
+    const label = !t ? 'しらべる' : t.kind === 'npc' || (t.kind === 'obj' && t.obj.kind === 'counter') ? 'はなす' : t.kind === 'bld' ? '入る' : 'しらべる';
     if (aBtn.textContent !== label) aBtn.textContent = label;
     aBtn.classList.toggle('ready', !!t);
     aBtn.style.opacity = t ? '1' : '0.55';
@@ -536,6 +538,15 @@ export function openField(mapId: string, hooks: FieldHooks, start?: { x: number;
         ctx.fillRect(sx, sy + s - 2, s, 2);
         ctx.fillRect(sx + ((y % 2) * s) / 2, sy, 2, s);
         break;
+      case 'g': {
+        // お店・会場の床（白と水色のタイル）
+        ctx.fillStyle = (x + y) % 2 ? '#eef3f7' : '#dfe8ef';
+        ctx.fillRect(sx, sy, s, s);
+        ctx.fillStyle = 'rgba(120,140,160,.25)';
+        ctx.fillRect(sx, sy + s - 1, s, 1);
+        ctx.fillRect(sx + s - 1, sy, 1, s);
+        break;
+      }
       case 'k':
         ctx.fillStyle = '#c94a5a';
         ctx.fillRect(sx, sy, s, s);
@@ -1111,6 +1122,164 @@ export function openField(mapId: string, hooks: FieldHooks, start?: { x: number;
         ctx.fillRect(cx - s * 0.01, cy + s * 0.31, s * 0.02, s * 0.08);
         break;
       }
+      // ---------- 建物の中の家具 ----------
+      case 'counter': {
+        // 受付・レジのカウンター（奥の店員さんの腰から下をかくす）
+        ctx.fillStyle = 'rgba(0,0,0,.18)';
+        ctx.fillRect(x + 2, y + hh - 4, w - 4, 5);
+        ctx.fillStyle = '#8d5a2b';
+        ctx.fillRect(x + 1, y + s * 0.18, w - 2, hh - s * 0.2);
+        ctx.fillStyle = '#c98b4e';
+        ctx.fillRect(x + 1, y + s * 0.08, w - 2, s * 0.2);
+        ctx.fillStyle = '#a86d36';
+        for (let i = 1; i < (o.w ?? 1); i++) ctx.fillRect(x + i * s - 1, y + s * 0.32, 2, hh - s * 0.4);
+        // レジとベル
+        ctx.fillStyle = '#5c6bc0';
+        ctx.fillRect(x + w - s * 0.62, y - s * 0.12, s * 0.42, s * 0.26);
+        ctx.fillStyle = '#ffd23b';
+        ctx.beginPath();
+        ctx.arc(x + s * 0.4, y + s * 0.1, s * 0.1, Math.PI, 0);
+        ctx.fill();
+        break;
+      }
+      case 'showcase': {
+        // カードを並べたガラスのケース
+        ctx.fillStyle = '#6d4c2f';
+        ctx.fillRect(x + 2, y + s * 0.15, w - 4, hh - s * 0.15);
+        ctx.fillStyle = '#bfe6ff';
+        ctx.fillRect(x + 5, y + s * 0.22, w - 10, hh - s * 0.42);
+        const cols = ['#e5484d', '#3c8dff', '#2ead5b', '#ffcc33', '#b05dff', '#ff7a3c'];
+        const n = Math.max(3, Math.floor((w - 12) / (s * 0.28)));
+        for (let i = 0; i < n; i++) {
+          ctx.fillStyle = cols[(i + o.x) % cols.length];
+          ctx.fillRect(x + 8 + i * ((w - 16) / n), y + s * 0.3, (w - 16) / n - 3, s * 0.36);
+        }
+        ctx.fillStyle = `rgba(255,255,255,${0.35 + Math.sin(frame / 18 + o.x) * 0.2})`;
+        ctx.fillRect(x + 6, y + s * 0.24, (w - 12) * 0.3, 3);
+        break;
+      }
+      case 'plant':
+        ctx.fillStyle = '#b5651d';
+        ctx.fillRect(x + s * 0.3, y + s * 0.55, s * 0.4, s * 0.4);
+        ctx.fillStyle = '#2e7d32';
+        ctx.beginPath();
+        ctx.arc(x + s * 0.5, y + s * 0.38, s * 0.3, 0, 6.3);
+        ctx.fill();
+        ctx.fillStyle = '#4caf50';
+        ctx.beginPath();
+        ctx.arc(x + s * 0.38, y + s * 0.3, s * 0.15, 0, 6.3);
+        ctx.arc(x + s * 0.64, y + s * 0.42, s * 0.13, 0, 6.3);
+        ctx.fill();
+        break;
+      case 'crate':
+        for (let iy = 0; iy < (o.h ?? 1); iy++)
+          for (let ix = 0; ix < (o.w ?? 1); ix++) {
+            const cx = x + ix * s;
+            const cy = y + iy * s;
+            ctx.fillStyle = '#c8a165';
+            ctx.fillRect(cx + 3, cy + 4, s - 6, s - 7);
+            ctx.fillStyle = '#a07a40';
+            ctx.fillRect(cx + 3, cy + s * 0.45, s - 6, 3);
+            ctx.fillRect(cx + s * 0.47, cy + 4, 3, s - 7);
+            ctx.strokeStyle = '#7a5a2a';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(cx + 3.5, cy + 4.5, s - 7, s - 8);
+          }
+        break;
+      case 'rack': {
+        // 服をかけたハンガーラック
+        ctx.fillStyle = '#9e9e9e';
+        ctx.fillRect(x + 3, y + s * 0.1, 3, hh - s * 0.1);
+        ctx.fillRect(x + w - 6, y + s * 0.1, 3, hh - s * 0.1);
+        ctx.fillRect(x + 3, y + s * 0.1, w - 6, 3);
+        const cl = ['#e91e63', '#ffffff', '#ab47bc', '#ffca28', '#26a69a', '#ef5350'];
+        const n = Math.max(3, Math.floor(w / (s * 0.3)));
+        for (let i = 0; i < n; i++) {
+          ctx.fillStyle = cl[(i + o.x) % cl.length];
+          ctx.fillRect(x + 8 + i * ((w - 16) / n), y + s * 0.18, (w - 16) / n - 2, s * 0.62);
+        }
+        break;
+      }
+      case 'bench':
+        ctx.fillStyle = '#795548';
+        ctx.fillRect(x + 3, y + s * 0.35, w - 6, s * 0.3);
+        ctx.fillStyle = '#a1887f';
+        ctx.fillRect(x + 3, y + s * 0.35, w - 6, s * 0.1);
+        ctx.fillStyle = '#5d4037';
+        ctx.fillRect(x + 6, y + s * 0.65, 4, s * 0.25);
+        ctx.fillRect(x + w - 10, y + s * 0.65, 4, s * 0.25);
+        break;
+      case 'trophy': {
+        // トロフィーを飾った棚
+        ctx.fillStyle = '#5d4037';
+        ctx.fillRect(x + 2, y + 2, w - 4, hh - 4);
+        ctx.fillStyle = '#3e2723';
+        ctx.fillRect(x + 5, y + 5, w - 10, hh - 10);
+        const n = Math.max(1, Math.round(w / s));
+        for (let i = 0; i < n; i++) {
+          const cx = x + (i + 0.5) * (w / n);
+          ctx.fillStyle = i % 2 ? '#cfd8dc' : '#ffd23b';
+          ctx.beginPath();
+          ctx.moveTo(cx - s * 0.18, y + s * 0.2);
+          ctx.lineTo(cx + s * 0.18, y + s * 0.2);
+          ctx.lineTo(cx + s * 0.08, y + s * 0.5);
+          ctx.lineTo(cx - s * 0.08, y + s * 0.5);
+          ctx.fill();
+          ctx.fillRect(cx - s * 0.03, y + s * 0.5, s * 0.06, s * 0.14);
+          ctx.fillRect(cx - s * 0.13, y + s * 0.64, s * 0.26, s * 0.08);
+        }
+        break;
+      }
+      case 'piano':
+        ctx.fillStyle = '#212121';
+        ctx.fillRect(x + 2, y + s * 0.1, w - 4, hh - s * 0.15);
+        ctx.fillStyle = '#fafafa';
+        ctx.fillRect(x + 5, y + hh * 0.55, w - 10, hh * 0.25);
+        ctx.fillStyle = '#212121';
+        for (let i = 0; i < (w - 10) / 6; i++) if (i % 7 !== 2 && i % 7 !== 6) ctx.fillRect(x + 8 + i * 6, y + hh * 0.55, 3, hh * 0.14);
+        break;
+      case 'cat': {
+        const bob = Math.sin(frame / 25) * 1.2;
+        ctx.fillStyle = '#ff9f43';
+        ctx.beginPath();
+        ctx.ellipse(x + s * 0.5, y + s * 0.62 + bob, s * 0.3, s * 0.2, 0, 0, 6.3);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x + s * 0.28, y + s * 0.5, s * 0.15, 0, 6.3);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(x + s * 0.16, y + s * 0.42);
+        ctx.lineTo(x + s * 0.2, y + s * 0.28);
+        ctx.lineTo(x + s * 0.27, y + s * 0.38);
+        ctx.moveTo(x + s * 0.3, y + s * 0.38);
+        ctx.lineTo(x + s * 0.37, y + s * 0.28);
+        ctx.lineTo(x + s * 0.41, y + s * 0.42);
+        ctx.fill();
+        ctx.fillStyle = '#3e2723';
+        ctx.fillRect(x + s * 0.22, y + s * 0.5, s * 0.06, 2);
+        ctx.fillRect(x + s * 0.31, y + s * 0.5, s * 0.06, 2);
+        break;
+      }
+      case 'mirror':
+        ctx.fillStyle = '#c9a227';
+        ctx.beginPath();
+        ctx.ellipse(x + w / 2, y + hh * 0.45, w * 0.32, hh * 0.42, 0, 0, 6.3);
+        ctx.fill();
+        ctx.fillStyle = '#d6f0ff';
+        ctx.beginPath();
+        ctx.ellipse(x + w / 2, y + hh * 0.45, w * 0.25, hh * 0.35, 0, 0, 6.3);
+        ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,.8)';
+        ctx.fillRect(x + w * 0.38, y + hh * 0.2, 3, hh * 0.3);
+        break;
+      case 'stool':
+        ctx.fillStyle = '#c62828';
+        ctx.beginPath();
+        ctx.ellipse(x + s / 2, y + s * 0.45, s * 0.24, s * 0.12, 0, 0, 6.3);
+        ctx.fill();
+        ctx.fillStyle = '#616161';
+        ctx.fillRect(x + s * 0.47, y + s * 0.5, s * 0.06, s * 0.38);
+        break;
       default:
         ctx.fillStyle = '#999';
         ctx.fillRect(x + 4, y + 4, w - 8, hh - 8);

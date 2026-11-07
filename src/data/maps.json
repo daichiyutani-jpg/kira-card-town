@@ -1,7 +1,7 @@
 {
   "legend": {
     ".": "草地", ",": "花", "=": "道", ":": "石畳", "T": "木（通れない）", "~": "水（通れない）", "b": "橋", "s": "砂",
-    "_": "床", "W": "壁（通れない）", "k": "じゅうたん", "f": "柵（通れない）", "x": "見えない壁"
+    "_": "床", "W": "壁（通れない）", "k": "じゅうたん", "g": "タイルの床", "f": "柵（通れない）", "x": "見えない壁"
   },
   "maps": {
     "town1": {
@@ -17,14 +17,14 @@
       "points": [{ "x": 7, "y": 6, "t": "T" }, { "x": 9, "y": 6, "t": "T" }, { "x": 20, "y": 10, "t": "," }, { "x": 21, "y": 10, "t": "," }],
       "buildings": [
         { "id": "home", "x": 2, "y": 2, "w": 5, "h": 4, "kind": "house", "wall": "#f4e1c1", "roof": "#d2553f", "label": "じぶんの家", "door": { "x": 4, "y": 5 }, "act": { "warp": "home", "tx": 6, "ty": 8 } },
-        { "id": "shop1", "x": 14, "y": 2, "w": 6, "h": 4, "kind": "shop", "wall": "#fdf6e3", "roof": "#2e86de", "label": "カードショップ ひだまり", "door": { "x": 16, "y": 5 }, "act": { "shop": "shop1" } },
-        { "id": "hall1", "x": 2, "y": 10, "w": 6, "h": 4, "kind": "hall", "wall": "#efe6ff", "roof": "#8e44ad", "label": "ひだまり大会会場", "door": { "x": 4, "y": 13 }, "act": { "cup": "cup1" } },
-        { "id": "post", "x": 14, "y": 10, "w": 5, "h": 4, "kind": "office", "wall": "#eaf7ea", "roof": "#27ae60", "label": "ひだまり配達センター", "door": { "x": 16, "y": 13 }, "act": { "job": "delivery" } },
-        { "id": "d1", "x": 2, "y": 17, "w": 4, "h": 3, "kind": "house", "wall": "#fff0f0", "roof": "#e74c3c", "label": "赤い屋根の家", "door": { "x": 3, "y": 19 }, "act": { "talk": "house_d1" } },
-        { "id": "d2", "x": 7, "y": 17, "w": 4, "h": 3, "kind": "house", "wall": "#f0f8ff", "roof": "#3498db", "label": "青い屋根の家", "door": { "x": 8, "y": 19 }, "act": { "talk": "house_d2" } },
-        { "id": "d3", "x": 14, "y": 17, "w": 4, "h": 3, "kind": "house", "wall": "#fffbe6", "roof": "#f1c40f", "label": "黄色い屋根の家", "door": { "x": 15, "y": 19 }, "act": { "talk": "house_d3" } },
-        { "id": "d4", "x": 19, "y": 17, "w": 4, "h": 3, "kind": "house", "wall": "#f3fff0", "roof": "#2ecc71", "label": "緑の屋根の家", "door": { "x": 20, "y": 19 }, "act": { "talk": "house_d4" } },
-        { "id": "d5", "x": 20, "y": 11, "w": 3, "h": 3, "kind": "house", "wall": "#f7f0ff", "roof": "#9b59b6", "label": "紫の屋根の家", "door": { "x": 21, "y": 13 }, "act": { "talk": "house_d5" } }
+        { "id": "shop1", "x": 14, "y": 2, "w": 6, "h": 4, "kind": "shop", "wall": "#fdf6e3", "roof": "#2e86de", "label": "カードショップ ひだまり", "door": { "x": 16, "y": 5 }, "act": { "warp": "in_shop1", "tx": 5, "ty": 7, "dir": "up" } },
+        { "id": "hall1", "x": 2, "y": 10, "w": 6, "h": 4, "kind": "hall", "wall": "#efe6ff", "roof": "#8e44ad", "label": "ひだまり大会会場", "door": { "x": 4, "y": 13 }, "act": { "warp": "in_hall1", "tx": 6, "ty": 8, "dir": "up" } },
+        { "id": "post", "x": 14, "y": 10, "w": 5, "h": 4, "kind": "office", "wall": "#eaf7ea", "roof": "#27ae60", "label": "ひだまり配達センター", "door": { "x": 16, "y": 13 }, "act": { "warp": "in_post", "tx": 5, "ty": 7, "dir": "up" } },
+        { "id": "d1", "x": 2, "y": 17, "w": 4, "h": 3, "kind": "house", "wall": "#fff0f0", "roof": "#e74c3c", "label": "赤い屋根の家", "door": { "x": 3, "y": 19 }, "act": { "warp": "in_d1", "tx": 4, "ty": 5, "dir": "up" } },
+        { "id": "d2", "x": 7, "y": 17, "w": 4, "h": 3, "kind": "house", "wall": "#f0f8ff", "roof": "#3498db", "label": "青い屋根の家", "door": { "x": 8, "y": 19 }, "act": { "warp": "in_d2", "tx": 4, "ty": 5, "dir": "up" } },
+        { "id": "d3", "x": 14, "y": 17, "w": 4, "h": 3, "kind": "house", "wall": "#fffbe6", "roof": "#f1c40f", "label": "黄色い屋根の家", "door": { "x": 15, "y": 19 }, "act": { "warp": "in_d3", "tx": 4, "ty": 5, "dir": "up" } },
+        { "id": "d4", "x": 19, "y": 17, "w": 4, "h": 3, "kind": "house", "wall": "#f3fff0", "roof": "#2ecc71", "label": "緑の屋根の家", "door": { "x": 20, "y": 19 }, "act": { "warp": "in_d4", "tx": 4, "ty": 5, "dir": "up" } },
+        { "id": "d5", "x": 20, "y": 11, "w": 3, "h": 3, "kind": "house", "wall": "#f7f0ff", "roof": "#9b59b6", "label": "紫の屋根の家", "door": { "x": 21, "y": 13 }, "act": { "warp": "in_d5", "tx": 4, "ty": 5, "dir": "up" } }
       ],
       "objects": [
         { "id": "bus1", "x": 21, "y": 6, "kind": "busstop", "label": "バス停", "act": { "travel": true } },
@@ -73,11 +73,11 @@
       ],
       "points": [{ "x": 1, "y": 12, "t": "T" }, { "x": 22, "y": 12, "t": "T" }, { "x": 8, "y": 6, "t": "T" }, { "x": 15, "y": 6, "t": "T" }],
       "buildings": [
-        { "id": "shop2", "x": 1, "y": 1, "w": 8, "h": 5, "kind": "mall", "wall": "#fff3e0", "roof": "#e67e22", "label": "メガカードショップ にぎわい", "door": { "x": 5, "y": 5 }, "act": { "shop": "shop2" } },
-        { "id": "hall2", "x": 15, "y": 1, "w": 8, "h": 5, "kind": "hall", "wall": "#ffe9ec", "roof": "#c0392b", "label": "にぎわいアリーナ", "door": { "x": 18, "y": 5 }, "act": { "cup": "cup2" } },
-        { "id": "warehouse", "x": 1, "y": 13, "w": 7, "h": 4, "kind": "warehouse", "wall": "#e8eef2", "roof": "#7f8c8d", "label": "にぎわい倉庫（仕分けのアルバイト）", "door": { "x": 4, "y": 16 }, "act": { "job": "sorting" } },
-        { "id": "ramen", "x": 15, "y": 13, "w": 4, "h": 4, "kind": "shop", "wall": "#fff8e1", "roof": "#d35400", "label": "ラーメン こがね", "door": { "x": 16, "y": 16 }, "act": { "talk": "ramen" } },
-        { "id": "cloth", "x": 20, "y": 13, "w": 3, "h": 4, "kind": "shop", "wall": "#fce4ec", "roof": "#e91e63", "label": "ブティック ルル", "door": { "x": 21, "y": 16 }, "act": { "talk": "boutique" } }
+        { "id": "shop2", "x": 1, "y": 1, "w": 8, "h": 5, "kind": "mall", "wall": "#fff3e0", "roof": "#e67e22", "label": "メガカードショップ にぎわい", "door": { "x": 5, "y": 5 }, "act": { "warp": "in_shop2", "tx": 7, "ty": 8, "dir": "up" } },
+        { "id": "hall2", "x": 15, "y": 1, "w": 8, "h": 5, "kind": "hall", "wall": "#ffe9ec", "roof": "#c0392b", "label": "にぎわいアリーナ", "door": { "x": 18, "y": 5 }, "act": { "warp": "in_hall2", "tx": 6, "ty": 8, "dir": "up" } },
+        { "id": "warehouse", "x": 1, "y": 13, "w": 7, "h": 4, "kind": "warehouse", "wall": "#e8eef2", "roof": "#7f8c8d", "label": "にぎわい倉庫（仕分けのアルバイト）", "door": { "x": 4, "y": 16 }, "act": { "warp": "in_warehouse", "tx": 6, "ty": 8, "dir": "up" } },
+        { "id": "ramen", "x": 15, "y": 13, "w": 4, "h": 4, "kind": "shop", "wall": "#fff8e1", "roof": "#d35400", "label": "ラーメン こがね", "door": { "x": 16, "y": 16 }, "act": { "warp": "in_ramen", "tx": 5, "ty": 6, "dir": "up" } },
+        { "id": "cloth", "x": 20, "y": 13, "w": 3, "h": 4, "kind": "shop", "wall": "#fce4ec", "roof": "#e91e63", "label": "ブティック ルル", "door": { "x": 21, "y": 16 }, "act": { "warp": "in_cloth", "tx": 4, "ty": 6, "dir": "up" } }
       ],
       "objects": [
         { "id": "bus2", "x": 14, "y": 12, "kind": "busstop", "label": "バス停", "act": { "travel": true } },
@@ -87,7 +87,7 @@
       "npcs": [
         { "id": "merchant", "x": 7, "y": 9, "dir": "down", "look": { "hair": "#222", "shirt": "#16a085", "skin": "#e9c29a", "pants": "#2c3e50" }, "name": "商店街の会長", "talk": "merchant" },
         { "id": "girl2", "x": 17, "y": 9, "dir": "left", "look": { "hair": "#e86b9a", "shirt": "#fff", "skin": "#f3c9a4", "pants": "#e86b9a" }, "name": "おしゃれな女の子", "talk": "girl2" },
-        { "id": "worker", "x": 6, "y": 17, "dir": "up", "look": { "hair": "#333", "shirt": "#7f8c8d", "skin": "#e0b48a", "pants": "#34495e" }, "name": "倉庫の主任", "talk": "worker" }
+        { "id": "worker", "x": 8, "y": 16, "dir": "down", "look": { "hair": "#333", "shirt": "#7f8c8d", "skin": "#e0b48a", "pants": "#34495e" }, "name": "倉庫の主任", "talk": "worker" }
       ],
       "spawn": { "x": 13, "y": 12, "dir": "down" }
     },
@@ -103,7 +103,7 @@
         { "x": 19, "y": 3, "w": 4, "h": 4, "t": "," },
         { "x": 20, "y": 7, "w": 2, "h": 1, "t": "," },
         { "x": 18, "y": 13, "w": 7, "h": 8, "t": "," },
-        { "x": 1, "y": 15, "w": 4, "h": 5, "t": "T" },
+        { "x": 1, "y": 16, "w": 4, "h": 4, "t": "T" },
         { "x": 9, "y": 14, "w": 5, "h": 5, "t": "," }
       ],
       "points": [
@@ -111,9 +111,9 @@
         { "x": 21, "y": 18, "t": "T" }, { "x": 11, "y": 16, "t": "T" }, { "x": 24, "y": 19, "t": "T" }, { "x": 20, "y": 20, "t": "T" }
       ],
       "buildings": [
-        { "id": "shop3", "x": 1, "y": 2, "w": 5, "h": 4, "kind": "cabin", "wall": "#c49a6c", "roof": "#6d4c2f", "label": "森のカード屋 こもれび", "door": { "x": 3, "y": 5 }, "act": { "shop": "shop3" } },
-        { "id": "hall3", "x": 8, "y": 4, "w": 6, "h": 4, "kind": "hall", "wall": "#e8f5e9", "roof": "#2e7d32", "label": "みどりの森ステージ", "door": { "x": 10, "y": 7 }, "act": { "cup": "cup3" } },
-        { "id": "ranger", "x": 1, "y": 12, "w": 4, "h": 3, "kind": "cabin", "wall": "#d7b98e", "roof": "#8d6e63", "label": "森の案内所（自然探索のアルバイト）", "door": { "x": 2, "y": 14 }, "act": { "job": "nature" } }
+        { "id": "shop3", "x": 1, "y": 2, "w": 5, "h": 4, "kind": "cabin", "wall": "#c49a6c", "roof": "#6d4c2f", "label": "森のカード屋 こもれび", "door": { "x": 3, "y": 5 }, "act": { "warp": "in_shop3", "tx": 5, "ty": 7, "dir": "up" } },
+        { "id": "hall3", "x": 8, "y": 4, "w": 6, "h": 4, "kind": "hall", "wall": "#e8f5e9", "roof": "#2e7d32", "label": "みどりの森ステージ", "door": { "x": 10, "y": 7 }, "act": { "warp": "in_hall3", "tx": 6, "ty": 8, "dir": "up" } },
+        { "id": "ranger", "x": 1, "y": 12, "w": 4, "h": 3, "kind": "cabin", "wall": "#d7b98e", "roof": "#8d6e63", "label": "森の案内所（自然探索のアルバイト）", "door": { "x": 2, "y": 14 }, "act": { "warp": "in_ranger", "tx": 5, "ty": 6, "dir": "up" } }
       ],
       "objects": [
         { "id": "bus3", "x": 8, "y": 9, "kind": "busstop", "label": "バス停", "act": { "travel": true } },
@@ -197,6 +197,365 @@
         { "id": "festkid", "x": 17, "y": 9, "dir": "left", "look": { "hair": "#5d4037", "shirt": "#ffca28", "skin": "#f3c9a4", "pants": "#ffca28", "hat": "#e53935" }, "name": "はっぴの男の子", "talk": "festkid" }
       ],
       "spawn": { "x": 10, "y": 15, "dir": "up" }
+    },
+    "in_shop1": {
+      "name": "カードショップ ひだまり", "bgm": "shop", "indoor": true, "w": 11, "h": 9, "fill": "g", "border": "W",
+      "rects": [
+        { "x": 1, "y": 1, "w": 9, "h": 1, "t": "W" },
+        { "x": 5, "y": 4, "w": 1, "h": 4, "t": "k" },
+        { "x": 5, "y": 8, "w": 1, "h": 1, "t": "g" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "counter", "x": 4, "y": 3, "w": 3, "kind": "counter", "label": "レジ", "act": { "shop": "shop1" } },
+        { "id": "case1", "x": 1, "y": 2, "w": 2, "kind": "showcase", "label": "ショーケース", "act": { "talk": "in_showcase" } },
+        { "id": "case2", "x": 8, "y": 2, "w": 2, "kind": "showcase", "label": "ショーケース", "act": { "talk": "in_showcase" } },
+        { "id": "table1", "x": 2, "y": 6, "kind": "table", "label": "対戦テーブル", "act": { "talk": "in_playtable" } },
+        { "id": "table2", "x": 8, "y": 6, "kind": "table", "label": "対戦テーブル", "act": { "talk": "in_playtable" } },
+        { "id": "plant1", "x": 1, "y": 7, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_plant" } },
+        { "id": "plant2", "x": 9, "y": 7, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_plant" } },
+        { "id": "exit", "x": 5, "y": 8, "kind": "doormat", "label": "出口", "act": { "warp": "town1", "tx": 16, "ty": 6 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "clerk", "x": 5, "y": 2, "dir": "down", "look": { "hair": "#2f8f5b", "shirt": "#69c28e", "skin": "#f3c9a4", "pants": "#3b4a6b" }, "name": "ミドリ店長", "talk": "in_clerk" },
+        { "id": "shopkid", "x": 8, "y": 5, "dir": "down", "look": { "hair": "#5a3a1a", "shirt": "#ff8a65", "skin": "#f3c9a4", "pants": "#455a64" }, "name": "カード好きの子", "talk": "in_shopkid" }
+      ],
+      "spawn": { "x": 5, "y": 7, "dir": "up" }
+    },
+    "in_hall1": {
+      "name": "ひだまり大会会場", "bgm": "cup", "indoor": true, "w": 13, "h": 10, "fill": "g", "border": "W",
+      "rects": [
+        { "x": 1, "y": 1, "w": 11, "h": 1, "t": "W" },
+        { "x": 6, "y": 2, "w": 1, "h": 7, "t": "k" },
+        { "x": 6, "y": 9, "w": 1, "h": 1, "t": "g" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "counter", "x": 5, "y": 3, "w": 3, "kind": "counter", "label": "受付", "act": { "cup": "cup1" } },
+        { "id": "trophy1", "x": 1, "y": 2, "w": 3, "kind": "trophy", "label": "トロフィーの棚", "act": { "talk": "in_trophy" } },
+        { "id": "trophy2", "x": 9, "y": 2, "w": 3, "kind": "trophy", "label": "トロフィーの棚", "act": { "talk": "in_trophy" } },
+        { "id": "bench1", "x": 2, "y": 5, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
+        { "id": "bench2", "x": 8, "y": 5, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
+        { "id": "bench3", "x": 2, "y": 7, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
+        { "id": "bench4", "x": 8, "y": 7, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
+        { "id": "exit", "x": 6, "y": 9, "kind": "doormat", "label": "出口", "act": { "warp": "town1", "tx": 4, "ty": 14 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "hallstaff1", "x": 6, "y": 2, "dir": "down", "look": { "hair": "#3a2a1a", "shirt": "#8e44ad", "skin": "#f3c9a4", "pants": "#2c3e50" }, "name": "受付の人", "talk": "in_hallstaff" },
+        { "id": "fan1", "x": 9, "y": 4, "dir": "left", "look": { "hair": "#c0392b", "shirt": "#f1c40f", "skin": "#f3c9a4", "pants": "#2c3e50" }, "name": "大会ファン", "talk": "in_fan1" }
+      ],
+      "spawn": { "x": 6, "y": 8, "dir": "up" }
+    },
+    "in_post": {
+      "name": "ひだまり配達センター", "bgm": "town1", "indoor": true, "w": 11, "h": 9, "fill": "g", "border": "W",
+      "rects": [
+        { "x": 1, "y": 1, "w": 9, "h": 1, "t": "W" },
+        { "x": 5, "y": 8, "w": 1, "h": 1, "t": "g" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "counter", "x": 4, "y": 3, "w": 3, "kind": "counter", "label": "受付", "act": { "job": "delivery" } },
+        { "id": "crate1", "x": 1, "y": 2, "w": 2, "h": 2, "kind": "crate", "label": "荷物", "act": { "talk": "in_parcel" } },
+        { "id": "crate2", "x": 8, "y": 2, "w": 2, "kind": "crate", "label": "荷物", "act": { "talk": "in_parcel" } },
+        { "id": "crate3", "x": 9, "y": 5, "h": 2, "kind": "crate", "label": "荷物", "act": { "talk": "in_parcel" } },
+        { "id": "plant1", "x": 1, "y": 7, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_plant" } },
+        { "id": "exit", "x": 5, "y": 8, "kind": "doormat", "label": "出口", "act": { "warp": "town1", "tx": 16, "ty": 14 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "poststaff", "x": 5, "y": 2, "dir": "down", "look": { "hair": "#222", "shirt": "#27ae60", "skin": "#f3c9a4", "pants": "#1e5631", "hat": "#1e5631" }, "name": "配達センターの人", "talk": "in_poststaff" }
+      ],
+      "spawn": { "x": 5, "y": 7, "dir": "up" }
+    },
+    "in_d1": {
+      "name": "赤い屋根の家", "bgm": "home", "indoor": true, "w": 9, "h": 7, "fill": "_", "border": "W",
+      "rects": [
+        { "x": 1, "y": 1, "w": 7, "h": 1, "t": "W" },
+        { "x": 3, "y": 3, "w": 3, "h": 2, "t": "k" },
+        { "x": 4, "y": 6, "w": 1, "h": 1, "t": "_" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "kitchen", "x": 1, "y": 2, "w": 2, "kind": "kitchen", "label": "台所", "act": { "talk": "in_d1_kitchen" } },
+        { "id": "shelf", "x": 6, "y": 2, "w": 2, "kind": "shelf", "label": "本だな", "act": { "talk": "in_d1_shelf" } },
+        { "id": "table", "x": 4, "y": 3, "kind": "table", "label": "テーブル", "act": { "talk": "in_d1_table" } },
+        { "id": "exit", "x": 4, "y": 6, "kind": "doormat", "label": "出口", "act": { "warp": "town1", "tx": 3, "ty": 20 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "satou", "x": 6, "y": 4, "dir": "left", "look": { "hair": "#6d4c41", "shirt": "#e57373", "skin": "#f3c9a4", "pants": "#5d4037", "apron": "#ffffff" }, "name": "さとうさん", "talk": "in_d1" }
+      ],
+      "spawn": { "x": 4, "y": 5, "dir": "up" }
+    },
+    "in_d2": {
+      "name": "青い屋根の家", "bgm": "home", "indoor": true, "w": 9, "h": 7, "fill": "_", "border": "W",
+      "rects": [
+        { "x": 1, "y": 1, "w": 7, "h": 1, "t": "W" },
+        { "x": 2, "y": 4, "w": 5, "h": 1, "t": "k" },
+        { "x": 4, "y": 6, "w": 1, "h": 1, "t": "_" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "piano", "x": 4, "y": 2, "w": 3, "kind": "piano", "label": "ピアノ", "act": { "talk": "in_piano" } },
+        { "id": "shelf", "x": 1, "y": 2, "w": 2, "kind": "shelf", "label": "楽譜のたな", "act": { "talk": "in_d2_shelf" } },
+        { "id": "plant", "x": 7, "y": 4, "kind": "plant", "label": "観葉植物", "act": { "talk": "in_plant" } },
+        { "id": "exit", "x": 4, "y": 6, "kind": "doormat", "label": "出口", "act": { "warp": "town1", "tx": 8, "ty": 20 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "pianist", "x": 5, "y": 3, "dir": "up", "look": { "hair": "#1a237e", "shirt": "#90caf9", "skin": "#f3c9a4", "pants": "#1565c0" }, "name": "ピアノのお姉さん", "talk": "in_d2" }
+      ],
+      "spawn": { "x": 4, "y": 5, "dir": "up" }
+    },
+    "in_d3": {
+      "name": "黄色い屋根の家", "bgm": "home", "indoor": true, "w": 9, "h": 7, "fill": "_", "border": "W",
+      "rects": [
+        { "x": 1, "y": 1, "w": 7, "h": 1, "t": "W" },
+        { "x": 1, "y": 4, "w": 3, "h": 2, "t": "k" },
+        { "x": 4, "y": 6, "w": 1, "h": 1, "t": "_" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "cat", "x": 2, "y": 4, "kind": "cat", "label": "ねこ", "act": { "talk": "in_cat" } },
+        { "id": "shelf", "x": 1, "y": 2, "w": 2, "kind": "shelf", "label": "本だな", "act": { "talk": "in_d3_shelf" } },
+        { "id": "kitchen", "x": 6, "y": 2, "w": 2, "kind": "kitchen", "label": "台所", "act": { "talk": "in_d3_kitchen" } },
+        { "id": "table", "x": 6, "y": 4, "kind": "table", "label": "テーブル", "act": { "talk": "in_d3_table" } },
+        { "id": "exit", "x": 4, "y": 6, "kind": "doormat", "label": "出口", "act": { "warp": "town1", "tx": 15, "ty": 20 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "catgrandpa", "x": 4, "y": 3, "dir": "down", "look": { "hair": "#e0e0e0", "shirt": "#ffca28", "skin": "#efc9a0", "pants": "#6d4c41" }, "name": "ねこ好きのおじいさん", "talk": "in_d3" }
+      ],
+      "spawn": { "x": 4, "y": 5, "dir": "up" }
+    },
+    "in_d4": {
+      "name": "緑の屋根の家", "bgm": "home", "indoor": true, "w": 9, "h": 7, "fill": "_", "border": "W",
+      "rects": [
+        { "x": 1, "y": 1, "w": 7, "h": 1, "t": "W" },
+        { "x": 4, "y": 6, "w": 1, "h": 1, "t": "_" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "plant1", "x": 1, "y": 2, "kind": "plant", "label": "トマトのなえ", "act": { "talk": "in_d4_plant" } },
+        { "id": "plant2", "x": 2, "y": 2, "kind": "plant", "label": "きゅうりのなえ", "act": { "talk": "in_d4_plant" } },
+        { "id": "plant3", "x": 7, "y": 2, "kind": "plant", "label": "なすのなえ", "act": { "talk": "in_d4_plant" } },
+        { "id": "crate", "x": 6, "y": 4, "kind": "crate", "label": "野菜のかご", "act": { "talk": "in_d4_crate" } },
+        { "id": "table", "x": 2, "y": 4, "kind": "table", "label": "テーブル", "act": { "talk": "in_d4_table" } },
+        { "id": "exit", "x": 4, "y": 6, "kind": "doormat", "label": "出口", "act": { "warp": "town1", "tx": 20, "ty": 20 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "farmer", "x": 4, "y": 2, "dir": "down", "look": { "hair": "#5d4037", "shirt": "#66bb6a", "skin": "#e0b48a", "pants": "#3e2723", "hat": "#f9a825" }, "name": "野菜づくりのおじさん", "talk": "in_d4" }
+      ],
+      "spawn": { "x": 4, "y": 5, "dir": "up" }
+    },
+    "in_d5": {
+      "name": "紫の屋根の家", "bgm": "home", "indoor": true, "w": 9, "h": 7, "fill": "_", "border": "W",
+      "rects": [
+        { "x": 1, "y": 1, "w": 7, "h": 1, "t": "W" },
+        { "x": 2, "y": 2, "w": 5, "h": 3, "t": "k" },
+        { "x": 4, "y": 6, "w": 1, "h": 1, "t": "_" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "table", "x": 3, "y": 3, "w": 3, "kind": "table", "label": "カードを広げたテーブル", "act": { "talk": "in_cardtable" } },
+        { "id": "shelf", "x": 6, "y": 2, "w": 2, "kind": "shelf", "label": "カードファイルのたな", "act": { "talk": "in_d5_shelf" } },
+        { "id": "exit", "x": 4, "y": 6, "kind": "doormat", "label": "出口", "act": { "warp": "town1", "tx": 21, "ty": 14 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "cardbro", "x": 2, "y": 3, "dir": "right", "look": { "hair": "#4a148c", "shirt": "#ce93d8", "skin": "#f3c9a4", "pants": "#311b92" }, "name": "カード好きの兄", "talk": "in_d5_bro" },
+        { "id": "cardsis", "x": 6, "y": 3, "dir": "left", "look": { "hair": "#4a148c", "shirt": "#f8bbd0", "skin": "#f3c9a4", "pants": "#6a1b9a" }, "name": "カード好きの妹", "talk": "in_d5_sis" }
+      ],
+      "spawn": { "x": 4, "y": 5, "dir": "up" }
+    },
+    "in_shop2": {
+      "name": "メガカードショップ にぎわい", "bgm": "shop", "indoor": true, "w": 15, "h": 10, "fill": "g", "border": "W",
+      "rects": [
+        { "x": 1, "y": 1, "w": 13, "h": 1, "t": "W" },
+        { "x": 7, "y": 4, "w": 1, "h": 5, "t": "k" },
+        { "x": 7, "y": 9, "w": 1, "h": 1, "t": "g" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "counter", "x": 6, "y": 3, "w": 3, "kind": "counter", "label": "レジ", "act": { "shop": "shop2" } },
+        { "id": "case1", "x": 1, "y": 2, "w": 4, "kind": "showcase", "label": "ショーケース", "act": { "talk": "in_showcase" } },
+        { "id": "case2", "x": 10, "y": 2, "w": 4, "kind": "showcase", "label": "ショーケース", "act": { "talk": "in_showcase" } },
+        { "id": "case3", "x": 1, "y": 5, "w": 2, "kind": "showcase", "label": "ショーケース", "act": { "talk": "in_showcase2" } },
+        { "id": "case4", "x": 12, "y": 5, "w": 2, "kind": "showcase", "label": "ショーケース", "act": { "talk": "in_showcase2" } },
+        { "id": "table1", "x": 3, "y": 7, "kind": "table", "label": "対戦テーブル", "act": { "talk": "in_playtable" } },
+        { "id": "table2", "x": 11, "y": 7, "kind": "table", "label": "対戦テーブル", "act": { "talk": "in_playtable" } },
+        { "id": "exit", "x": 7, "y": 9, "kind": "doormat", "label": "出口", "act": { "warp": "town2", "tx": 5, "ty": 6 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "megaclerk", "x": 7, "y": 2, "dir": "down", "look": { "hair": "#222", "shirt": "#e67e22", "skin": "#f3c9a4", "pants": "#2c3e50" }, "name": "メガショップの店員", "talk": "in_megaclerk" },
+        { "id": "megakid", "x": 4, "y": 7, "dir": "left", "look": { "hair": "#3e2723", "shirt": "#42a5f5", "skin": "#f3c9a4", "pants": "#263238" }, "name": "対戦中の男の子", "talk": "in_megakid" },
+        { "id": "megagirl", "x": 10, "y": 4, "dir": "down", "look": { "hair": "#ad1457", "shirt": "#fff59d", "skin": "#f3c9a4", "pants": "#ad1457" }, "name": "カードを選ぶ女の子", "talk": "in_megagirl" }
+      ],
+      "spawn": { "x": 7, "y": 8, "dir": "up" }
+    },
+    "in_hall2": {
+      "name": "にぎわいアリーナ", "bgm": "cup", "indoor": true, "w": 13, "h": 10, "fill": "g", "border": "W",
+      "rects": [
+        { "x": 1, "y": 1, "w": 11, "h": 1, "t": "W" },
+        { "x": 6, "y": 2, "w": 1, "h": 7, "t": "k" },
+        { "x": 6, "y": 9, "w": 1, "h": 1, "t": "g" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "counter", "x": 5, "y": 3, "w": 3, "kind": "counter", "label": "受付", "act": { "cup": "cup2" } },
+        { "id": "trophy1", "x": 1, "y": 2, "w": 3, "kind": "trophy", "label": "トロフィーの棚", "act": { "talk": "in_trophy" } },
+        { "id": "trophy2", "x": 9, "y": 2, "w": 3, "kind": "trophy", "label": "トロフィーの棚", "act": { "talk": "in_trophy" } },
+        { "id": "bench1", "x": 2, "y": 5, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
+        { "id": "bench2", "x": 8, "y": 5, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
+        { "id": "bench3", "x": 2, "y": 7, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
+        { "id": "bench4", "x": 8, "y": 7, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
+        { "id": "exit", "x": 6, "y": 9, "kind": "doormat", "label": "出口", "act": { "warp": "town2", "tx": 18, "ty": 6 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "hallstaff2", "x": 6, "y": 2, "dir": "down", "look": { "hair": "#3a2a1a", "shirt": "#c0392b", "skin": "#f3c9a4", "pants": "#2c3e50" }, "name": "受付の人", "talk": "in_hallstaff" },
+        { "id": "fan2", "x": 3, "y": 4, "dir": "right", "look": { "hair": "#f39c12", "shirt": "#2980b9", "skin": "#f3c9a4", "pants": "#2c3e50" }, "name": "アリーナの常連", "talk": "in_fan2" }
+      ],
+      "spawn": { "x": 6, "y": 8, "dir": "up" }
+    },
+    "in_warehouse": {
+      "name": "にぎわい倉庫", "bgm": "town2", "indoor": true, "w": 13, "h": 10, "fill": "g", "border": "W",
+      "rects": [
+        { "x": 1, "y": 1, "w": 11, "h": 1, "t": "W" },
+        { "x": 6, "y": 9, "w": 1, "h": 1, "t": "g" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "counter", "x": 5, "y": 3, "w": 3, "kind": "counter", "label": "受付", "act": { "job": "sorting" } },
+        { "id": "crate1", "x": 1, "y": 2, "w": 3, "h": 2, "kind": "crate", "label": "荷物の山", "act": { "talk": "in_parcel" } },
+        { "id": "crate2", "x": 9, "y": 2, "w": 3, "h": 2, "kind": "crate", "label": "荷物の山", "act": { "talk": "in_parcel" } },
+        { "id": "crate3", "x": 1, "y": 6, "w": 2, "h": 2, "kind": "crate", "label": "荷物の山", "act": { "talk": "in_parcel" } },
+        { "id": "crate4", "x": 10, "y": 6, "w": 2, "h": 2, "kind": "crate", "label": "荷物の山", "act": { "talk": "in_parcel" } },
+        { "id": "exit", "x": 6, "y": 9, "kind": "doormat", "label": "出口", "act": { "warp": "town2", "tx": 4, "ty": 17 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "whstaff", "x": 6, "y": 2, "dir": "down", "look": { "hair": "#333", "shirt": "#7f8c8d", "skin": "#e0b48a", "pants": "#34495e", "hat": "#ffc107" }, "name": "倉庫の人", "talk": "in_whstaff" }
+      ],
+      "spawn": { "x": 6, "y": 8, "dir": "up" }
+    },
+    "in_ramen": {
+      "name": "ラーメン こがね", "bgm": "town2", "indoor": true, "w": 11, "h": 8, "fill": "_", "border": "W",
+      "rects": [
+        { "x": 1, "y": 1, "w": 9, "h": 1, "t": "W" },
+        { "x": 5, "y": 7, "w": 1, "h": 1, "t": "_" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "counter", "x": 2, "y": 3, "w": 7, "kind": "counter", "label": "カウンター", "act": { "talk": "in_ramen" } },
+        { "id": "stool1", "x": 2, "y": 4, "kind": "stool", "label": "いす", "act": { "talk": "in_stool" } },
+        { "id": "stool2", "x": 4, "y": 4, "kind": "stool", "label": "いす", "act": { "talk": "in_stool" } },
+        { "id": "stool3", "x": 6, "y": 4, "kind": "stool", "label": "いす", "act": { "talk": "in_stool" } },
+        { "id": "stool4", "x": 8, "y": 4, "kind": "stool", "label": "いす", "act": { "talk": "in_stool" } },
+        { "id": "exit", "x": 5, "y": 7, "kind": "doormat", "label": "出口", "act": { "warp": "town2", "tx": 16, "ty": 17 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "ramenmaster", "x": 5, "y": 2, "dir": "down", "look": { "hair": "#222", "shirt": "#ffffff", "skin": "#e0b48a", "pants": "#455a64" }, "name": "ラーメン屋の大将", "talk": "in_ramenmaster" },
+        { "id": "ramenguest", "x": 8, "y": 5, "dir": "up", "look": { "hair": "#4e342e", "shirt": "#78909c", "skin": "#f3c9a4", "pants": "#37474f" }, "name": "お客さん", "talk": "in_ramenguest" }
+      ],
+      "spawn": { "x": 5, "y": 6, "dir": "up" }
+    },
+    "in_cloth": {
+      "name": "ブティック ルル", "bgm": "town2", "indoor": true, "w": 9, "h": 8, "fill": "_", "border": "W",
+      "rects": [
+        { "x": 1, "y": 1, "w": 7, "h": 1, "t": "W" },
+        { "x": 2, "y": 4, "w": 5, "h": 3, "t": "k" },
+        { "x": 4, "y": 7, "w": 1, "h": 1, "t": "_" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "counter", "x": 3, "y": 3, "w": 3, "kind": "counter", "label": "レジ", "act": { "talk": "in_boutique" } },
+        { "id": "rack1", "x": 1, "y": 2, "w": 2, "kind": "rack", "label": "服のラック", "act": { "talk": "in_rack" } },
+        { "id": "rack2", "x": 6, "y": 2, "w": 2, "kind": "rack", "label": "服のラック", "act": { "talk": "in_rack" } },
+        { "id": "mirror", "x": 7, "y": 5, "h": 2, "kind": "mirror", "label": "鏡", "act": { "talk": "in_mirror" } },
+        { "id": "exit", "x": 4, "y": 7, "kind": "doormat", "label": "出口", "act": { "warp": "town2", "tx": 21, "ty": 17 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "boutiquestaff", "x": 4, "y": 2, "dir": "down", "look": { "hair": "#e86b9a", "shirt": "#fce4ec", "skin": "#f3c9a4", "pants": "#e91e63" }, "name": "お店の人", "talk": "in_boutiquestaff" }
+      ],
+      "spawn": { "x": 4, "y": 6, "dir": "up" }
+    },
+    "in_shop3": {
+      "name": "森のカード屋 こもれび", "bgm": "shop", "indoor": true, "w": 11, "h": 9, "fill": "_", "border": "W",
+      "rects": [
+        { "x": 1, "y": 1, "w": 9, "h": 1, "t": "W" },
+        { "x": 4, "y": 4, "w": 3, "h": 4, "t": "k" },
+        { "x": 5, "y": 8, "w": 1, "h": 1, "t": "_" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "counter", "x": 4, "y": 3, "w": 3, "kind": "counter", "label": "レジ", "act": { "shop": "shop3" } },
+        { "id": "shelf", "x": 1, "y": 2, "w": 2, "kind": "shelf", "label": "木のたな", "act": { "talk": "in_forestshelf" } },
+        { "id": "case1", "x": 8, "y": 2, "w": 2, "kind": "showcase", "label": "ショーケース", "act": { "talk": "in_showcase" } },
+        { "id": "table", "x": 2, "y": 5, "kind": "table", "label": "対戦テーブル", "act": { "talk": "in_playtable" } },
+        { "id": "plant1", "x": 1, "y": 7, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
+        { "id": "plant2", "x": 9, "y": 7, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
+        { "id": "exit", "x": 5, "y": 8, "kind": "doormat", "label": "出口", "act": { "warp": "town3", "tx": 3, "ty": 6 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "forestclerk", "x": 5, "y": 2, "dir": "down", "look": { "hair": "#6d4c2f", "shirt": "#a1887f", "skin": "#efc9a0", "pants": "#4e342e", "apron": "#558b2f" }, "name": "こもれびの店主", "talk": "in_forestclerk" }
+      ],
+      "spawn": { "x": 5, "y": 7, "dir": "up" }
+    },
+    "in_hall3": {
+      "name": "みどりの森ステージ", "bgm": "cup", "indoor": true, "w": 13, "h": 10, "fill": "_", "border": "W",
+      "rects": [
+        { "x": 1, "y": 1, "w": 11, "h": 1, "t": "W" },
+        { "x": 6, "y": 2, "w": 1, "h": 7, "t": "k" },
+        { "x": 6, "y": 9, "w": 1, "h": 1, "t": "_" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "counter", "x": 5, "y": 3, "w": 3, "kind": "counter", "label": "受付", "act": { "cup": "cup3" } },
+        { "id": "trophy1", "x": 1, "y": 2, "w": 3, "kind": "trophy", "label": "トロフィーの棚", "act": { "talk": "in_trophy" } },
+        { "id": "trophy2", "x": 9, "y": 2, "w": 3, "kind": "trophy", "label": "トロフィーの棚", "act": { "talk": "in_trophy" } },
+        { "id": "bench1", "x": 2, "y": 5, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
+        { "id": "bench2", "x": 8, "y": 5, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
+        { "id": "bench3", "x": 2, "y": 7, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
+        { "id": "bench4", "x": 8, "y": 7, "w": 3, "kind": "bench", "label": "観客席", "act": { "talk": "in_bench" } },
+        { "id": "plant1", "x": 1, "y": 4, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
+        { "id": "plant2", "x": 11, "y": 4, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
+        { "id": "exit", "x": 6, "y": 9, "kind": "doormat", "label": "出口", "act": { "warp": "town3", "tx": 10, "ty": 8 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "hallstaff3", "x": 6, "y": 2, "dir": "down", "look": { "hair": "#3a2a1a", "shirt": "#2e7d32", "skin": "#f3c9a4", "pants": "#1b5e20" }, "name": "受付の人", "talk": "in_hallstaff" },
+        { "id": "fan3", "x": 9, "y": 4, "dir": "left", "look": { "hair": "#795548", "shirt": "#aed581", "skin": "#f3c9a4", "pants": "#33691e" }, "name": "森のステージのファン", "talk": "in_fan3" }
+      ],
+      "spawn": { "x": 6, "y": 8, "dir": "up" }
+    },
+    "in_ranger": {
+      "name": "森の案内所", "bgm": "town3", "indoor": true, "w": 11, "h": 8, "fill": "_", "border": "W",
+      "rects": [
+        { "x": 1, "y": 1, "w": 9, "h": 1, "t": "W" },
+        { "x": 5, "y": 7, "w": 1, "h": 1, "t": "_" }
+      ],
+      "points": [],
+      "buildings": [],
+      "objects": [
+        { "id": "counter", "x": 4, "y": 3, "w": 3, "kind": "counter", "label": "受付", "act": { "job": "nature" } },
+        { "id": "board", "x": 1, "y": 2, "w": 2, "kind": "board", "label": "森の地図", "act": { "talk": "in_forestmap" } },
+        { "id": "plant1", "x": 9, "y": 2, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
+        { "id": "plant2", "x": 1, "y": 6, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
+        { "id": "plant3", "x": 9, "y": 6, "kind": "plant", "label": "森の草花", "act": { "talk": "in_forestplant" } },
+        { "id": "exit", "x": 5, "y": 7, "kind": "doormat", "label": "出口", "act": { "warp": "town3", "tx": 2, "ty": 15 }, "walk": true }
+      ],
+      "npcs": [
+        { "id": "rangerstaff", "x": 5, "y": 2, "dir": "down", "look": { "hair": "#5a3a1a", "shirt": "#689f38", "skin": "#e0b48a", "pants": "#3e2723", "hat": "#33691e" }, "name": "案内所の人", "talk": "in_rangerstaff" }
+      ],
+      "spawn": { "x": 5, "y": 6, "dir": "up" }
     }
   }
 }

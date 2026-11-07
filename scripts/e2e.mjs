@@ -194,6 +194,14 @@ try {
   await page.evaluate(() => window.__kira.enterMap('town1', { x: 16, y: 6, dir: 'up' }));
   await page.waitForTimeout(300);
   await hold('ArrowUp', 400);
+  await page.waitForTimeout(500);
+  check('扉から建物の中に入れる（カードショップの中）', (await mapPos()).map === 'in_shop1', JSON.stringify(await mapPos()));
+  await shot('03b-shop-inside');
+  // 中を歩いてレジの前へ行き、「はなす」
+  await hold('ArrowUp', 1200);
+  await page.waitForTimeout(300);
+  check('レジの前で「はなす」になる', (await page.locator('.abtn').textContent()) === 'はなす');
+  await page.locator('.abtn').click({ force: true });
   await page.waitForTimeout(400);
   await talkAll();
   await page.waitForSelector('text=最初のデッキをえらぼう', { timeout: 10000 });
